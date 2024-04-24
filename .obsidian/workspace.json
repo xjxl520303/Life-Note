@@ -4,27 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "092b787e9ecda465",
+        "id": "f2a320f7cb9c411c",
         "type": "tabs",
         "children": [
           {
-            "id": "11d10143dab14adc",
+            "id": "dff97c0f4f84e370",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "README.md",
+                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
                 "mode": "source",
                 "source": false
               }
-            }
-          },
-          {
-            "id": "3869584f3d3668f4",
-            "type": "leaf",
-            "state": {
-              "type": "thino_view",
-              "state": {}
             }
           }
         ]
@@ -74,14 +66,6 @@
             }
           },
           {
-            "id": "a39eb4d29e1aa987",
-            "type": "leaf",
-            "state": {
-              "type": "mk-path-view",
-              "state": {}
-            }
-          },
-          {
             "id": "eb28d1bf48a4bd75",
             "type": "leaf",
             "state": {
@@ -96,13 +80,21 @@
               "type": "file-tree-view",
               "state": {}
             }
+          },
+          {
+            "id": "6bcfd4f6e9d426eb",
+            "type": "leaf",
+            "state": {
+              "type": "mk-path-view",
+              "state": {}
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 292.5
+    "width": 269.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -118,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
+                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -135,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
+                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -158,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md"
+                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md"
               }
             }
           },
@@ -169,13 +161,21 @@
               "type": "git-view",
               "state": {}
             }
+          },
+          {
+            "id": "d7693365484a2640",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 335.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -188,15 +188,24 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false,
       "media-extended:Open media": false,
       "obsidian-memos:Thino": false,
-      "obsidian-omnivore:Omnivore": false,
+      "file-tree-alternative:File Tree Alternative Plugin": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
-      "file-tree-alternative:File Tree Alternative Plugin": false
+      "obsidian-omnivore:Omnivore": false
     }
   },
-  "active": "11d10143dab14adc",
+  "active": "d7693365484a2640",
   "lastOpenFiles": [
-    "附件",
+    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Go/抗遗忘系列",
+    "博客/Go/插件使用/Go-pretty",
+    "博客/Go/插件使用/Excelize",
+    "博客/Go/插件使用",
+    "博客/Go",
+    "博客/Obsidian",
+    "日记",
     "README.md",
+    "博客",
+    "附件",
     "Spaces"
   ]
 }

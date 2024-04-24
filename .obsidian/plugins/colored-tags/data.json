@@ -12,7 +12,9 @@
   "knownTags": {
     "Root": 1,
     "Greek": 2,
-    "Latin": 3
+    "Latin": 3,
+    "Obsidian": 4,
+    "博客": 5
   },
   "_version": 3
 }

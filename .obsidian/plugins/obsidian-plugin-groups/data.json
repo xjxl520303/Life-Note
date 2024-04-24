@@ -1,0 +1,206 @@
+{
+  "groups": [
+    {
+      "loadAtStartup": false,
+      "disableOnStartup": false,
+      "delay": 2,
+      "id": "pg",
+      "name": "文本编辑相关",
+      "plugins": [
+        {
+          "id": "obsidian-pangu",
+          "name": "盘古 PanGu"
+        },
+        {
+          "id": "oz-clear-unused-images",
+          "name": "Clear Unused Images"
+        },
+        {
+          "id": "dataview",
+          "name": "Dataview"
+        },
+        {
+          "id": "easy-typing-obsidian",
+          "name": "Easy Typing"
+        },
+        {
+          "id": "cm-chs-patch",
+          "name": "Word Splitting for Simplified Chinese in Edit Mode and Vim Mode"
+        },
+        {
+          "id": "various-complements",
+          "name": "Various Complements"
+        },
+        {
+          "id": "cm-typewriter-scroll-obsidian",
+          "name": "Typewriter Scroll"
+        },
+        {
+          "id": "obsidian-quiet-outline",
+          "name": "Quiet Outline"
+        },
+        {
+          "id": "url-into-selection",
+          "name": "Paste URL into selection"
+        },
+        {
+          "id": "nldates-obsidian",
+          "name": "Natural Language Dates"
+        },
+        {
+          "id": "obsidian-file-link",
+          "name": "Better File Link"
+        },
+        {
+          "id": "table-editor-obsidian",
+          "name": "Advanced Tables"
+        }
+      ],
+      "groupIds": [],
+      "generateCommands": false
+    },
+    {
+      "loadAtStartup": false,
+      "disableOnStartup": false,
+      "delay": 2,
+      "id": "pg0",
+      "name": "界面增强",
+      "plugins": [
+        {
+          "id": "code-styler",
+          "name": "Code Styler"
+        },
+        {
+          "id": "obsidian-code-tab",
+          "name": "Code Tab"
+        },
+        {
+          "id": "colored-tags",
+          "name": "Colored Tags"
+        },
+        {
+          "id": "editing-toolbar",
+          "name": "Editing Toolbar"
+        },
+        {
+          "id": "editor-width-slider",
+          "name": "Editor Width Slider"
+        },
+        {
+          "id": "last-modified-timestamp-in-status-bar",
+          "name": "File Creation and Last Modified Timestamps in Status Bar"
+        },
+        {
+          "id": "file-tree-alternative",
+          "name": "File Tree Alternative"
+        },
+        {
+          "id": "home-tab",
+          "name": "Home tab"
+        },
+        {
+          "id": "obsidian-hover-editor",
+          "name": "Hover Editor"
+        },
+        {
+          "id": "obsidian-icon-folder",
+          "name": "Iconize"
+        },
+        {
+          "id": "make-md",
+          "name": "MAKE.md"
+        },
+        {
+          "id": "novel-word-count",
+          "name": "Novel word count"
+        },
+        {
+          "id": "quick-explorer",
+          "name": "Quick Explorer"
+        },
+        {
+          "id": "wallpaper",
+          "name": "wallpaper"
+        }
+      ],
+      "groupIds": [],
+      "generateCommands": false
+    },
+    {
+      "loadAtStartup": false,
+      "disableOnStartup": false,
+      "delay": 2,
+      "id": "pg01",
+      "name": "管理",
+      "plugins": [
+        {
+          "id": "obsidian-git",
+          "name": "Git"
+        },
+        {
+          "id": "obsidian-linter",
+          "name": "Linter"
+        },
+        {
+          "id": "obsidian-plugin-update-tracker",
+          "name": "Plugin Update Tracker"
+        },
+        {
+          "id": "obsidian-style-settings",
+          "name": "Style Settings"
+        },
+        {
+          "id": "obsidian-version-history-diff",
+          "name": "Version History Diff"
+        }
+      ],
+      "groupIds": [],
+      "generateCommands": false
+    },
+    {
+      "loadAtStartup": false,
+      "disableOnStartup": false,
+      "delay": 2,
+      "id": "pg012",
+      "name": "应用增强",
+      "plugins": [
+        {
+          "id": "calendar",
+          "name": "Calendar"
+        },
+        {
+          "id": "obsidian-day-planner",
+          "name": "Day Planner"
+        },
+        {
+          "id": "obsidian-excalidraw-plugin",
+          "name": "Excalidraw"
+        },
+        {
+          "id": "obsidian-omnivore",
+          "name": "Omnivore"
+        },
+        {
+          "id": "surfing",
+          "name": "Surfing"
+        },
+        {
+          "id": "obsidian-memos",
+          "name": "Thino"
+        },
+        {
+          "id": "media-extended",
+          "name": "Media Extended"
+        }
+      ],
+      "groupIds": [],
+      "generateCommands": false
+    }
+  ],
+  "generateCommands": true,
+  "showNoticeOnGroupLoad": "none",
+  "devLogs": false,
+  "devices": [],
+  "doLoadSynchronously": true,
+  "showStatusbarIcon": "None"
+}

@@ -38,7 +38,9 @@
   "deleteFileOption": "trash",
   "expandedSpaces": [
     "/",
-    "50个 Greek 和 Latin 词根"
+    "50个 Greek 和 Latin 词根",
+    "博客/Go/抗遗忘系列",
+    "博客/Obsidian"
   ],
   "expandFolderOnClick": true,
   "menuTriggerChar": "/",
@@ -53,6 +55,7 @@
     "_assets",
     "_blocks"
   ],
+  "newFileLocation": "current",
   "inlineBacklinks": false,
   "inlineContext": true,
   "inlineBacklinksExpanded": false,
