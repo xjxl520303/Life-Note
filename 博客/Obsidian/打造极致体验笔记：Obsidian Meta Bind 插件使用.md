@@ -1,0 +1,1 @@
+[mProjectsCode/obsidian-meta-bind-plugin: A plugin for Obsidian to make your notes interactive with inline input fields, metadata displays, and buttons. (github.com)](https://github.com/mProjectsCode/obsidian-meta-bind-plugin)

@@ -4,18 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "f2a320f7cb9c411c",
+        "id": "9b46c50058a833ac",
         "type": "tabs",
         "children": [
           {
-            "id": "dff97c0f4f84e370",
+            "id": "fc85cdebad48c611",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
-                "mode": "source",
-                "source": false
+                "file": "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
+                "mode": "preview",
+                "source": true
               }
             }
           }
@@ -66,14 +66,6 @@
             }
           },
           {
-            "id": "eb28d1bf48a4bd75",
-            "type": "leaf",
-            "state": {
-              "type": "surfing-tab-tree",
-              "state": {}
-            }
-          },
-          {
             "id": "eb2ba09db5404a0b",
             "type": "leaf",
             "state": {
@@ -82,10 +74,18 @@
             }
           },
           {
-            "id": "6bcfd4f6e9d426eb",
+            "id": "ef51d368f2f1516a",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "f91e0f55bdd28218",
+            "type": "leaf",
+            "state": {
+              "type": "surfing-tab-tree",
               "state": {}
             }
           }
@@ -94,7 +94,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 269.5
+    "width": 351.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -110,7 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+                "file": "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+                "file": "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +150,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md"
+                "file": "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md"
               }
             }
           },
@@ -169,9 +169,29 @@
               "type": "quiet-outline",
               "state": {}
             }
+          },
+          {
+            "id": "bfff48720db8c001",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          },
+          {
+            "id": "4c0cb0bfaa589cac",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -180,22 +200,40 @@
   "left-ribbon": {
     "hiddenItems": {
       "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "media-extended:Open media": false,
       "obsidian-memos:Thino": false,
       "file-tree-alternative:File Tree Alternative Plugin": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
-      "obsidian-omnivore:Omnivore": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "markdown-table-editor:Open Markdown Table Editor": false
     }
   },
-  "active": "d7693365484a2640",
+  "active": "fc85cdebad48c611",
   "lastOpenFiles": [
+    "附件/Pasted image 20240426193451.png",
+    "附件/Pasted image 20240426192402.png",
+    "附件/企业微信截图_17141199186147.png",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Meta Bind 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Tasks 插件使用.md",
+    "附件/企业微信截图_17140459602815.png",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "附件/Pasted image 20240425193026.png",
+    "附件/Pasted image 20240425192540.png",
+    "附件/Pasted image 20240425191442.png",
+    "附件/Pasted image 20240425180855.png",
+    "附件/企业微信截图_17140394995465.png",
+    "附件/Pasted image 20240425155428.png",
+    "附件/Pasted image 20240425121828.png",
+    "博客/Obsidian/打造极致体验笔记：Obsidian 插件开发.md",
+    "博客/Obsidian/打造极致体验笔记：QuickAdd 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Style Settings 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Metadata Menu 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Templater Obsidian 插件使用.md",
     "博客/Go/抗遗忘系列",
     "博客/Go/插件使用/Go-pretty",
     "博客/Go/插件使用/Excelize",

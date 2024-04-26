@@ -1,6 +1,5 @@
 [
   "obsidian-pangu",
-  "table-editor-obsidian",
   "oz-clear-unused-images",
   "obsidian-code-tab",
   "dataview",
@@ -8,9 +7,7 @@
   "last-modified-timestamp-in-status-bar",
   "obsidian-git",
   "home-tab",
-  "obsidian-hover-editor",
   "obsidian-icon-folder",
-  "obsidian-linter",
   "make-md",
   "cm-chs-patch",
   "obsidian-version-history-diff",
@@ -19,10 +16,8 @@
   "novel-word-count",
   "media-extended",
   "obsidian-memos",
-  "obsidian-omnivore",
   "surfing",
   "code-styler",
-  "colored-tags",
   "editing-toolbar",
   "editor-width-slider",
   "obsidian-excalidraw-plugin",
@@ -34,5 +29,8 @@
   "obsidian-style-settings",
   "obsidian-plugin-groups",
   "obsidian-quiet-outline",
-  "obsidian-outliner"
+  "obsidian-outliner",
+  "table-editor-obsidian",
+  "markdown-table-editor",
+  "obsidian-tasks-plugin"
 ]
