@@ -14,8 +14,8 @@
               "type": "markdown",
               "state": {
                 "file": "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
-                "mode": "preview",
-                "source": true
+                "mode": "source",
+                "source": false
               }
             }
           }
@@ -90,7 +90,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -191,7 +191,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -199,26 +199,27 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:打开快速切换": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
-      "command-palette:打开命令面板": false,
+      "switcher:Open quick switcher": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
       "media-extended:Open media": false,
       "obsidian-memos:Thino": false,
       "file-tree-alternative:File Tree Alternative Plugin": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false
     }
   },
   "active": "fc85cdebad48c611",
   "lastOpenFiles": [
+    "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
+    "Spaces",
     "附件/Pasted image 20240426193451.png",
     "附件/Pasted image 20240426192402.png",
     "附件/企业微信截图_17141199186147.png",
     "博客/Obsidian/打造极致体验笔记：Obsidian Meta Bind 插件使用.md",
-    "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Tasks 插件使用.md",
     "附件/企业微信截图_17140459602815.png",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
@@ -228,7 +229,6 @@
     "附件/Pasted image 20240425180855.png",
     "附件/企业微信截图_17140394995465.png",
     "附件/Pasted image 20240425155428.png",
-    "附件/Pasted image 20240425121828.png",
     "博客/Obsidian/打造极致体验笔记：Obsidian 插件开发.md",
     "博客/Obsidian/打造极致体验笔记：QuickAdd 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Style Settings 插件使用.md",
@@ -243,7 +243,6 @@
     "日记",
     "README.md",
     "博客",
-    "附件",
-    "Spaces"
+    "附件"
   ]
 }
