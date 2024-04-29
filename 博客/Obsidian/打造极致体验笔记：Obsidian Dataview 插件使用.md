@@ -582,8 +582,11 @@ FLATTEN progress + "%" AS percentage
 
 wordcount:: 2300
 timeNow:: 1 hours
+list2:: `= date(now)`
 
 `= date(2027-12-31)` ---kk `= date(now) + dur(this.timeNow)`
+
+[`$= const x = new Date(); "<b>" + x + "</b>"`]    测试
 
 作为一款笔记类应用软件，日期的相关操作显得举足轻重，因此 DataView 提供了 `date` 类型来处理日期。(mmm:: date(2022-04-05))
 
@@ -606,4 +609,7 @@ WHERE T.completed AND file = this.file
 - [obsidian插件dataview官方文档翻译 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393550306)
 - [Dataview综合文档 | obsidian文档咖啡豆版](https://obsidian.vip/zh/dataview/)
 - [Dataviewjs的奇技淫巧 - 经验分享 - Obsidian 中文论坛](https://forum-zh.obsidian.md/t/topic/5954)
-- [Obsidian学习从0到1 —— 双链（重点）_obsidian 双链-CSDN博客](https://blog.csdn.net/weixin_51684355/article/details/126084867)>)
+- [Obsidian学习从0到1 —— 双链（重点）_obsidian 双链-CSDN博客](https://blog.csdn.net/weixin_51684355/article/details/126084867)
+- [dmscode/Obsidian-Templates: 我在 Obsidian 中用的各种模板（Dataview，Templater，QuickAdd） (github.com)](https://github.com/dmscode/Obsidian-Templates)
+- [702573N/Obsidian-Tasks-Timeline: A custom view build with Obsidian-Dataview to display tasks from Obsidian-Tasks and from your daily notes in a highly customisable timeline (github.com)](https://github.com/702573N/Obsidian-Tasks-Timeline)
+- [Aetherinox/obsidian-dataview-snippets: A collection of Obsidian.md scripts which include Tag & Page Clouds, Table of Contents / ToC, Bad / Missing Link reporting, etc. (github.com)](https://github.com/Aetherinox/obsidian-dataview-snippets)
