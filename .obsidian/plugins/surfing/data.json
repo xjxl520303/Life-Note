@@ -46,7 +46,19 @@
     ],
     "defaultFilterType": "tree"
   },
-  "treeData": [],
+  "treeData": [
+    {
+      "id": "584c0b2008e3a47b",
+      "parent": 0,
+      "droppable": true,
+      "text": "Dataview函数集合 | obsidian文档咖啡豆版",
+      "data": {
+        "fileType": "site",
+        "fileSize": "",
+        "icon": {}
+      }
+    }
+  ],
   "enableHtmlPreview": true,
   "supportLivePreviewInlineUrl": true
 }

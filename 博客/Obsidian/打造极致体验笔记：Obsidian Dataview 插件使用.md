@@ -578,17 +578,231 @@ FLATTEN progress + "%" AS percentage
 
 最后对于链接的文件中的属性我们直接使用 `[[Link]].value` 读取即可。
 
-#### 日期类型
+#### 日期类型（Dates）
 
-wordcount:: 2300
-timeNow:: 1 hours
-list2:: `= date(now)`
+日期类型的值格式需要满足 Data ISO format 规则，我们通常以 `2024-04-29 11:11:23` 或者 `2024/04/29 11:11:23` 的格式来表示日期+时间，这更符合国人的习惯。
 
-`= date(2027-12-31)` ---kk `= date(now) + dur(this.timeNow)`
+DataView 提供了一个 `date()` 函数来构造一个日期对象，这个函数有 2 种签名：`date(any)` 和 `date(text, format)`。
 
-[`$= const x = new Date(); "<b>" + x + "</b>"`]    测试
+##### `date(any)` 使用
 
-作为一款笔记类应用软件，日期的相关操作显得举足轻重，因此 DataView 提供了 `date` 类型来处理日期。(mmm:: date(2022-04-05))
+需要注意的是传入 ` date() ` 函数的日期是可以不加引号的，例如：` date(2024-04-29) `，对于有具体时间的日期我们不能以：` date(2024-04-29 11:20:20) ` 这种形式传入，正确的姿势是：` date(2024-04-29T11:20:20) `，这里的 ` T ` 为日期分隔符。DataView 为 ` date() ` 函数预定义了很多具有描述性质的常量参数，例如：` date(now) ` 表示当前日期和时间，具体如下：
+
+- `today`：表示当前日期
+- `now`：表示当前日期+时间
+- `tomorrow`：表示明天的日期
+- `yesterday`：表示昨天的日期
+- `sow` / `eow`：表示当前周的开始日期和结束日期
+- `som` / `eom`：表示当前月的开始日期和结束日期
+- `soy` / `eoy`：表示当前年份的开始日期和结束日期
+
+> 注：`so` 为 `start of` 的缩写, `eo` 为 `end of` 的缩写。
+
+下面使用内联 DQL 查询来演示：
+
+```
+日期:: 2024-04-29
+时间:: 2024/04/29 11:01:20
+`= this.日期` %% 2024-04-29 %%
+`= this.时间` %% 2024/04/29 11:01:20 %%
+现在时间：`= date(now)` %% 现在时间：2024-04-29 13:04:05 %%
+指定日期1：`= date(2024-04-29)` %% 2024-04-29 %%
+指定日期2：`= date("2020-04-18")` %% 2024-04-18 %%
+指定日期3：`= date([[2024-04-23]])` %% 2024-04-23 %%
+指定时间4：`= date(2024-04-29T11:20:20)` %% 2024-04-29 11:04:20 %%
+指定日期5：`= date([[Place|2021-04]])` %% 结果 %%
+昨天：`= date(yesterday)`，明天：`= date(tomorrow)` %% 昨天：2024-04-28，明天：2024-04-30 %%
+周开始与结束日期：`= date(sow)` / `= date(eow)` %% 周开始与结束日期：2024-04-29 / 2024-05-05 11:05:59 %%
+月开始与结束日期：`= date(som)` / `= date(eom)` %% 2024-04-01 / 2024-04-30 11:04:59 %%
+年开始与结束日期：`= date(soy)` / `= date(eoy)` %%0 2024-01-01 / 2024-12-31 11:12:59 %%
+```
+
+>注：`%% %%` 部分为 Obsidian 中的注释
+
+上面的代码中我们始终以 `xxxx-xx-xx` 或 `xxxx-xx-xxTxx:xx:xx` 的格式传入 `date()` 函数中，这也是**唯一合法的格式**，其它例如：`date(2024/04/29)`, `date(Mon Apr 29 2024 14:45:46 GMT+0800 (中国标准时间))` 以及 `data(1714366864889)` 都是不合法的。如果相要使用这些格式作为输入就需要使用第二种形式了。此外，我们在前面【快速入门】中有提过修改 Obsidian 日期输出的默认格式，如果没有修改可能得到的结果日期为 `MMMM dd, yyyy` 格式，时间为 `h:mm a - MMMM dd, yyy` 格式。
+##### `date(text, format)` 使用
+
+`date()` 函数的这种使用方式设计是有点让人产生歧义，初看以为是一种类似日期 `format` 类似的作用，实则不是。它的第 1 个参数必须是文本，不可传入变量，然后第 2 个参数你以为可以使用任何满足 Luxon 时间库格式化的字符，那就理解错了，它真正的作用是为了解决上面我们说的除唯一合法格式以外的输入，请看下面的示例：
+
+```
+日期1：`= date("12/31/2022 12:12:12", "MM/dd/yyyy HH:mm:s")` %% 2022-12-31 12:12:12 %%
+日期2：`= date("2023/10/12", "yyyy/MM/dd")` %% 2023/10/12 %%
+日期3：`= date("210313", "yyMMdd")` %% 2021/03/13 %%
+时间缀（毫秒）：`= date("1714366864889", "x")` %% 2024-04-29 01:04:04 %%
+时间缀（秒）：`= date("1407287224", "X")` %% 2014-08-06 09:08:04 %%
+```
+
+前面说的中国标准时间，暂时作者也不知道怎么来写这个 Format，所以这种格式尽量别用。
+
+>[Tips] 日期格式化有专门的函数 `dateformat(date|datetime, string)` 来处理，后面会讲解。
+
+#### 持续时间类型（Durations）
+
+要表示持续时间类型需要调用 `dur(any)` 函数传入描述字面量，可以描述年、月、日、时、分、秒和周，例如：`dur(1 h)` 根据当前的语言环境会解析成：`1小时`。
+
+- `s` / `sec` / `secs` / `second` / `seconds`：表示 `x秒钟`。
+- `m` / `min` / `mins` / `minute` / `minutes`：表示 `x分钟`。
+- `h` / `hr` / `hrs` / `hour` / `hours`：表示 `x小时`。
+- `d` / `day` / `days`：表示 `x天`。
+- `w` / `wk` / `wks` / `week` / `weeks`：表示 `x周`。
+- `mo` / `month` / `months`：表示 `x个月`。
+- `yr` / `yrs` / `year` / `years`：表示 `x年`。
+
+下面是一些基础示例：
+
+```
+年：`= dur(5 yr)` %% 5年 %%
+月：`= dur(5 mo)` %% 5个月 %%
+日：`= dur(5 d)` %% 5天 %%
+小时：`= dur(5 h)` %% 5小时 %%
+分钟：`= dur(5 m)` %% 5分钟 %%
+秒数：`= dur(5 s)` %% 5秒钟 %%
+周：`= dur(3 w)` %% 3周 %%
+```
+
+接下来看一下复杂的组合示例，我们会发现 Dataview 会自动推算出合适的表达：
+
+```
+100天：`= dur(100 d)` %% 3个月、2周、2天 %%
+36个月：`= dur(36 mo)` %% 3年 %%
+50周：`= dur(50 w)` %% 1年、2周 %%
+160分钟：`= dur(160 m)` %% 2小时、40分钟 %%
+1500秒：`= dur(1500 s)` %% 25分钟 %%
+100分钟12秒：`= dur(100 m, 12 s)` %% 1小时、40分钟、12秒钟 %%
+3年5个月12天：`= dur(3 yr, 5 mo, 12 d)` %% 3年、5个月、1周、5天 %%
+```
+
+除了单独使用外，更多的场景是结合 `date()` 函数一起使用：
+
+```
+过去5天：`= date(now) - dur(5 d)` %% 2024-04-24 17:04:02 %%
+过去2周：`= date(now) - dur(2 w)` %% 2024-04-15 17:04:02 %%
+明天：`= date(now) + dur(1 d)` %% 2024-04-30 17:04:02 %%
+往后3年：`= date(now) + dur(3 yr)` %% 2027-04-29 17:04:02 %%
+十秒前：`= date(now) - dur(10 m)` %% 2024-04-29 16:04:02 %%
+```
+
+## 内置函数
+
+DataView 提供了大量的函数来提高处理文档的效率，这里的函数官方文档将其分为：构造函数、数值计算函数、对象，数组和字符串操作函数以及工具（辅助）函数。
+
+#### 构造函数
+
+构造函数用于构建对象的实例，这里的对象可以是普通 JavaScript 中的对象、字符串和数字，也可以是 DataView 中的列表、日期、持续时间和链接等。接下来我们通过实例来辅助理解每个函数，就不再一一列举讲解了。
+
+对于函数 `date(any)`，`date(text, format)` 以及 `dur(any)` 我们在章节【表达式】中有详细介绍，请自行回顾。
+
+下面我们举例来说明 `object(key1, value1, ...)`, `list(value1, value2, ...)`, `number(string)` 和 `string(any)` 的使用，需要注意的是通过内联 DQL 查询后显示结果，对象显示为：`key: key2: key3: value` 的形式，而列表不分是否嵌套统一显示成 `value, value, ...` 的形式。
+
+```
+普通对象：`= object("a", 123)` %% a: 123 %%
+获取对象的值1：`= object("a", 123).a` %% 123 %%
+获取对象的值2：`= extract(object("a", 123), "a")` %% a: 123 %%
+嵌套对象：`= object("a", object("b", object("c", 123)))` %% a: b: c: 123 %%
+
+普通列表：`= list(1, 2, 3)` %% 1, 2, 3 %%
+嵌套列表：`= list(list(1, 2, 3), list(4, 5, 6))` %% 1, 2, 3, 4, 5, 6 %%
+对象列表：`= list(object("a", 1), object("a", 2))` %% a: 1, a: 2 %%
+
+普通数字：`= number(123)` %% 123 %%
+负数：`= number(-123)` %% -123 %%
+小数：`= number(1.34)` %% 1.34 %%
+字符串中包含数字1：`= number("12hhh34")` %% 12 %%
+字符串中包含数字2：`= number("hhh34wer123")` %% 34 %%
+字符串中包含数字3：`= number("wer123")` %% 123 %%
+非数字：`= number("nonnum")` %% - %%
+
+普通字符串：`= string("hello world")` %% hello world %%
+数字字符串：`= string(123)` %% 123 %%
+日期：`= string(dur(3 h))` %% 3小时 %%
+```
+
+上面的示例我们使用内联 DQL 查询，对于一个普通的对象如何在 DQL 显示呢？这里我们需要借助 `FLATTEN` 语句来实现：
+
+````
+```dataview
+TABLE WITHOUT ID T.name AS 姓名, T.age AS 年龄
+FLATTEN object("name", "jenemy", "age", 33) AS T
+WHERE file = this.file
+```
+````
+
+结果：
+
+![[Pasted image 20240429182623.png]]
+
+如果是列表对象，写成 `FLATTEN list(object("name", "jenemy", "age", 33), object("name", "lulu", "age", 26)) AS T` 就可以了。
+
+接下来我们来看一下通过 `link(path, [display])` 函数如何来创建链接，有些什么需要注意的点。
+
+假如现在我们的文档目录树如下：
+
+```
+|- Obsidian
+|  |- 笔记一.md
+|  |- 笔记二.md
+|  └─ Dataview
+|    |- 笔记一.md
+|    └─ 笔记二.md
+|- 笔记一.md
+|- 笔记二.md
+└─ 笔记三.md
+```
+
+现在我们在 `Obsidian/Dataview/笔记一.md` 中使用 `linK("笔记二")` 引用笔记二。上面的目录我最后一次编辑停留在了最外层的笔记二文档中，当我们点击链接时直接跳到了最外层和笔记二文档。然后我们再次打开同级的笔记二编辑，发现还是跳转最外面的文档二。接下来我们在 Obsidian 这一级目录的笔记一中创建同样的链接，操作后发现还是跳到了最外层的文档二。然后我们最后一次重新创建目录和文档，最后一个创建的文档二不在最外层，再次操作后还是同样的效果，删除最外面的文档后才跳转到同级的文档二。总结一下：**`link()` 函数会从最外层寻找链接的文档，然后才是同级目录下的文档。**
+
+经过上面的实验我们需要注意的是在指定链接时一定要加是路径，如果在文档内引用了多个同名的文档，最好使用别名来标识。下面是一些使用示例：
+
+```
+`= link("笔记二)"` %% 根目录下的笔记二 %%
+`= link("/笔记二)"` %% 根目录下的笔记二 %%
+`= link("./笔记二")` %% 同级目录笔记二 %%
+`= link("Obsidian/笔记二")` %% Obsidian 目录下的笔记二 %%
+`= link("./笔记二", "别名")` %% 使用别名 %%
+```
+
+然后我们再来看一下如何使用 `embed(link, [embed?])` 嵌入图片和 `elink(url, [display])` 创建外部链接。
+
+```
+`= embed(link("bg_1.jpg"))` %% 图片位于附件默认存放路径中 %%
+`= elink("www.baidu.com")` %% 创建百度外部链接 %%
+`= elink("www.google.com", "谷歌搜索")` %% 显示指定的别名，而非地址 %%
+```
+
+最后我们来看一下如何判断数据类型,，这里我们使用 `typeof(any)` 函数来判断：
+
+```
+`= typeof(12)` %% "number" %%
+`= typeof("abc")` %% "string" %%
+`= typeof(link("笔记二"))` %% "link" %%
+`= typeof(list(1, 3, 4))` %% "array" %%
+`= typeof([1, 3, 4])` %% "array" %%
+`= typeof(object("a", 1))` %% "object" %%
+`= typeof({ a: 1 })` %% "object" %%
+`= typeof(date(now))` %% "date" %%
+`= typeof(dur(1 d))` %% "duration" %% 
+`= typeof(true)` %% "boolean" %%
+```
+
+#### 数值操作
+
+对于数值的操作除了前面章节介绍过的四则运算和求余运算外，比较常见的还有求最大值（`max(a, b, ..)`）、最小值（`min(a, b, ..)`）、求和（`sum(array)`）、向上取整（`ceil(number)`）、向下取整（`floor(number)`）、四舍五入（`round(number, [digits])`）、平均值（`average(array)`）以及小数位截断（`trunc(number)`）等。
+
+```
+四舍五入：`= round(16.5555)` %% 17 %%
+保留2位小数：`= round(16.5555, 2)` %% 16.56 %%
+小数点截断：`= -12.937` %% -12.937 %%
+向下取整：`= floor(12.937)` %% 12 %%
+向上取整：`= ceil(12.937)` %% 13 %%
+最小值：`= min(5, 2, 4, 8)` %% 2 %%
+最大值：`= max(5, 2, 4, 8)` %% 8 %%
+求和：`= sum([1, 2, 3, 5])` %% 11 %%
+求平均值：`= average([1, 2, 4, 5])` %% 3 %%
+数字数组乘积：`= product([1, 2, 3, 5])` %% 30 %%
+累加：`= reduce([1, 3, 5], "+")` %% 9 %%
+累除：`= reduce([200, 10, 5], "/")` %% 4 %%
+字符重复：`= reduce(["a", 3], "*")` %% aaa %%
+```
 
 ## 综合实例
 
@@ -613,3 +827,4 @@ WHERE T.completed AND file = this.file
 - [dmscode/Obsidian-Templates: 我在 Obsidian 中用的各种模板（Dataview，Templater，QuickAdd） (github.com)](https://github.com/dmscode/Obsidian-Templates)
 - [702573N/Obsidian-Tasks-Timeline: A custom view build with Obsidian-Dataview to display tasks from Obsidian-Tasks and from your daily notes in a highly customisable timeline (github.com)](https://github.com/702573N/Obsidian-Tasks-Timeline)
 - [Aetherinox/obsidian-dataview-snippets: A collection of Obsidian.md scripts which include Tag & Page Clouds, Table of Contents / ToC, Bad / Missing Link reporting, etc. (github.com)](https://github.com/Aetherinox/obsidian-dataview-snippets)
+- [Formatting (moment.github.io)](https://moment.github.io/luxon/#/formatting)
