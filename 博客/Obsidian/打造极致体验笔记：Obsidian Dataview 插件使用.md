@@ -570,7 +570,7 @@ FLATTEN progress + "%" AS percentage
 - `[1, 2, 3]`：列表，JavaScript 中为数组
 - `{a: 1, b: 2, c: [1, 2, 3]}`：对象
 
-在 JavaScript 中不提供函数名称的函数称之为**匿名函数**，比如在函数中返回一个函数：`function foo() {return function() {console.log("Hello Dataview")}}`，在使用数组过滤时我们通常这样写：`arr.filter(function(item) {return item.xx > 0})`，进一步我们可以简写为 `arr.filter(item => item.xx > 0)`，这里的写法称之为**箭头函数**，它与普通函数的区别就不作说明了，对应于 DataView 中称之为 **Lambdas 表达式**，作用是一样的。
+在 JavaScript 中不提供函数名称的函数称之为**匿名函数**，比如在函数中返回一个函数：`function foo() {return function() {console.log("Hello Dataview")}}`，在使用数组过滤时我们通常这样写：`arr.filter(function(item) {return item.xx > 0})`，进一步我们可以简写为 `arr.filter(item => item.xx > 0)`，这里的写法称之为**箭头函数**，它与普通函数的区别就不作说明了，对应于 DataView 中称之为 **Lambdas 表达式**，作用是一样的，唯一需要注意的是变量名必需加括号，例如 `(item) => item.xx > 0`。
 
 在 DataView 中读取变量值或者属性值，调用函数语法和 JavaScript 中是一样的，例如通过对象名+属性名（`obj.prop`），对象名+计算属性（obj[`item_${index}`]），函数调用 （`f(a, b)`）。
 
@@ -791,7 +791,7 @@ WHERE file = this.file
 ```
 四舍五入：`= round(16.5555)` %% 17 %%
 保留2位小数：`= round(16.5555, 2)` %% 16.56 %%
-小数点截断：`= -12.937` %% -12.937 %%
+小数点截断：`= trunc(-12.937)` %% -12 %%
 向下取整：`= floor(12.937)` %% 12 %%
 向上取整：`= ceil(12.937)` %% 13 %%
 最小值：`= min(5, 2, 4, 8)` %% 2 %%
@@ -803,6 +803,17 @@ WHERE file = this.file
 累除：`= reduce([200, 10, 5], "/")` %% 4 %%
 字符重复：`= reduce(["a", 3], "*")` %% aaa %%
 ```
+
+在使用 `average()` 时如果传入空数组，结果将为 `null`，在页面中渲染为 `-`，如果明确知道有 `null` 值，可以使用 `nonnull(array)` 函数来移除空值再计算：`average(nonnull([null, 1, 3, 5]))`，同样适合于接收数组参数的 `sum()` 和 `product()` 函数。
+
+`minby(array, function)` 和 `maxby(array, function)` 用于根据指定的函数来返回最小值和最大值。
+
+```
+最小值：`= minby([1, 3, 5], (v) => v)` %% 1 %%
+将正整数按负数进行比较获得的最小值：`= minby([1, 2, 3], (v) => 0 - v)` %% 3 %%
+对一组单词返回最长的词汇：`= maxby(["Compute", "the", "maximum", "value"], (v) => length(v))` %% maximum %%
+```
+
 
 ## 综合实例
 
