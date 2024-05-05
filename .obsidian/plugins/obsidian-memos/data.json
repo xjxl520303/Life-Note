@@ -85,7 +85,7 @@
   "MomentsIcon": "https://images.pexels.com/photos/256514/pexels-photo-256514.jpeg",
   "MomentsQuote": "道德当身，方能不以物惑；德位想配，方能洁身奉公。",
   "DefaultThemeForThino": "modern",
-  "LastUpdatedVersion": "2.4.33",
+  "LastUpdatedVersion": "2.4.34",
   "ShareToThinoWithText": false,
   "ShareToThinoWithTextAppend": "",
   "ShareToThinoWithTextPrepend": "",
@@ -109,5 +109,9 @@
   "PrependViaServer": "",
   "WithNewLineViaServer": "none",
   "SupportSelectOtherView": false,
-  "WaitTemplaterToFinishParse": false
+  "WaitTemplaterToFinishParse": false,
+  "NavbarButton": false,
+  "AlwaysShowStatusText": false,
+  "FilterByMetadata": false,
+  "ShowSourcePath": false
 }
