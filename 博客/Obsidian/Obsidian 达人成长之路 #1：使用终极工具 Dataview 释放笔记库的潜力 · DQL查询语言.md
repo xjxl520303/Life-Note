@@ -1,33 +1,44 @@
 ---
 tags:
-  - 博客
   - Obsidian
+  - Dataview
+  - Blog
 ---
-️✍️DataView 是 Obsidian 社区最受欢迎的插件之一，它提供了一个在知识库上实时索引和查询的引擎，我们通过在文档中添加**属性**（Properties）或者称之**元数据**（Metadata）来为 DataView 查询语言提供检索数据来源，通过 Dataview 我们可以列出、筛选、排序和分组数据，类似于我使用数据库查询语言。
+️DataView 是 Obsidian 社区中的热门插件，它为用户提供了一个强大的实时索引和查询引擎。通过在文档中设置属性（或称为元数据），DataView 能够检索并处理这些数据。借助 DataView，用户可以轻松列出、筛选、排序和分组数据，这与使用数据库查询语言类似。
 
-**注意**：这里我们以属性或元数据来描述文档中由官方提供、第三方插件提供或者自定义的描述变量，前者为 Obsidian 官方的叫法，后者为 Dataview 中的叫法，两者实际上为同一个实体，不同的概念，后续文章以属性来描述。
+在 Obsidian 中，我们使用“属性”来描述文档中由官方或第三方插件提供的描述变量，这些变量也被称为“元数据”。在 DataView 的语境下，虽然名称有所差异，但它们实际上指的是同一实体。为了保持一致性，后续文章中我们将统一使用“属性”来描述这些变量。
+
+考虑到不同读者拥有的 Obsidian 文档数量和内容的多样性，文章中将主要以当前文档的数据作为示例，展示 Dataview 的使用案例。为了避免过于复杂和需要额外构造数据的用例，我们将尽量基于实际文档数据进行演示。在文章中，我们将使用“文档”一词特指 Obsidian 中的笔记，即具有 `.md` 后缀的 Markdown 文档，而非其他类型的文件。这样的定义旨在明确文章的语境和对象，方便读者理解和跟随。
+
+文章中复杂的示例我们将以 Dataview Example Vault 这个开源示例库为数据源进行演示，读者可自行去 Github 上克隆到本地进行操作。
 
 本文基于 Davaview 0.5.66 版本撰写，如果发现文章与官方内容有所出入，请以官方最新文档为参考。
 
-考虑到读者的 Obsidian 文档的数量和内容不一定能够支撑运行 Dataview 复杂的用例，所以文章中多数据用例均以当前文档数据为依据，尽量少去造数据。
-
-文章中使用 `文档` 来表示 Obsidian 中的笔记，指代的是以 `.md` 为后缀的 Markdown 文档，而不是任意文档。
-
 ## 快速入门
 
-直接在官方插件搜索名称即可安装，然后在选项中将【Enable JavaScript Queries】 和【Enable Inline JavaScript Queries】开启，并将选项【Date Format】 设置为 `yyyy-MM-dd`，【Date + Time Format】设置为 `yyyy-MM-dd HH:MM:ss`，这样子更符合我们的使用习惯。
+为了更顺畅地使用 DataView 插件，你可以直接在 Obsidian 的官方插件商店中搜索“DataView”并安装它。安装完成后，请按照以下步骤进行配置：
 
-接下来我们在 Obsidian 中新建一个文档然后添加一个标签属性，使用快捷键 `CMD/CTRL+;` 来触发属性编辑。
+1. 打开 DataView 的插件设置选项。
+2. 启用【Enable JavaScript Queries】和【Enable Inline JavaScript Queries】选项，以允许在 DataView 中使用 JavaScript 查询。
+3. 将【Date Format】选项设置为 `yyyy-MM-dd`，这将确保日期以“年-月-日”的格式显示，更符合我们的使用习惯。
+4. 同时，将【Date + Time Format】选项设置为 `yyyy-MM-dd HH:MM:ss`，以便在需要同时显示日期和时间时，按照“年-月-日 时:分:秒”的格式呈现。
+
+完成这些设置后，你就可以开始使用 DataView 插件来索引、查询和整理你的 Obsidian 文档了。
+
+接下来，在 Obsidian 中新建一个文档然为其添加一个标签属性。在 Obsidian 中，可以使用快捷键 `CMD+;`（在 macOS 上）或 `CTRL+;`（在 Windows/Linux 上）来触发属性编辑面板。这个面板允许你为文档添加、编辑或删除属性。
+
+下面是当前文档的属性值，以 YAML 展示：
 
 ```yaml
 ---
 tags:
-  - 博客
+  - Blog
   - Obsidian
+  - Dataview
 ---
 ```
 
-然后我们使用 Dataview 查询语言（DQL）在当前文档中以列表的形式将标签属性读取出来：
+要在 Obsidian 中使用 DataView 查询语言（DQL）来读取当前文档（或选定文档）的标签属性并以列表形式显示，我们需要编写一个 DataView 查询，下面我们编写的第一个查询示例：
 
 ````
 ```dataview
@@ -38,11 +49,13 @@ WHERE file = this.file
 
 结果：
 
-![[Pasted image 20240425121828.png]]
+![[Pasted image 20240508121157.png]]
 
-%3E 这里我们遵循官方的写法，将查询语法的关键词以大写方式表示。
+**注意**：这里我们遵循官方的写法，将查询语法的关键词以大写方式表示。
 
-然后, 我们再使用 Dataview JavaScript 查询方式来同样获取当前文档的标签：
+对于大多数日常任务，Dataview 查询语言已足够应对。然而，当需要执行复杂的逻辑和数据操作时，Dataview 的 JavaScript API 便派上了用场。借助这一 API，我们可以充分利用编程语言的强大功能以及 Dataview 提供的丰富函数，不仅可以自由定义输出的格式和内容，还能加载外部脚本和样式，极大地提升了查询的灵活性和扩展性。
+
+这是上一个示例采用 JavaScript API 实现的重写：
 
 ````
 ```dataviewjs
@@ -52,26 +65,285 @@ dv.list(dv.pages("").file.tags.distinct())
 
 结果：
 
-![[企业微信截图_17140459602815.png]]
+![[Pasted image 20240508122630.png]]
 
 ## YAML 简介
 
-在介绍具体使用之前我们先来了解一下在 Obsidian 中描述属性的 **YAML** 语言。
+在 Obsidian 中，YAML 是一种用于配置文件和元数据的标记语言。YAML 语法简洁明了，易于阅读和编写，使得在 Obsidian 中描述属性变得更为便捷。
 
-YAML 其实更多时候是用于编写配置文件，其文件以 `.yml` 为后缀，它的语法简洁直观，比 JOSN 输入起来要快。如果熟悉 JSON 格式我们可以直接使用网站 [JSON to YAML Converter: Best Free Tool (jsonformatter.org)](https://jsonformatter.org/json-to-yaml) 将其转成 YAML 表示形式，看图就能直观掌握其写法。
+在 Obsidian 中，YAML 通常用于为笔记添加元数据，如标题、标签、别名等。这些元数据可以帮助你更好地组织和管理笔记。具体来说，YAML 在 Obsidian 中的使用方式如下：
 
-![[Pasted image 20240425113911.png]]
+在笔记的开头使用三个短横线（`---`）来定义一个 YAML 区域，也称之为 Front Matter。在这个区域内，你可以使用 YAML 语法为笔记添加各种元数据，例如，使用 `tags` 来添加标签，使用 `aliases` 来设置别名，使用 `cssclasses` 来设置文档样式等。
 
-关于 YAML 简单使用只需要记住：
+```yaml
+---
+title: Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言
+date: 2024-05-08
+tags: ['Blog', 'Obsidian', 'Dataview']
+alias: 别名
+---
 
-- 用 `#` 表示注释。
-- 用缩进表示层级关系，并且只能使用空格来缩进，同一层级在空格数量上需要保持一致。
-- 变量是大小写敏感的。
-- 数据使用 `变量名: 变量值` 的形式来表示数据。
-- 使用 `|` 来保留数据的换行，每行的缩进和行尾空白都会被去掉，而额外的缩进会被保留。
-- 使用 `>` 来表示折叠换行，只有空白行才识别为换行。
-- 只使用 `true` 和 `false` 来表示布尔值。
-- `null`、`Null` 和 `~` 以及不指定值默认都为空。
+主体内容
+```
+
+### 基本语法
+
+在 YAML 语言中变量名是区分大小写的，因此 `one` 与 `One` 是不同的实体。
+
+使用 `#` 来表示注释。
+
+使用缩进来表示层级关系，并且只能使用空格来缩进，同一层级在空格数量上需要保持一致。
+
+一个文件中是可以包含多个 `---` 区域的。
+
+```yaml
+# 这是注释
+one:
+    two: 2
+    three:
+    four: 4
+    five: 5
+
+// JSON
+{
+    "one": {
+        "two": 2,
+        "three": {
+            "four": 4,
+            "five": 5
+        }
+    }
+}
+```
+
+### 数据结构与类型
+
+YAML 支持数字、布尔、字符串、数组和对象这几种常见类型，以及空值和时间缀。
+
+#### 字符串
+
+字符串一般不需要用引号（不区分单/双引号，但必须成对）包裹，但是如果字符串中包含转义字符（以反斜杠 `\` 开头，如换行：`\n`）就必须引号包裹。
+
+字符串分为单行和多行文本，在多行文本中还可能包含空白行（是否保留？），因此会有不同的语法扶持。
+
+```yaml
+strings:
+    - Hello Dataview
+    - 'Hello Dataview with single quotes'
+    - "Hello Dataview with double quotes"
+    - "Include Unicode. \u263A"
+    - "Include Hex code. \r\n"
+    - 'Nested "quotes"'
+
+// JSON:
+{
+    "strings": [
+        "Hello Dataview",
+        "Hello Dataview with single quotes",
+        "Hello Dataview with double quotes",
+        "Include Unicode. ☺",
+        "Include Hex code. \r\n",
+        "Nested \"quotes\""
+    ]
+}
+```
+
+使用 `|` 来保留数据的换行，每行的缩进和行尾空白都会被去掉，而额外的缩进会被保留。
+
+```yaml
+lines: |
+    line 1
+    line 2
+
+    line 3
+        line 4
+    line 5
+    line 6
+
+// JSON:
+{
+    "lines": "line 1\nline 2\n\nline 3\n    line 4\nline 5\nline 6\n"
+}
+```
+
+使用 `>` 来表示折叠换行，只有空白行才识别为换行。
+
+```yaml
+lines: >
+    line 1
+    line 2
+
+    line 3
+        line 4
+    line 5
+    line 6
+
+// JSON:
+{
+    "lines": "line 1 line 2\nline 3\n    line 4\nline 5 line 6\n"
+}
+```
+
+#### 布尔值
+
+在 YAML 中我们统一使用 `true` 和 `false` 表示真值与假值，此外 `True` / `TRUE` 同样可以表示真值，同理还有 `False` / `FALSE` 表示假值。
+
+```yaml
+boolean:
+    - true
+    - true
+    - TRUE
+    - false
+    - False
+    - FALSE
+
+// JSON:
+{
+    "boolean": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+    ]
+}
+```
+
+注意在 Obsidian 属性面板中输入布尔值时需要将【属性类型】设置为【复选框】。
+
+#### 数字
+
+数字分为整数、浮点数，表示方法有科学表示法，进制表示法（二进制、八进制、十进制和十六进制）。
+
+```yaml
+Integers: [ 0, 0o7, 0x3A, -19 ]
+Floats: [0., -0.0, .5, +12e03, -2E+05]
+
+// JSON:
+{
+    "Integers": [
+        0,
+        7,
+        58,
+        -19
+    ],
+    "Floats": [
+        0,
+        0,
+        0.5,
+        12000,
+        -200000
+    ]
+}
+```
+
+注意在 Obsidian 属性面板中输入数字时需要将【属性类型】设置为【数字】。
+
+#### 空值
+
+`null`、`Null` 和 `~` 以及不指定值默认都为空。
+
+```yaml
+nulls:
+    - null
+    - Null
+    -
+    - ~
+// JSON:
+{
+    "nulls": [
+        null,
+        null,
+        null,
+        null
+    ]
+}
+```
+
+#### 时间缀
+
+YAML 支持 ISO 8601 格式的时间数据。但是在 Obsidian 中使用时只支持部分格式，建议使用 `xxxx-xx-xx xx:xx:xx` 这种格式来输入日期和时间，或者在属性面板中将【属性类型】设置为【日期】或【日期 & 时间】然后在日期或时间选择器中选择想要的值。
+
+>[Tips] 在 Obsidian 的【选项】中的【编辑器】将【文档属性】显示方式切换为【源码】模式就可以显示属性的 YAML 源码。
+
+```yaml
+date1: 2024-04-20T11:32:00.000-04:00
+date2: 2017-04-20
+date3: 2017-W17-7
+date4: 11:32:00.000-04:00
+```
+
+#### 数组
+
+YAML 中数组有 2 种语法格式，一种是区块格式（即：`- 属性值`），另一种是内联格式（`[属性值]`）。多维数组则通过缩进来表示层级关系。
+
+```yaml
+Inline arrays: ["a", "b", 1, 2]
+Block arrays:
+    - a
+    - b
+    - 1
+    - 2
+Multiple arrays:
+    -
+        - a
+        - b
+    -
+        - c
+        - d
+
+// JSON:
+{
+    "Inline arrays": [
+        "a",
+        "b",
+        1,
+        2
+    ],
+    "Block arrays": [
+        "a",
+        "b",
+        1,
+        2
+    ],
+    "Multiple arrays": [
+        [
+            "a",
+            "b"
+        ],
+        [
+            "c",
+            "d"
+        ]
+    ]
+}
+```
+
+#### 对象
+
+对象是以键值对（`key: value`）的形式来表示数据。
+
+```yaml
+key: value
+key: { key1: value1, key2: value2 }
+key:
+  key2: value2
+  key3: value3
+
+// JSON:
+{
+    "key": "value",
+    "key2": {
+        "key1": "value1",
+        "key2": "value2"
+    },
+    "key3": {
+        "key2": "value2",
+        "key3": "value3"
+    }
+}
+```
 
 ## 认识属性
 
@@ -85,7 +357,7 @@ Obsidian 官方为属性描述提供了 6 种数据类型：
 
 Dataview 在则在此基础上额外提供了 2 种数据类型持续时间（`Duration` ）和对象（`Object`）。
 
-持续时间的语法为 `%3Ctime> <unit>`，例如：`6 hours` 或者 `4 minutes`，下面是更多的表达场景：
+持续时间的语法为 `<time> <unit>`，例如：`6 hours` 或者 `4 minutes`，下面是更多的表达场景：
 
 ```
 Example:: 7 hours
@@ -96,11 +368,9 @@ Example:: 9 years, 8 months, 4 days, 16 hours, 2 minutes
 Example:: 9 yrs 8 min
 ```
 
-> 注意：这些时间值是可以在代码中进行运算的，后面实例部分会讲解。
-
 对象就是在一个父字段下多个字段的映射，只能定义在 YAML 中，例如：
 
-```
+```yaml
 ---
 obj:
   key1: "Val"
@@ -112,29 +382,49 @@ obj:
 ---
 ```
 
-Dataview 提供了一种内联字段，让我们可以在文档内容中任意位置定义数据，其语法为：`变量名:: 变量值`。
+### 内联字段
+
+Dataview 提供了一种内联字段，让我们可以在文档内容中任意位置定义数据。这种内联字段的语法允许你在不干扰文档主要内容的同时，为文档添加额外的元数据或信息。这些内联字段可以被 Dataview 插件识别并用于查询、过滤、排序等操作。
 
 ```
 Basic Field:: Some random Value
 **Bold Field**:: Nice!
 带❤变量:: 我是表情+非拉丁字母
 I would rate this a [rating:: 9]! It was [mood:: acceptable].
+
 - [ ] Send an mail to David about the deadline [due:: 2022-04-05].
+
 This will not show the (longKeyIDontNeedWhenReading:: key).
 
 基础字段：`= this.basic-field`
 加粗字段：`= this.bold-field`
 在语句中：Rating: `= this.rating`, Mood: `= this.mood`
 在任务列表中：`= this.due`
-不显示变量名：`= this.longkeyidontneedwhenreading`
+不显示变量名：`= this.longKeyIDontNeedWhenReading`
 非常规变量：`= this.带❤变量`
 ```
 
 结果：
 
-![[Pasted image 20240425155428.png]]
+![[Pasted image 20240508174422.png]]
 
-注意如果内联字段独占一行可以不加 `[]`，如果在文本内部必须加上，此外可通过 `()` 来包裹内联字段可以在渲染时只显示值，不显示变量名。如果变量名使用空格来分隔的，在内部会被表示成小写字母+连字符的方式，驼峰命名会表示成全小写的（**实际运行发现并不能成功读取**）。
+下以是 Dataview 内联字段的一些基本规则和用法：
+
+1.  **内联字段的定义**
+
+内联字段可以使用 `字段名:: 字段值` 的形式在文档内容中定义。
+
+2. **独占一行与位于文本内**
+
+如果内联字段是独占一行的，通常不需要加任何包裹字符。但如果内联字段在文本内部，确保它被 Dataview 正确识别，要将其放在方括号 `[]` 中。
+
+3. **变量名的命名规则**
+
+对于变量名，Dataview 允许使用英文、中文或表情符号来命名，建议尽可能使用英文来命名变量和字段。如果变量名使用空格来分隔的（例如：`Foo bar`），在内部会被表示成小写字母+连字符的方式（`foo-bar`），当然我们也可以直接使用 `this["Foo bar"]` 的方式来读取，但需要注意的是这里必须使用双引号。
+
+4. **渲染时隐藏变量名**
+
+如果您想在渲染时只显示值而不显示变量名，可以使用圆括号 `()` 包裹整个内联字段。但请注意，这并不会影响 Dataview 的查询功能，只是改变了它在文档中的显示方式。
 
 ### 文档中的默认属性
 
@@ -175,7 +465,9 @@ WHERE file = this.file
 
 结果：
 
-![[Pasted image 20240425180855.png]]
+![[Pasted image 20240508181648.png]]
+
+结果截图中由于标题中带有 `#` 字符所以在渲染时被当成了标签。
 
 ### 任务相关属性
 
@@ -205,32 +497,39 @@ WHERE start = date("2024-04-22")
 
 结果：
 
-![[Pasted image 20240425191442.png]]
+![[Pasted image 20240508182704.png]]
 
-其它几个属性也可以使用类似的方法来判断，这里就不举例了，然后我们接下来使用 Dataview 提供的任务相关的属性 `completed` 和 `fullyCompleted` 来过滤任务，两者的区别请参考后续表格。
+在 Obsidian 的 Dataview 插件中，`completed` 和 `fullyCompleted` 是两个与任务（即使用复选框的待办事项）相关的属性。这两个属性在查询和过滤任务时非常有用，但它们具有不同的含义和用途。
 
-````
-```dataview
-TASK
-WHERE completed
-```
-````
+- `completed`
 
-`completed` 过滤结果：
-
-![[Pasted image 20240425192540.png]]
-
+`completed` 属性是一个布尔值（`true` 或 `false`），用于指示任务是否已被标记为完成。如果一个任务项（即一个带有复选框的列表项）被勾选（即标记为完成），则 `completed` 属性将为 `true`；如果未被勾选，则为 `false`。
 
 ````
 ```dataview
 TASK
-WHERE fullyCompleted
+WHERE file = this.file AND completed
 ```
 ````
 
-`fullyCompleted` 过滤结果：
+结果：
 
-![[Pasted image 20240425193026.png]]
+![[Pasted image 20240508183300.png]]
+
+- `fullyCompleted`
+
+`fullyCompleted` 属性也用于指示任务是否完成，但它考虑的是嵌套任务（即嵌套在另一个任务下的子任务）的完成情况。如果一个任务及其所有子任务都已被标记为完成，则 `fullyCompleted` 属性将为 `true`。即使主任务被标记为完成，但如果它有任何子任务尚未完成，`fullyCompleted` 仍将为 `false`。
+
+````
+```dataview
+TASK
+WHERE file = this.file AND fullyCompleted
+```
+````
+
+结果：
+
+![[Pasted image 20240508183544.png]]
 
 下面给出 Dataview 为列表和任务提供的内置属性，更多操作参考后面的综合实例部分。
 
@@ -257,7 +556,7 @@ WHERE fullyCompleted
 
 ### Tasks 插件提供的属性
 
-[obsidian-tasks](https://github.com/obsidian-tasks-group/obsidian-tasks) 是综合管理任务的第三方插件，后续文章会专门探讨，现在我们只需要关注它提供的任务分类状态表情速记符（emoji-shorthands），让我们不用自己来使用内联属性定义任务状态，它直接开箱即用提供了以下几种速记语法：
+[obsidian-tasks](https://github.com/obsidian-tasks-group/obsidian-tasks) 是一个流行的 Obsidian 插件，用于增强 Obsidian 中的任务管理功能。后续文章会专门探讨，现在我们只需要关注它提供的任务分类状态表情速记符（emoji-shorthands），让我们不用自己来使用内联属性定义任务状态，它直接开箱即用提供了以下几种速记语法：
 
 | 属性名       | 速记语法       | 解释     |
 |:------------ |:-------------- |:-------- |
@@ -289,7 +588,7 @@ WHERE completion = date("2024-04-26") AND file = this.file
 
 结果：
 
-![[企业微信截图_17141199186147.png]]
+![[Pasted image 20240508184754.png]]
 
 ## 数据查询方式
 
@@ -297,16 +596,69 @@ WHERE completion = date("2024-04-26") AND file = this.file
 
 ### DQL 查询语言
 
-Dataview 查询语言（Dataview Query Language 简称 **DQL**）类似于数据库查询语言，它支持 4 种查询类型（`TABLE` / `LIST` / `TASK` / `CALENDAR`）来生成不同的输出，例如对结果进行选择、优化和分组，得到你想要的结果。
+Dataview 插件为 Obsidian 提供了强大的数据查询和可视化功能。通过使用 Dataview 查询语言（DQL），用户可以创建复杂的查询来检索、处理和展示 Obsidian 笔记库中的信息。DQL 支持四种主要的查询类型：`TABLE`、`LIST`、`TASK` 和 `CALENDAR`，每种类型都有其特定的用途和语法。
 
-要使用 DQL，只需要在文档中的代码块中将类型指定为 `dataview` 并加上查询代码即可：
+#### `TABLE` 类型
+
+`TABLE` 查询类型用于生成表格形式的输出。你可以指定要显示的列和它们的排序方式。
 
 ````
 ```dataview
-TABLE rating AS "Rating", summary AS "Summary" FROM #games
-SORT rating DESC
+TABLE WITHOUT ID file.name AS 文件名, file.cday AS 创建时期
+WHERE file = this.file
 ```
 ````
+
+结果：
+
+![[Pasted image 20240508185739.png]]
+
+#### `LIST` 类型
+
+`LIST` 查询类型用于生成列表形式的输出。你可以指定要显示的字段和它们的排序方式。
+
+````
+```dataview
+LIST WITHOUT ID file.name
+WHERE file = this.file
+```
+````
+
+结果：
+
+![[Pasted image 20240508190331.png]]
+
+#### `TASK` 类型
+
+`TASK` 查询类型专门用于检索和展示任务。你可以根据任务的完成状态、截止日期等属性进行筛选和排序。
+
+````
+```dataview
+TASK
+FROM "10 Example Data/dailys"
+WHERE "#journal" AND completed
+LIMIT 5
+```
+````
+
+结果：
+
+![[Pasted image 20240508190943.png]]
+
+#### `CALENDAR` 类型
+
+`CALENDAR` 查询类型用于生成日历视图，展示具有日期属性（如截止日期或开始日期）的任务或事件。
+
+````
+```dataview
+CALENDAR file.day
+FROM "10 Example Data/dailys"
+```
+````
+
+结果：
+
+![[Pasted image 20240508191349.png]]
 
 ### 内联 DQL 查询
 
@@ -334,7 +686,7 @@ SORT rating DESC
 
 ### 使用 Dataview JS 查询
 
-使用 DataView 提供的 JavaScript API 可以实现复杂的功能，结合 Obsidian 的 API 一起使用可以极大的发挥创造性。
+使用 DataView 提供的 JavaScript API 可以实现复杂的功能，结合 `DataView` 和 Obsidian API，你可以实现一些有趣且复杂的功能。
 
 在使用时只需要将代码块的类型设置为 `dataviewjs` 即可：
 
@@ -358,7 +710,7 @@ dv.list([currentFilename])
 下面是一个显示当前任务进度的进度条代码：
 
 ```
-[任务完成度:: `$= const value = Math.round(((dv.page("打造极致体验笔记：Obsidian Dataview 插件使用").file.tasks.where(t => t.completed).length) / (dv.page("打造极致体验笔记：Obsidian Dataview 插件使用").file.tasks).length || 0) * 100); "<progress value='" + value + "' max='100'></progress>" + " " + value + "%"`]
+[任务完成度:: `$= const value = Math.round(((dv.page("Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.tasks.where(t => t.completed).length) / (dv.page("Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.tasks).length || 0) * 100); "<progress value='" + value + "' max='100'></progress>" + " " + value + "%"`]
 ```
 
 结果：
@@ -367,7 +719,9 @@ dv.list([currentFilename])
 
 ## DQL 查询语言详解
 
-现在开始我们将深入了解 DQL 查询语言的一切，从小白到熟练工转变。
+从现在开始，我们将踏上一段深入探索 Dataview 查询语言（DQL）的旅程。不论你是初次接触 DQL 的小白，还是渴望进一步挖掘其潜力的熟练工，这个旅程都将为你带来丰富的知识和无尽的乐趣。
+
+通过不断的学习和实践，你将逐渐掌握 DQL 的精髓，并能够将其应用到实际的场景中，提高你的工作效率和创造力。让我们一起踏上这段充满挑战和机遇的旅程吧！
 
 ### 语法结构
 
@@ -387,6 +741,7 @@ FLATTEN <value> [AS <name>]
 ````
 
 > **注意**：这个语法定义非官方提供，在文章中仅为了方便描述。除了查询类型和 `FROM` 语句位置固定外，其它语句统称数据命令（Data Command），可以多次使用，位置不固定。
+
 #### 查询类型 `TABLE` / `LIST` / `TASK` / `CALENDAR`
 
  官方提供了 4 种类型：
@@ -402,7 +757,7 @@ FLATTEN <value> [AS <name>]
 
 ![[Pasted image 20240426192402.png]]
 
-`<WITHOUT ID>` 用于 `TABLE` 类型中，表示在查询的结果中不显示第一列文件名。
+`<WITHOUT ID>` 用于 `TABLE` 类型中，表示在查询的结果中不显示第一列链接文件名。
 
 ![[Pasted image 20240426193451.png]]
 
@@ -505,7 +860,7 @@ WHERE T.completed AND file = this.file
 
 ![[Pasted image 20240428122149.png]]
 
-> [!note] `FLATTEN` 语句的所有使用都需要结合 `TABLE` 查询类型来输出结果，并且记住其后面一定是数组类型数据才有效。
+> [!note] `FLATTEN` 语句的所有使用都需要结合 `TABLE` 查询类型来输出结果。
 
 现在再来演示另一种使用 `FLATTEN` 的场景，这刚好与 `GROUP BY` 语句结果相反。现在有一个目录 `books` 放置了很多书籍，每一个文档代表一本书，文档中设置 `genres` 属性来作为分类（`Children`, `Romance`, `Magic` 等等），当我们使用 `TABLE genres` 查询时，结果是每个分类占据表格的一行，而默认文档链接会根据分类数量自动合并行，现在想要相同行不合并显示，这时就需要使用 `FLATTEN genres` 来实现。
 
@@ -559,7 +914,7 @@ FLATTEN progress + "%" AS percentage
 
 在 DataView 中除了查询类型和数据命令外，其它数据统称表达式。
 
-如果会 JavaScript 语言，那么对于数字（number）、布尔值（boolean）、字符串（string）、数组（array）和对象（object）不会感到陌生，在 DataView 中只是增加了日期（date）、持续时间（duration）和链接（link）三种类型，下面举例说明：
+如果会 JavaScript 语言，那么对于数字（Number）、布尔值（Boolean）、字符串（String）、数组（Array）和对象（Object）的概念不会感到陌生，DataView 进一步提供了日期和时间（Date）、持续时间（Duration）和链接（Link）三种类型，下面举例说明：
 
 - `1`, `0.5`, `-5` ：数字
 - `true`, `false`：布尔值
@@ -1159,18 +1514,23 @@ SORT hash(dateformat(file.ctime, "YYYY-MM-DD"), file.name)
 
 - `display` 链接的别名，如果没有提供则为 `null`，示例：`meta([[打造极致体验笔记：Templater Obsidian 插件使用|这里就是display要显示的内容]]).display` 的值为 `这里就是display要显示的内容`。
 - `embed` 用于判断链接是否为媒体文件嵌入，例如：`meta(![[Pasted image 20240504133553.png]]).embed` 值为 `true`。
-- `subpath` 链接的文档中的标题名或者段落 ID，例如：`[[打造极致体验笔记：Obsidian Dataview 插件使用#\`meta\` 函数]].subpath ` 的值为` \`meta\` 函数 `。如果引用的是文档中的段落，例如：`meta([[My Project#^9bcbe8]]).subpath` 则值为 ` 9 bcbe 8 `
+- `subpath` 链接的文档中的标题名或者段落 ID，例如：`[[打造极致体验笔记：Obsidian Dataview 插件使用#\`meta\` 函数]].subpath ` 的值为` \`meta\` 函数 `。如果引用的是文档中的段落，例如：`meta([[My Project#^9bcbe8]]).subpath` 则值为 `9 bcbe 8`
 - `type` 链接的类型，其值为 `file` / `header` / `block`，分别表示链接的是文件、标题段落。
 
-## 综合实例
+## 总结
 
-```dataview
-TABLE WITHOUT ID file.name, file.mtime
-SORT file.ctime
-//SORT hash(dateformat(file.ctime, "YYYY-MM-DD"), file.name)
-```
+本文可以看作是对官方文档的一个解读，帮助学习 Dataview 的 Obsidian 使用者踩坑，铺路。文章最后并没有给出 DQL 的实战案例，因为我们打算放在第 3 期文章中。
 
-`= striptime(this.file.ctime)`
+创作不易，洋洋洒洒花费了近一月的时间边学习实践，边创作文档。本来只是想分享一下作者搜集的一大堆插件，列了个大纲结果发现内容太多，而且很多插件都依赖 Dataview，所以才花费时间精力去研究其使用，并分享出来。
+
+文章一开始的构想是将 DQL 和 Dataview 的 JavaScript API 以及实战写在一篇文章中，后面发现要写的内容越来越多，时间越拖越久，有点没有耐心、快有半途而废的节奏了。还有一个原因是使用 Obsidian 写作时使用了大量的插件，随着内容的增多，经常出现光标不能定位到文字的情况。不能在加载文档后通过大纲跳到文档的末尾，立即编辑，因为在实时渲染视图下这部分还没有被处理，然后不得不从页面顶部通过鼠标滚动到底部当一切都准备好后才能顺利编辑。
+
+文章后面给出的参考很多作者自己也还没有来得及去研究，给读者去挖掘吧。
+
+文章难免会出现一些文字在描述上不合理，不专业的地方以及错误字，往广大读者指正和提供更好的建议。
+
+最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长。
+
 ## 参考
 
 - [Dataview (blacksmithgu.github.io)](https://blacksmithgu.github.io/obsidian-dataview/)
@@ -1180,7 +1540,6 @@ SORT file.ctime
 - [Obsidian DataView 入门保姆级引导手册 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/614881764)
 - [一文看懂 YAML - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/145173920)
 - [obsidian插件dataview官方文档翻译 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/393550306)
-- [Dataview综合文档 | obsidian文档咖啡豆版](https://obsidian.vip/zh/dataview/)
 - [Dataviewjs的奇技淫巧 - 经验分享 - Obsidian 中文论坛](https://forum-zh.obsidian.md/t/topic/5954)
 - [Obsidian学习从0到1 —— 双链（重点）_obsidian 双链-CSDN博客](https://blog.csdn.net/weixin_51684355/article/details/126084867)
 - [dmscode/Obsidian-Templates: 我在 Obsidian 中用的各种模板（Dataview，Templater，QuickAdd） (github.com)](https://github.com/dmscode/Obsidian-Templates)

@@ -1,7 +1,7 @@
 ---
 tags:
   - Obsidian
-  - 博客
+  - Blog
 Created At: 2024-04-24
 Category:
   - obsidian

@@ -22,28 +22,7 @@
   "showShortcuts": true,
   "markdownOnly": false,
   "unresolvedLinks": false,
-  "recentFilesStore": [
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
-      "timestamp": 1714905157556
-    },
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
-      "timestamp": 1714882441033
-    },
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
-      "timestamp": 1714873819620
-    },
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
-      "timestamp": 1714873494391
-    },
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-      "timestamp": 1714839277157
-    }
-  ],
+  "recentFilesStore": [],
   "starredFileStore": [],
   "searchDelay": 0,
   "replaceNewTabs": true,
