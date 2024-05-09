@@ -22,7 +22,16 @@
   "showShortcuts": true,
   "markdownOnly": false,
   "unresolvedLinks": false,
-  "recentFilesStore": [],
+  "recentFilesStore": [
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+      "timestamp": 1715245900966
+    },
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+      "timestamp": 1715227252033
+    }
+  ],
   "starredFileStore": [],
   "searchDelay": 0,
   "replaceNewTabs": true,

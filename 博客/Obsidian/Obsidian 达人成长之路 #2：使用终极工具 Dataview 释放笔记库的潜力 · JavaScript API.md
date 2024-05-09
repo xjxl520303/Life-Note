@@ -3,6 +3,10 @@
 
 使用 `DataArray#array()` 将 Dataview 列表转成普通的 JavaScript 数组。
 
+TODO:
+
+- [ ] 如何读取 yaml 中的 JSON 属性
+
 ## Luxon 库介绍
 
 Luxon 是一个完整的日期与时间处理库，它提供了 ISO 8601 规范的解析、格式化、本地化以及日期与时间运算等功能。在 Dataview 中我们使用 `dv.luxon` 来获取 Luxon 实例。
@@ -20,9 +24,9 @@ Luxon 提供了以下几个操作类：
 - `SystemZone`: 表示当前 JavaScript 运行环境的本地区域。
 - `Zone`: 表示区域。
 
-在 Dataview 中我们只关心如何使用 `DateTime`, `Duration` 和 `Interval` 这 3 个类。因为文章主要但要 Dataview 的使用，所以只会介绍 Luxon 的常用功能。
+在 Dataview 中我们只关心如何使用 `DateTime` 和 `Duration` 这 2 个类。因为文章主要但要 Dataview 的使用，所以只会介绍 Luxon 的常用功能。
 
-接下来文章中使用的 `DateTime` 均指代 `dv.luxon.DateTime`，`Duration` 和 `Interval` 同样如此。
+接下来文章中使用的 `DateTime` 均指代 `dv.luxon.DateTime`，`Duration` 同样如此。
 
 >![Note] 这部分但介绍的内容有点多，实际在 Dataview 中我们可能并不会涉及到所有这些知识。
 
@@ -409,6 +413,144 @@ console.log(d.endOf('minute').toISOTime()) // 12:23:59.999+08:00
 
 ### Duration 使用
 
+持续时间（Duration）指一个时间段的长度，比如几天、几小时、几分钟等。
+
+#### 创建持续时间
+
+要创建一个持续时间，可以通过以下几种试：
+
+- 通过 `fromMillis(count: number, opts: Object): Duration` 函数传入毫秒数。
+- 通过 `fromObject(obj: Object, opts: Object): Duration` 函数传入一个对象（属性包含：`years` | `quarters` | `months` | `weeks` | `days` | `hours` | `minutes` | `seconds` | `milliseconds`）。
+- 通过 `fromDurationLike(durationLike: (Object | number | Duration)): Duration` 函数，个函数相当于不传 `opts` 的 `fromMillis()` 和 `fromObject()` 函数，同时还持续传入已有的 `Duration` 对象实例来创建持续时间。
+- 通过 `fromISO(text: string, opts: Object): Duration` 和 `fromISOTime(text: string, opts: Object): Duration` 函数来创建。
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+const d = dur.fromMillis(1715238823499)
+
+console.log(dur.fromMillis(86400000).toObject()) // {milliseconds: 86400000}
+console.log(dur.fromObject({ hours: 2, minutes: 8 }).toObject()) // {hours: 2, minutes: 8}
+console.log(dur.fromDurationLike(86400000).toObject()) // {milliseconds: 86400000}
+console.log(dur.fromDurationLike({ hours: 2, minutes: 8 }).toObject()) // // {hours: 2, minutes: 8}
+console.log(dur.fromDurationLike(d).toObject()) // {milliseconds: 1715238823499}
+console.log(dur.fromISO('P3Y6M1W4DT12H30M5S').toObject()) // { years: 3, months: 6, weeks: 1, days: 4, hours: 12, minutes: 30, seconds: 5 }
+console.log(dur.fromISOTime('11:22:33.444').toObject()) // { hours: 11, minutes: 22, seconds: 33, milliseconds: 444 }
+```
+````
+
+>[Note] 对于 ISO 格式的持续时间请参考官方网站，这里不作说明。
+
+#### 输出持续时间
+
+这时令 `d` 为一个 `Duration` 的实例，可以通过 `d.locale` 获取当前持续时间的本地类型，通常为 `zh-CN`，然后通过 `years` | `quarters` | `months` | `weeks` | `days` | `hours` | `minutes` | `seconds` | `milliseconds` 实例属性可获取相应的日期和时间值，也可以将基作为参数传入 `get()` 函数来获取值，例如：`d.get("months")`。
+
+接下来我们看一下几个相关的输出函数：
+
+##### `toFormat()` 函数
+
+通过前面 DateTime 的介绍，相信对于这个函数的使用不会存在任何疑惑，但是这里需要注意的是这是一个阉割版的，因为它所支持的格式符号仅限以下几种：
+
+- `S`: 毫秒
+- `s`: 秒
+- `m`: 分钟
+- `h`: 小时
+- `d`: 天
+- `w`: 周
+- `M`: 月
+- `y`: 年，`yy` 将填充为 2 位年数表示法。
+
+这里的 `toFormat()` 函数同样也支持在字符串内使用单引号进行转义。
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+const d = dur.fromISO('P3Y6M1W4DT12H30M5S')
+
+console.log(d.toFormat('yy-MM-dd hh-mm-ss')) // 03-06-11 12-30-05
+console.log(d.toFormat("yy'年'MM'月'")) // 03年06月
+```
+````
+
+##### `toHuman()` 函数
+
+`toHuman(opts: Object)` 函数返回包含所有单位的 Duration 的字符串表示形式。
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+const d = dur.fromISO('P3Y6M1W4DT12H30M5S')
+
+console.log(d.toHuman()) // 3年、6个月、1周、4天、12小时、30分钟、5秒钟
+console.log(d.toHuman({ unitDisplay: 'short' })) // 3年、6个月、1周、4天、12小时、30分钟、5秒
+```
+````
+
+>[Tips] 关于 `opts` ，可以参考 [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#options)
+
+##### `toObject()` 函数
+
+这个函数就是将持续时间输出为 JavaScript 对象表示，没有什么好说的。
+
+##### `toISO()` / `toISOTime()` 函数
+
+ISO 8601 形式的持续时间表示法，对很多人来讲很陌生，作者也是一样第一次接触，但是查阅相关资源后其实也挺容易理解的，例如：`P5M` 表示 `5个月`，下面作一个简单的介绍。
+
+持续时间以 `P` （表示 Period） 开头，格式为： 
+
+1. `P[n]Y[n]M[n]DT[n]H[n]M[n]S`
+2. `P[n]W`
+3. `P<date>T<time>`
+
+基中 `[n]` 为要被替换的具体日期或时间值，例如 `P2Y` 表示 `02年`，`P1Y-2M` 表示 `1年负2个月`，也就是 `10个月`。
+
+`W` 表示周数，例如：`P2W` 表示 `第2周`。
+
+`T` 后面表示时间，格式为 `Thh:mm:ss.sss` 或者 `hh:mm:ss.sss`，可通过 `toISOTime()` 函数的选项 `opts.includePrefix` 来控制是否显示前缀 `T`。
+
+下面是一些示例：
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+
+console.log(dur.fromObject({years: 2024}).toISO()) // P2024Y
+console.log(dur.fromObject({months: 5}).toISO()) // P5M
+console.log(dur.fromObject({weeks: 5}).toISO()) // P5W
+console.log(dur.fromObject({minutes: 5}).toISO()) // PT5M
+console.log(dur.fromObject({seconds: 5}).toISO()) // PT5S
+console.log(dur.fromObject({seconds: 5, milliseconds: 234}).toISO()) // PT5.234S
+
+console.log(dur.fromObject({ hours: 11 }).toISOTime()) // 11:00:00.000
+console.log(dur.fromObject({ hours: 11 }).toISOTime({ suppressMilliseconds: true })) // 11:00:00
+console.log(dur.fromObject({ hours: 11 }).toISOTime({ includePrefix: true })) // T11:00:00.000
+console.log(dur.fromObject({ hours: 11 }).toISOTime({ format: 'basic' })) // 110000.000
+```
+````
+
+>[Tips] 还有 2 个函数 `toJSON()` 和 `toString()` 也是输出为 ISO 8601，只不过一个适用于 JSON,一个适用于调式。
+
+除了上述几个函数外，还可以使用 `toMillis()` 和 `valueOf()` 来输出持续时间的毫秒表示。
+
+#### 持续时间的数学运算
+
+持续时间的数学运算只支持相加（`plus(duration: (Duration | Object | number)): Duration`）和相减（`minus(duration: (Duration | Object | number)): Duration`）以及比较（`equals(others: Duration): boolean`）运算，此外还提供了一个遍历函数 ` mapUnits(fn: function): Duration ` 来根据条件作运算。
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+
+const dur1 = dur.fromISO('P1Y')
+const dur2 = dur.fromISO('P2M')
+
+console.log(dur1.equals(dur2)) // false
+console.log(dur1.plus(dur2).toISO()) // P1Y2M
+console.log(dur1.minus(dur2).toISO()) // P1Y-2M
+console.log(dur1.plus(dur2).mapUnits(x => x * 2).toISO()) // P2Y4M
+console.log(dur1.plus(dur2).mapUnits((x, u) => u === "months" ? x * 3 : x).toISO()) // P1Y6M
+```
+````
+
 #### 日期和时间的换算
 
 我们知道 1 天有 24 小时，1 小时有 60 分钟，1 分钟有 60 秒，1 秒有 1000 毫秒，然后 1 天可以表示成 8640000 毫秒，在 Luxon 中提供了 `as(unit: string): number` 和 `shiftTo(units: ...any): Duration` 函数来处理，些外还有一个 `shiftToAll(): Duration` 函数，等同于调用 `shiftTo("years", "months", "weeks", "days", "hours", "minutes", "seconds", "milliseconds")`。
@@ -436,6 +578,21 @@ console.log(dur3.shiftToAll().toObject()) // {"years":0,"months":2,"weeks":3,"da
 ```
 ````
 
+ 既然有将日期和时间换算成毫秒表示，自然也有对应的将毫秒转换成相应的对象表示形式，这里我们需要用到 `rescale(): Duration` 函数，使用方法如下：
+
+````
+```dataviewjs
+const dur = dv.luxon.Duration
+const dur1 = dur.fromObject({milliseconds: 86400000})
+
+console.log(dur1.valueOf()) // 86400000
+console.log(dur1.toObject()) // {milliseconds: 86400000}
+console.log(dur1.rescale().toObject()) // {days: 1}
+console.log(dur.fromMillis(1715245618057).toObject()) // {milliseconds: 1715245618057}
+console.log(dur.fromMillis(1715245618057).rescale().toObject()) // {years: 59, months: 1, hours: 9, minutes: 6, seconds: 58, milliseconds: 55}
+```
+````
+
 ## 参考
 
 - [luxon 3.4.4 | Documentation (moment.github.io)](https://moment.github.io/luxon/api-docs/index.html)
@@ -443,3 +600,4 @@ console.log(dur3.shiftToAll().toObject()) // {"years":0,"months":2,"weeks":3,"da
 - [深入了解ISO 8601：日期和时间的国际标准化-CSDN博客](https://blog.csdn.net/weixin_53742691/article/details/135534399)
 - [JS Intl对象完整简介及在中文中的应用 « 张鑫旭-鑫空间-鑫生活 (zhangxinxu.com)](https://www.zhangxinxu.com/wordpress/2019/09/js-intl-zh/)
 - [Array.prototype.flatMap() - JavaScript | MDN (mozilla.org)](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap)
+- [ISO 8601 - Wikipedia](https://en.wikipedia.org/wiki/ISO_8601#Durations)

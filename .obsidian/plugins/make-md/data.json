@@ -26,7 +26,7 @@
   "defaultDateFormat": "MMM dd yyyy",
   "spacesEnabled": true,
   "spacesPerformance": false,
-  "currentWaypoint": 3,
+  "currentWaypoint": 4,
   "enableFolderNote": true,
   "folderIndentationLines": true,
   "revealActiveFile": false,

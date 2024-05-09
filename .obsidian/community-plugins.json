@@ -6,7 +6,6 @@
   "easy-typing-obsidian",
   "obsidian-git",
   "home-tab",
-  "make-md",
   "cm-chs-patch",
   "obsidian-version-history-diff",
   "obsidian-plugin-update-tracker",
@@ -24,6 +23,6 @@
   "obsidian-quiet-outline",
   "obsidian-outliner",
   "obsidian-tasks-plugin",
-  "table-editor-obsidian",
-  "markdown-table-editor"
+  "markdown-table-editor",
+  "make-md"
 ]
