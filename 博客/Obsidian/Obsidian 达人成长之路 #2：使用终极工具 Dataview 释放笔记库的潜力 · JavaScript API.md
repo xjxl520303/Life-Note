@@ -1,7 +1,67 @@
+Dataview 提供的 DQL 查询语言为不同背景和需求的用户带来了便利，特别是对于那些不擅长或不愿意深入学习复杂编程语言的用户降低了使用门槛，让其数据查询和管理更多直观和易于上手。
+
+然而，用户的群体是多种多样的，不同的用户对体验的要求是不尽相同的。这种多样性体现在对编辑器或工具的选择上，还体现在对数据查询和管理的个性化需求上。就拿代码编辑器来举例，有些用户倾向于使用功能丰富、界面友好的集成开发环境（IDE）；有的用户则更喜欢轻便、快捷的文本编辑器；还有一部分极客喜欢 DIY 神器 Vim。
+
+在这方面，Dataview 的优势在于其灵活性和可扩展性。与其说 Dataview 提供了 2 种方式来满足不同用户的需求，不如说它为用户提供了一个开放平台，让用户可以根据自己的喜欢和需求来定制和优化自己的查询结果。
+
+这是《Obsidian 达人成长之路》系列的第 2 篇，专注于 Dataview JavaScript API 的使用，这对于希望充分利用 Obsidian 笔记工具高级功能的用户来说是非常有价值的。
+
+## 快速入门
+
+在编程的世界中，有一个广泛接受的传统，那就是使用“Hello World”作为学习新编程语言时的第一个示例程序，本文也不例外。
+
+任意新建一个文档将下面的内容复制粘贴并运行。
+
+````
+greet:: Hello World!
+
+- [ ] `= this.greet`
+
+```dataviewjs
+const page = dv.current()
+const inlineGreet = page["greet"]
+
+console.log(inlineGreet)
+dv.header(2, inlineGreet)
+dv.list([inlineGreet])
+dv.el("span", `- [ ] ${inlineGreet}`)
+dv.taskList(page.file.tasks)
+dv.table(["问候"], [[inlineGreet]])
+```
+````
+
+结果：
+
+![[Pasted image 20240511112532.png]]
+
+下面我们来分析一下上述示例：
+
+首先，我们在文档中创建了一个内联属性 `greet`，然后创建了一个任务并通过内联 DQL 查询出 `greet` 属性并作为任务的名称。
+
+接下来，我们通过调用 `dv.current()` 函数获取脚本当前正在执行的页面的页面信息，这相当于调用 `dv.page("当前文档名")` 函数。然后赋值给常量 `page`，紧接着读取了页面中的内联属性 `greet` 并赋值给常量 `inlineGreet`。
+
+第一个输出使用浏览器的控制台作为载体，通过调用 JavaScript 的 `console.log()` 函数来实现。如果你不知道怎么显示开发者工具，1）在 Windows 或 Linux 下可以使用快捷键 <kbd>Ctrl+Shift+I</kbd>；2）macOS 请使用<kbd>Cmd+Opt+I</kbd>。
+
+接下来我们分别使用了 `div.header(2, inlineGreet)` 函数来将问候输出为二级标题；使用 `dv.list([inlineGreet])` 将其输出为列表元素；使用 `dv.el("span", ...)` 函数来将其输出为任务（这里只是为了演示，通常我们是从文档中获取任务）；使用 `dv.taskList(page.file.tasks)` 函数将页面中的任务查询出来；最后使用 `dv.table(["问候"], [[inlineGreet]])` 函数将其输出为表格显示。
+
+
+
+
+
+
+- 获取当前文档内容
+- 显示列表、任务
+- 获取当前文档中的 YAML 属性、内联字段属性、任务中的属性
+- 列表的遍历
+- 插入 HTML
+- 加载 HTML 和 CSS 文件
+
 
 使用 `dv.array(<array>)` 将普通的 JavaScript 数组转换成 Dataview 列表。
 
 使用 `DataArray#array()` 将 Dataview 列表转成普通的 JavaScript 数组。
+
+
 
 TODO:
 

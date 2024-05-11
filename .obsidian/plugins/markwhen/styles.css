@@ -1,0 +1,27 @@
+/*
+
+This CSS file will be included with your plugin, and
+available in the app when your plugin is enabled.
+
+If your plugin does not need CSS, delete this file.
+
+*/
+
+.workspace-leaf-content .view-content {
+  padding: 0;
+  overflow: hidden;
+}
+
+.markwhenEditor {
+  max-width: var(--file-line-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cm-content {
+  padding-bottom: 455px;
+}
+
+.mw-hidden {
+  display: none !important;
+}

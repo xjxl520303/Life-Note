@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "8623ac9531c62335",
+        "id": "fb16733ccdb78222",
         "type": "tabs",
         "children": [
           {
-            "id": "8b9c34071f3c912b",
+            "id": "a1287328128f2cbc",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-                "mode": "source",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -75,27 +75,27 @@
             }
           },
           {
-            "id": "f91e0f55bdd28218",
-            "type": "leaf",
-            "state": {
-              "type": "surfing-tab-tree",
-              "state": {}
-            }
-          },
-          {
             "id": "1046b393709128c3",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
               "state": {}
             }
+          },
+          {
+            "id": "76a1b383f816eb18",
+            "type": "leaf",
+            "state": {
+              "type": "surfing-tab-tree",
+              "state": {}
+            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 298.5
+    "width": 229.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -111,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -151,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md"
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md"
               }
             }
           },
@@ -189,7 +189,7 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md"
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md"
               }
             }
           },
@@ -202,7 +202,7 @@
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
@@ -219,10 +219,15 @@
       "markdown-table-editor:Open Markdown Table Editor": false
     }
   },
-  "active": "8b9c34071f3c912b",
+  "active": "a1287328128f2cbc",
   "lastOpenFiles": [
-    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "附件/Pasted image 20240511193408.png",
+    "附件/Pasted image 20240511181827.png",
     "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "附件/Pasted image 20240511112532.png",
+    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
+    "博客/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "附件/Pasted image 20240508191349.png",
     "附件/Pasted image 20240508190943.png",
@@ -232,9 +237,6 @@
     "附件/Pasted image 20240508183544.png",
     "附件/Pasted image 20240508183300.png",
     "附件/Pasted image 20240508182704.png",
-    "附件/Pasted image 20240508181648.png",
-    "附件/Pasted image 20240508174422.png",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
