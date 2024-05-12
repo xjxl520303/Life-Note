@@ -1,7 +1,6 @@
 {
   "newNotePlaceholder": "Untitled",
   "defaultInitialization": false,
-  "navigatorEnabled": true,
   "filePreviewOnHover": false,
   "flowMenuEnabled": true,
   "markSans": false,
@@ -86,12 +85,12 @@
   "autoMigration08": false,
   "releaseNotesPrompt": 0.9,
   "enableDefaultSpaces": true,
+  "enableTagSpaces": true,
   "showSpacePinIcon": true,
   "minimalFix": false,
   "experimental": false,
   "systemName": "生活点点滴滴记录",
   "defaultSpaceTemplate": "",
   "selectedKit": "default",
-  "actionMaxSteps": 100,
-  "enableTagSpaces": true
+  "actionMaxSteps": 100
 }

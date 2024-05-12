@@ -16,7 +16,7 @@
 
 #### dailys 目录
 
-这是一个存放作者日记的目录，内容记录了每天的心情（高兴、紧张、悲伤、不舒服等）、健康状况（头痛、腰痛、腿痛等）、日程安排（和谁约会，见面等）、日常起居时间（起床、午餐、晚餐和入睡时间）、锻炼数据（锻炼时间，仰卧起坐个数和步行数）、好习惯（祈祷、呼吸、感恩和放松）等数据。
+这是一个存放作者日记的目录，内容记录了每天的心情（高兴、紧张、悲伤、不舒服等）、健康状况（头痛、腰痛、腿痛等）、日程安排（和谁约会，见面等）、日常消费信息、日常起居时间（起床、午餐、晚餐和入睡时间）、锻炼数据（锻炼时间，仰卧起坐个数和步行数）、好习惯（祈祷、呼吸、感恩和放松）等数据。
 
 - food 目录
 
@@ -118,6 +118,205 @@ function isActive(name) {
 
 ![[Pasted image 20240511193408.png]]
 
+#### 按照文件中的顺序对重复的元数据字段进行分组
+
+>位置：20 Dataview Queries/# Group duplicated meta data fields after their order in file
+
+这个案例对日记中以下数据中的 `bought` 进行查询并显示出对应的 `paid` 数据。
+
+````
+#### Money spent
+
+bought:: piece of cake
+paid:: 7.99$
+
+bought:: buddha bowl
+paid:: 8.5$
+
+bought:: jacket
+paid:: 99$
+````
+
+从数据可以看出 `bought` 和 `paid` 在页面中是重复出现，这在 Obsidian 中将会被解析成 `bought: ['piece of cake', 'buddha bowl', 'jacket']` 和 `paid: ['7.99$', '8.5$', '99$']`。
+
+下面是查询代码：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+dv.table(["页面", "购买", "支付"], groupedValues)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240512233848.png]]
+
+从上面的结果来看，物品有一部分是经常购买的，比如说： `piece of cake`，现在我有一个想法浮现在脑海，我们能不能进一步根据 `bought` 的具体值再进行一次分组呢，相同组的名字以 `--` 显示，下面是期望得到的效果：
+
+![[Pasted image 20240512235407.png]]
+
+然后，我进入了无休止的尝试中...
+
+最终，我实现出了想要的结果，但是这个代码有点长，不太好理解，也并不优雅：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+   .sort(p => p.file.name)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+// 重组数据
+const newPages = groupedValues.map(g => {
+    return {
+        link: g[0],
+        bought: g[1],
+        paid: g[2],
+    }
+})
+
+// 按 bought 进行分组
+const newGroupedValues = dv.array(newPages)
+    .groupBy(p => p.bought)
+    .flatMap(g => g.rows)
+
+dv.table(
+    ["购买", "支付", "页面"],
+    newGroupedValues.flatMap((g, i, arr) => {
+        let j = 0; // 用于判断 bought 是否连续
+
+        // 找到连续的 bought
+        if (i > 0 && g.bought !== arr[i - 1].bought) {
+            j = i;
+        }
+
+        // 计算连续的数量
+        while (j < arr.length - 1 && arr[j+1].bought === g.bought) {
+            j++;
+        }
+
+        if (j > i) {
+            return Array(j - i + 1).fill(0).map((_, k) => {
+                if (k === 0) {
+                    return [g.bought, g.paid, g.link]
+                } else {
+                    // 相同名字显示 --
+                    return ['--', arr[i + k].paid, arr[i + k].link]
+                }
+            })
+        }
+
+        // 单个 bought
+        if (i === j && g.bought !== arr[i - 1].bought) {
+            return [[g.bought, g.paid, g.link]]
+        }
+    })
+)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+上述代码是在 `groupedValues` 的基础上对数据进行了一次重映射，然后使用 `dv.array()` 方法将普通的 JavaScript 数组转换成 `DataArray<T>` 类型，然后使用其 `groupBy()` 方法按 `bought` 字段进行分组，然后使用 `flatMap()` 映射返回 `rows` 的值。
+
+> [Tips] 使用 `groupBy()` 分组后返回一个包含 `key` 和 `rows` 的对象，其中 `key` 为分组名称，`rows` 是分组后的数据。
+
+`flatMap()` 方法是一个很重要的函数，关于其用法可自行去脑补，后面处理分组数据部分写出来后也不难，但是总感觉有更简单的实现。与是，作者又双叒叕熬夜想了想，终于以 2 个 `flatMap()` 方法成功破局，一行代码暴击（不追求代码可读性为前提）：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+   .sort(p => p.file.name)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+// 重组数据
+const newPages = groupedValues.map(g => {
+    return {
+        link: g[0],
+        bought: g[1],
+        paid: g[2],
+    }
+})
+
+// 按 bought 进行分组
+const newGroupedValues = dv.array(newPages)
+    .groupBy(p => p.bought)
+
+dv.table(
+   ["购买", "支付", "页面"],
+   newGroupedValues.flatMap((g, i, arr) => 
+        g.rows.flatMap((r, i, arr) => {
+            if (i === 0) {
+                return [[g.key, r.paid, r.link]]
+            } else {
+                return [['--', r.paid, r.link]]
+            }
+        })
+   )
+)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+最后，如果你脑子又一转，如果数据很多的情况下，是否可以将每个分组拆解出来单独显示呢？也就是说多个表格单独显示，像下面这样：
+
+![[Pasted image 20240513001831.png]]
+
+这必需安排起，只需要将上面的示例中的 `dv.table()` 部分改成下面的代码即可：
+
+```js
+for (let g of newGroupedValues) {
+    dv.span('- ' + g.key)
+    dv.table(
+        ["页面", "支付"],
+        g.rows.map(r => [r.link, r.paid])
+    )
+}
+```
 
 ## 常见问题
 
@@ -146,3 +345,4 @@ dv.el("div", html)
 ## 参考
 
 - [Can't use HTML tag `<img>` to show local picture - Bug graveyard - Obsidian Forum](https://forum.obsidian.md/t/cant-use-html-tag-img-to-show-local-picture/34272)
+- [Sorting groups in Dataview JS - Help - Obsidian Forum](https://forum.obsidian.md/t/sorting-groups-in-dataview-js/29126/4)
