@@ -24,5 +24,8 @@
   "obsidian-outliner",
   "obsidian-tasks-plugin",
   "markdown-table-editor",
-  "make-md"
+  "make-md",
+  "obsidian-footnotes",
+  "obsidian-linter",
+  "obsidian-minimal-settings"
 ]

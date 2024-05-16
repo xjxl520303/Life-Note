@@ -1,6 +1,7 @@
 {
   "accentColor": "",
-  "cssTheme": "Border",
-  "theme": "moonstone",
-  "textFontFamily": "LXGW WenKai Mono"
+  "cssTheme": "Things",
+  "theme": "obsidian",
+  "textFontFamily": "LXGW WenKai Mono",
+  "baseFontSize": 14
 }

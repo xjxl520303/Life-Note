@@ -1075,6 +1075,14 @@ settings:
         type: variable-text
         default: ''
     - 
+		id: color-activated-tab-header-underline-light
+		title: activated Tab header underline color(light mode)
+        title.zh: 已激活Tab的标头下划线颜色（亮色模式）
+        description: Input any CSS background value
+        description.zh: 输入任意 CSS background 值
+        type: variable-text
+        default: ''
+    - 
         id: Active-states-file-explorer-light
         title: Active states(file explorer)
         title.zh: 激活态（文件列表）
@@ -2020,6 +2028,14 @@ settings:
         title.zh: 已激活Tab的标头阴影（暗色模式）
         description: Input any CSS box-shadow value
         description.zh: 输入任意 CSS box-shadow 值
+        type: variable-text
+        default: ''
+    - 
+		id: color-activated-tab-header-underline-dark
+		title: activated Tab header underline color(dark mode)
+        title.zh: 已激活Tab的标头下划线颜色（暗色模式）
+        description: Input any CSS background value
+        description.zh: 输入任意 CSS background 值
         type: variable-text
         default: ''
     - 
@@ -3490,6 +3506,67 @@ settings:
         description.zh: 输入任意 CSS font-style 值
         type: variable-text
         default: ''
+    - 
+        id: Checkbox
+        title: Checkbox
+        title.zh: 复选框
+        type: heading
+        collapsed: true
+        level: 3
+    - 
+        id: checkbox-radius
+        title: checkbox radius
+        title.zh: 复选框 圆角半径
+        description: Input any CSS border-radius value
+        description.zh: 输入任意 CSS border-radius 值
+        type: variable-text
+        default: ''
+    - 
+		id: checkbox-marker-color
+		title: checkbox marker color
+        title.zh: 复选框标记颜色
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+    - 
+		id: checkbox-color
+		title: checkbox color
+        title.zh: 复选框颜色
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+    - 
+		id: checkbox-color-hover
+		title: checkbox color (hover)
+        title.zh: 复选框颜色（鼠标悬停时）
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+    - 
+		id: checkbox-border-color
+		title: checkbox border color
+        title.zh: 复选框边框颜色
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+    - 
+		id: checkbox-border-color-hover
+		title: checkbox border color (hover)
+        title.zh: 复选框边框颜色（鼠标悬停时）
+		type: variable-themed-color
+		opacity: true
+		format: hex
+		default-light: '#'
+		default-dark: '#'
+
 
 */
 
@@ -5024,6 +5101,26 @@ body:not(.is-mobile).theme-dark .workspace-tabs:not(.mod-stacked) .workspace-tab
     border-radius: var(--border-radius-activated-tab-header-dark);
 }
 
+body:not(.is-mobile) .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner::before {
+    content: "";
+    width: calc(100% - 6px);
+    height: 3px;
+    background-color: var(--color-activated-tab-header-underline-light);
+    position: absolute;
+    top: 35px;
+    left: 3px;
+}
+
+body:not(.is-mobile).theme-dark .workspace-tabs:not(.mod-stacked) .workspace-tab-header.is-active .workspace-tab-header-inner::before {
+    content: "";
+    width: calc(100% - 6px);
+    height: 3px;
+    background-color: var(--color-activated-tab-header-underline-dark);
+    position: absolute;
+    top: 35px;
+    left: 3px;
+}
+
 /* tab - mobile*/
 
 .is-mobile .workspace-tab-header.is-active .workspace-tab-header-inner {
@@ -5482,6 +5579,10 @@ body:not(.is-mobile) .embedded-backlinks .nav-header~.search-input-container {
 }
 
 /* document search replace */
+#cMenuToolbarModalBar.top {
+    z-index: var(--layer-status-bar);
+}
+
 body:not(.is-mobile) .mod-active .document-search-container,
 body:not(.is-mobile) .document-search-container {
     background-color: var(--background-primary);
@@ -6313,35 +6414,35 @@ body:not(.file-icon-remove) .workspace-leaf-content[data-type="bookmarks"] svg.l
 
 /*colorful folder icon*/
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+2) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+2) {
     --colorful-folder-color: var(--color-red);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+3) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+3) {
     --colorful-folder-color: var(--color-orange);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+4) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+4) {
     --colorful-folder-color: var(--color-yellow);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+5) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+5) {
     --colorful-folder-color: var(--color-green);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+6) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+6) {
     --colorful-folder-color: var(--color-cyan);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+7) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+7) {
     --colorful-folder-color: var(--color-blue);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+8) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+8) {
     --colorful-folder-color: var(--color-purple);
 }
 
-body:not(.file-icon-remove) .nav-folder-children>.nav-folder:nth-child(8n+9) {
+body:not(.file-icon-remove) .nav-folder:nth-child(8n+9) {
     --colorful-folder-color: var(--color-pink);
 }
 
@@ -6772,6 +6873,11 @@ body:not(.inline-title-divider-remove) .inline-title:not(.mk-inline-title) {
     border-top: 1px solid var(--divider-color);
 }
 
+.markdown-rendered>:is(h1, h2, h3, h4, h5, h6),
+.markdown-preview-sizer>div>:is(h1, h2, h3, h4, h5, h6) {
+    position: relative;
+}
+
 body:not(.heading-indicator-off) .markdown-preview-view .heading-collapse-indicator,
 body:not(.heading-indicator-off) .is-live-preview .HyperMD-header .collapse-indicator.collapse-icon {
     transform: translateX(-8px);
@@ -6779,7 +6885,6 @@ body:not(.heading-indicator-off) .is-live-preview .HyperMD-header .collapse-indi
 
 body:not(.heading-indicator-off) .markdown-rendered>:is(h1, h2, h3, h4, h5, h6),
 body:not(.heading-indicator-off) .markdown-preview-sizer>div>:is(h1, h2, h3, h4, h5, h6) {
-    position: relative;
     text-indent: 9px;
 }
 
@@ -7531,6 +7636,9 @@ li[data-task="S"]>p>input:checked,
 input[data-task="“"]:checked,
 li[data-task="“"]>input:checked,
 li[data-task="“"]>p>input:checked,
+input[data-task="\""]:checked,
+li[data-task="\""]>input:checked,
+li[data-task="\""]>p>input:checked,
 input[data-task="c"]:checked,
 li[data-task="c"]>input:checked,
 li[data-task="c"]>p>input:checked,
@@ -7682,7 +7790,10 @@ li[data-task="c"]>p>input:checked {
 
 input[data-task="“"]:checked,
 li[data-task="“"]>input:checked,
-li[data-task="“"]>p>input:checked {
+li[data-task="“"]>p>input:checked,
+input[data-task="\""]:checked,
+li[data-task="\""]>input:checked,
+li[data-task="\""]>p>input:checked {
     --checkbox-color-hover: var(--color-purple);
     color: var(--color-purple);
     -webkit-mask-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg id="svg0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><defs><style>.cls-1{fill:none;}</style></defs><rect class="cls-1" width="16" height="16"/><path d="M2.46,4.19c.94-1.01,2.35-1.53,4.21-1.53h.67v1.88l-.54,.11c-.91,.18-1.55,.54-1.89,1.07-.18,.28-.28,.61-.29,.94h2.05c.18,0,.35,.07,.47,.2,.13,.13,.2,.29,.2,.47v4.67c0,.74-.6,1.33-1.33,1.33H2c-.18,0-.35-.07-.47-.2-.13-.12-.2-.29-.2-.47V7.39c0-.07-.13-1.83,1.13-3.19ZM13.33,13.33h-4c-.18,0-.35-.07-.47-.2-.13-.12-.2-.29-.2-.47V7.39c0-.07-.13-1.83,1.13-3.19,.94-1.01,2.35-1.53,4.21-1.53h.67v1.88l-.54,.11c-.91,.18-1.55,.54-1.89,1.07-.18,.28-.28,.61-.29,.94h2.05c.18,0,.35,.07,.47,.2,.12,.13,.2,.29,.2,.47v4.67c0,.74-.6,1.33-1.33,1.33Z"/></svg>');
@@ -7744,6 +7855,7 @@ body {
     --callout-content-radius: 0px;
 }
 
+.theme-light .callout:is([data-callout-metadata*="style-1"], [data-callout*=style-1]),
 .callout-style-1.theme-light {
     --callout-border-width: 1px;
     --callout-border-opacity: 0.25;
@@ -7757,6 +7869,7 @@ body {
     --callout-content-radius: 0px;
 }
 
+.theme-dark .callout:is([data-callout-metadata*="style-1"], [data-callout*=style-1]),
 .callout-style-1.theme-dark {
     --callout-border-width: 1px;
     --callout-border-opacity: 0.25;
@@ -7770,6 +7883,7 @@ body {
     --callout-content-radius: 0px;
 }
 
+.theme-light .callout:is([data-callout-metadata*="style-2"], [data-callout*=style-2]),
 .callout-style-2.theme-light {
     --callout-border-width: 1px;
     --callout-border-opacity: 0.25;
@@ -7783,6 +7897,7 @@ body {
     --callout-content-radius: 4px;
 }
 
+.theme-dark .callout:is([data-callout-metadata*="style-2"], [data-callout*=style-2]),
 .callout-style-2.theme-dark {
     --callout-border-width: 1px;
     --callout-border-opacity: 0.25;
@@ -7796,6 +7911,7 @@ body {
     --callout-content-radius: 4px;
 }
 
+body:is(.theme-light, .theme-dark) .callout:is([data-callout-metadata*="style-3"], [data-callout*=style-3]),
 .callout-style-3:is(.theme-light, .theme-dark) {
     --callout-border-width: 0 0 0 4px;
     --callout-border-opacity: 1;
@@ -7809,6 +7925,7 @@ body {
     --callout-content-radius: 0px;
 }
 
+.theme-light .callout:is([data-callout-metadata*="style-4"], [data-callout*=style-4]),
 .callout-style-4.theme-light {
     --callout-border-width: 0 0 0 4px;
     --callout-border-opacity: 1;
@@ -7822,6 +7939,7 @@ body {
     --callout-content-radius: 0px;
 }
 
+.theme-dark .callout:is([data-callout-metadata*="style-4"], [data-callout*=style-4]),
 .callout-style-4.theme-dark {
     --callout-border-width: 0 0 0 4px;
     --callout-border-opacity: 1;
@@ -8183,6 +8301,14 @@ body.seamless-embeds {
 .img-center-align .print :is(.markdown-preview-view, .markdown-rendered) img:not([class]),
 .img-center-align .markdown-preview-view img:not([class]),
 .img-center-align .markdown-source-view img:not([class]) {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.img-center-align .print :is(.markdown-preview-view, .markdown-rendered) img:is([class=""], .image-ready-resize, .image-ready-click-view),
+.img-center-align .markdown-preview-view img:is([class=""], .image-ready-resize, .image-ready-click-view),
+.img-center-align .markdown-source-view img:is([class=""], .image-ready-resize, .image-ready-click-view) {
     display: block;
     margin-left: auto !important;
     margin-right: auto !important;

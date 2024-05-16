@@ -1,348 +1,234 @@
-## Obsidian Example Valut 案例集精选
+---
+tags:
+  - Blog
+  - Dataview
+  - Obsidian
+---
 
-[Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/) 提供了丰富的 Dataview 使用案例。通过这个示例仓库，用户可以学习到很多关于 Dataview 的知识，将其应用到自己的 Obsidian 工作流程中。这是一个很好的起点，但是由于其内容较多，需要花费大量时间和精力去实操，这是一个必然的过程，但是这个路不必自己去亲自走一遍，因为我已经为读者开辟了道路。
+## 初级篇：Dataview 基础应用
 
-这一节我们将对其进行介绍，并挑选一部分具有代表性的典型案例来讲解，让读者感受其强大之处，并借鉴到自己的工作流程当中。
+初级篇主要涉及一些比较简单的查询操作，适用于初学者练手，主要聚焦在 DQL 查询上以及基础的 JavaScript API 查询操作。
 
-### 数据集
+### 内联查询
 
-案例集提供了多种场景数据来展示，下面是一个简单介绍：
+内联查询适合于不需要作过多逻辑判断的属性查询，不需要指定代码块，可以在页面正文中任意位置插入查询语句。下面是 DQL 和 JavaScript API 两种语法示例。
 
-- assignments 目录
-
-#### books 目录
-
-记录了作者正在阅读的书籍的令牌，包含了书籍作者、主题、分类、总页数、书籍封面以及阅读进度（当前已阅读页数）信息。
-
-#### dailys 目录
-
-这是一个存放作者日记的目录，内容记录了每天的心情（高兴、紧张、悲伤、不舒服等）、健康状况（头痛、腰痛、腿痛等）、日程安排（和谁约会，见面等）、日常消费信息、日常起居时间（起床、午餐、晚餐和入睡时间）、锻炼数据（锻炼时间，仰卧起坐个数和步行数）、好习惯（祈祷、呼吸、感恩和放松）等数据。
-
-- food 目录
-
-- games 目录
-
-- people 目录
-
-- projects 目录
-
-- shows 目录
-
-### 精选案例
-
-下面是作者觉得具有一定代表性的案例甄选，代码有一定程度的修改，但功能保持不变。
-
-#### 计算连续头痛的周期和持续时间
-
-> 位置：20 Dataview Queries/Calculate cycle lengths and durations
-
-通过 YAML 中的属性 `wellbeing.pain-type` 是否包含 `head` 来判断当日是否有头痛记录，然后计算持续的天数以及上一次的间隔周期。
+DQL 内联查询示例：
 
 ````
-```dataviewjs
-const dt = dv.luxon.DateTime
-const dur = dv.luxon.Duration
+topic:: basic inline queries
+description:: Showcase basic syntax of DQL and JS Inline Queries
 
-// 返回一个由每个页面的前一天的页面（如果存在）组成的集合，并按日期降序排序。需要注意的是，并不是所有日期都有前一天的数据。
-let startDates = dv.pages('"10 Example Data/dailys"')
-    .mutate(p => p.previousDay = dv.page(dt.fromMillis(p.file.day - dv.duration("1d"))
-        .toFormat('yyyy-MM-dd')))
-        .sort(p => p.file.name)
+创建时间：`= this.file.ctime` %% 2024-05-13 11:05:56 %%
+修改时间：`= this.file.mtime` %% 2024-05-15 12:05:44 %%
+标签：`= this.tags` %% Blog, Dataview, Obsidian %%
+内联字段查询：`= this.topic` %% basic inline queries %%
+文本截取：`= truncate(this.description, 20, "...")` %% Showcase basic synt… %%
+条件判断：`= choice(contains(this, "topic"), "Set", "Missing!")` %% Set %%
+获取带有特殊字符的链接访问失败：`= [[博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言]].file.ctime` %% - %%
+需要调整为：`= link("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.ctime` %% 2024-05-06 11:05:12 %%
+文章包含的链接数量：`= length(link("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.outlinks)` %% 27 %%
+除图片以外的链接数量：`= length(filter(link("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.outlinks, (x) => !meta(x).embed))` %% 2 %%
+现在时间：`= date(now)` %% 2024-05-15 16:05:24 %%
+持续时间：`= dur(1mo2d)` %% 1个月、2天 %%
+格式化时间：`= dateformat(date(now), "M'月'dd'号'")` %% 5月15号 %%
+````
 
-// 结束日期的数据：当日没有记录数据，但前一天有记录。
-const endDates = dv.array(dv.clone(startDates)[0]).where(p => !checkCriteria(p) && checkCriteria(p.previousDay))
+JavaScript API 示例：
 
-// 开始日期的数据：当日有记录数据，但前一天无记录。
-startDates = startDates.where(p => checkCriteria(p) && !checkCriteria(p.previousDay))
+````
+创建时间：`$= dv.current().file.ctime` %% 2024-05-13 11:05:56 %%
+修改时间：`$= dv.current().file.mtime` %% 2024-05-15 12:05:44 %%
+标签：`$= dv.current().file.tags` %% Blog, Dataview, Obsidian %%
+内联字段查询：`$= dv.current().topic` %% basic inline queries %%
+文本截取：`$= dv.evaluate("truncate(this.description, 20, \"…\")").value` %% Showcase basic synt… %%
+或者：`$= dv.tryEvaluate("truncate(this.description, 20, \"…\")")` %% Showcase basic synt… %%
+条件判断：`$= dv.current().topic ? 'Set' : 'Missing!'` %% Set %%
+获取文件创建时间：`$= dv.page("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.ctime` %% - %%
+文章包含的链接数量：`$= dv.page("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.outlinks.length` %% 27 %%
+除图片以外的链接数量：`$= dv.page("博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言").file.outlinks.where(link => !link.embed).length` %% 2 %%
+现在时间：`$= dv.date('now')` %% 2024-05-15 16:05:24 %%
+持续时间：`$= dv.duration('1mo2d')` %% 1个月、2天 %%
+格式化时间：`$= dv.date('now').toFormat("M'月'dd'号'")` %% 5月15号 %%
+````
 
-// 存放周期数据
-const cycles = []
+> [!Tip] 使用内联 API 查询出来的标签在结果显示上和内联 DQL 的结果略有不同，前者是可交互的结果，后者为纯文本。
 
-for (let i = 0; i < endDates.length; i++) {
-    cycles.push([
-        startDates[i].file.link,
-        endDates[i].file.link,
-        dur.fromMillis(endDates[i].file.day - startDates[i].file.day),
-        i === 0 ? '' : dur.fromMillis(startDates[i].file.day - endDates[i-1]?.file.day),
-        i === 0 ? '' : dur.fromMillis(startDates[i].file.day - startDates[i-1]?.file.day).toFormat("d '天'")
-    ])
-}
+> [!Warning] 在 API 中没有对应的 `truncate()` 函数使用，但是我们可以 `dv.evalute()` 或者 `dv.tryEvaluate()` 函数在 API 中执行 DQL 查询。
 
-// 输出为表格
-dv.table(["开始", "结束", "持续时间", "间隔", "间隔周期"], cycles)
+> [!Warning] 在文件名不要包含 `#` 符号，在使用链接时会被错误的识别为标签或者页面标题。
 
-function checkCriteria(p) {
-    return p && p.wellbeing && (p.wellbeing["pain-type"] || []).contains("head")
-}
+### 数据分组
+
+数组分组适用于数据具有一对多或多对多的关系，例如一个作者对应多本书籍，那么我们在查询数据时就可以按作者去分组。
+
+在使用 DQL 查询语言 `GROUP BY` 时，需要明确一点的是，我们经过分组后的数据是保存在固定变量 `rows` 中的，这是一组数据，而非单一数据。例如在 `TABLE` 中没有分组时取文件链接是通过 ` file.link ` 来获取，经过分组后就需要使用 `rows.file.link ` 来取值了。需要注意的是 `rows` 是一个数组，我们可以使用 `rows[0]` 来获取分组数据的第一项，但是我们通常不会这样做。
+
+#### 示例一：书籍按作者分组
+
+````
+%% 属性样例 %%
+---
+author: Conrad C
+---
+
+%% 查询 %%
+```dataview
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+GROUP BY author AS 作者
+```
+````
+
+結果：
+
+![[Pasted image 20240516114029.png]]
+
+#### 示例二：书籍按类型分组
+
+````
+%% 属性样例 %%
+---
+genres:
+- Romance
+- Children
+- Magic
+---
+
+%% 查询 %%
+```dataview
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+FLATTEN genres
+GROUP BY genres AS 类别
 ```
 ````
 
 结果：
 
-![[Pasted image 20240511181827.png]]
+![[Pasted image 20240516114930.png]]
 
-#### 根据复选框动态显示内容
+>[!Tip] 这里需要注意的是 `FLATTEN` 语句很关键，如果不使用将会得到一个错误的结果。原因是在原始数据中每一本书可以对应多个类别，而在按类别查询分组后，结果变成多个类别对应一本书。因此我们需要把每个类别对应上同一本书来修正数据，这样再使用分组时就符合预期了。
 
->位置：20 Dataview Queries/Display or hide dataview queries based on a task selection
+下面是一个转换过程示例图解：
 
-当前页面中以作者名为任务名，当任务完成时自动去查询在日记中有引用自该作者的语录，当取消完成时，自动移除相关语录信息。
+![[Pasted image 20240516115704.png]]
+
+#### 示例三：根据计算结果分组
+
+这里对任务的 `due` 进行分组，如果在 `2022-05-12` 前没有完成就视为过期。
 
 ````
-- [x] Michel Foucault
-- [ ] Walter Benjamin
-- [ ] Karl Marx
+%% 属性样例 %%
+---
+class: history
+received: 2022-03-20
+due: 2022-05-05
+---
 
-```dataviewjs
-const checklist = dv.current().file.tasks.where(t => t.completed)
-const authors = ["Michel Foucault", "Walter Benjamin", "Karl Marx"]
-
-// 这里将原来代码中的 3 段代码用一个遍历重写了
-authors.forEach(author => {
-    if (isActive(author)) {
-        dv.header(2, `${author} quotes`)
-        dv.list(dv.pages('"10 Example Data/dailys"').flatMap(p => p.file.lists)
-            .where(l => l.author == author)
-            .text)
-    }
-})
-
-function isActive(name) {
-// 原代码使用 `t.text == name` 来判断并不准确
-// 因为我们安装了 tasks 插件后，任务完成会自动加上表情符号和完成日期。
-    return checklist.where(t => t.text.contains(name))[0]
-}
+%% 查询 %%
+```dataview
+LIST rows.file.link
+FROM "10 Example Data/assignments"
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
 ```
 ````
 
 结果：
 
-![[Pasted image 20240511193408.png]]
+![[Pasted image 20240516121939.png]]
 
-#### 按照文件中的顺序对重复的元数据字段进行分组
+#### 示例四：分组后的元数据
 
->位置：20 Dataview Queries/# Group duplicated meta data fields after their order in file
+在分组章节提到了分组后的数据属性 `rows`，实际上使用 `GROUP BY` 语句后返回的是一个对象，类似于：
 
-这个案例对日记中以下数据中的 `bought` 进行查询并显示出对应的 `paid` 数据。
-
-````
-#### Money spent
-
-bought:: piece of cake
-paid:: 7.99$
-
-bought:: buddha bowl
-paid:: 8.5$
-
-bought:: jacket
-paid:: 99$
-````
-
-从数据可以看出 `bought` 和 `paid` 在页面中是重复出现，这在 Obsidian 中将会被解析成 `bought: ['piece of cake', 'buddha bowl', 'jacket']` 和 `paid: ['7.99$', '8.5$', '99$']`。
-
-下面是查询代码：
-
-````
-```dataviewjs
-const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
-
-const groupedValues = [];
-for (let page of pages) {
-    const length = Array.isArray(page.bought) ? page.bought.length : 1;
-    for (let i = 0; i < length; i++) {
-        groupedValues.push([
-            page.file.link,
-            getValue(page, 'bought', i),
-            getValue(page, 'paid', i),
-        ]);
-    }
+```ts
+{
+	key: groupName;
+	rows: ArrayOfDataColumns
 }
+```
 
-dv.table(["页面", "购买", "支付"], groupedValues)
+在使用时通常不会直接去显示获取 `key` 值，默认情况下 Dataview 会直接读取了这个字段的值作为分组名。
 
-function getValue(page, key, i) {
-    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
-}
+如【示例三】所示，可以使用 `choice()` 函数来执行条件判断，返回 2 个状态描述，如果我们将 `LIST rows.file.link` 改成 `LIST`，那么读取的就是 `key` 值，这个 `key` 值就是 `choice()` 函数执行后返回的两个状态描述文本。
+
+在 `GROUP BY` 语句后面我们可以使用 `AS` 语句定义一个别名，例如：`statusText`，我们再次将列表查询语句修改成 `LIST statusText`，观察结果会发现会显示成类似 `- 还有机会: 还有机会`，这样的结果。这个时候 `statusText` 和 `key` 其实是同一个实体，如果只想显示一个分组名，或者不显示，可以使用 `LIST WITHOUT ID` 来达到目的。
+
+进一步我们还可以在 `LIST` 语句中拼接文本（包含有效果 HTML 标签），比如给结果加上 `<kbd>` 标签：`LIST WITHOUT ID "<kbd>" + statusText + "</kbd>"`，有一点需要谨记的是不能在里面使用模板字符串。
+
+有了上面提到的技巧，对于【示例三】的结果可以进一步改成 `LIST join(rows.file.link, " | ")` 来减少空间占用。
+
+对于 `GROUP BY` 语句我们还可以不提供分组属性，而是提供一个文本，然后只针对 `rows` 进行处理，比如获取其长度 `length(rows)`，这实际上是将所有查询的数组归为一个组了。
+
+````
+```dataview
+LIST length(rows)
+FROM "10 Example Data/assignments"
+GROUP BY "什么也不做"
 ```
 ````
 
 结果：
 
-![[Pasted image 20240512233848.png]]
+![[Pasted image 20240516180032.png]]
 
-从上面的结果来看，物品有一部分是经常购买的，比如说： `piece of cake`，现在我有一个想法浮现在脑海，我们能不能进一步根据 `bought` 的具体值再进行一次分组呢，相同组的名字以 `--` 显示，下面是期望得到的效果：
+现在我们来把【示例三】根据上面提及的一些知识点进行一次改造：
 
-![[Pasted image 20240512235407.png]]
-
-然后，我进入了无休止的尝试中...
-
-最终，我实现出了想要的结果，但是这个代码有点长，不太好理解，也并不优雅：
+1. 在链接后显示 `due` 的具体日期值
+2. 对结果进行合并，显示在一个列表中
 
 ````
-```dataviewjs
-const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
-   .sort(p => p.file.name)
-
-const groupedValues = [];
-for (let page of pages) {
-    const length = Array.isArray(page.bought) ? page.bought.length : 1;
-    for (let i = 0; i < length; i++) {
-        groupedValues.push([
-            page.file.link,
-            getValue(page, 'bought', i),
-            getValue(page, 'paid', i),
-        ]);
-    }
-}
-
-// 重组数据
-const newPages = groupedValues.map(g => {
-    return {
-        link: g[0],
-        bought: g[1],
-        paid: g[2],
-    }
-})
-
-// 按 bought 进行分组
-const newGroupedValues = dv.array(newPages)
-    .groupBy(p => p.bought)
-    .flatMap(g => g.rows)
-
-dv.table(
-    ["购买", "支付", "页面"],
-    newGroupedValues.flatMap((g, i, arr) => {
-        let j = 0; // 用于判断 bought 是否连续
-
-        // 找到连续的 bought
-        if (i > 0 && g.bought !== arr[i - 1].bought) {
-            j = i;
-        }
-
-        // 计算连续的数量
-        while (j < arr.length - 1 && arr[j+1].bought === g.bought) {
-            j++;
-        }
-
-        if (j > i) {
-            return Array(j - i + 1).fill(0).map((_, k) => {
-                if (k === 0) {
-                    return [g.bought, g.paid, g.link]
-                } else {
-                    // 相同名字显示 --
-                    return ['--', arr[i + k].paid, arr[i + k].link]
-                }
-            })
-        }
-
-        // 单个 bought
-        if (i === j && g.bought !== arr[i - 1].bought) {
-            return [[g.bought, g.paid, g.link]]
-        }
-    })
-)
-
-function getValue(page, key, i) {
-    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
-}
+```dataview
+LIST join(map(rows.file, (f) => f.link + " " + f.frontmatter.due), ", ")
+FROM "10 Example Data/assignments"
+FLATTEN file.frontmatter.due AS path
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
 ```
 ````
 
-上述代码是在 `groupedValues` 的基础上对数据进行了一次重映射，然后使用 `dv.array()` 方法将普通的 JavaScript 数组转换成 `DataArray<T>` 类型，然后使用其 `groupBy()` 方法按 `bought` 字段进行分组，然后使用 `flatMap()` 映射返回 `rows` 的值。
+结果：
 
-> [Tips] 使用 `groupBy()` 分组后返回一个包含 `key` 和 `rows` 的对象，其中 `key` 为分组名称，`rows` 是分组后的数据。
+![[Pasted image 20240516182930.png]]
 
-`flatMap()` 方法是一个很重要的函数，关于其用法可自行去脑补，后面处理分组数据部分写出来后也不难，但是总感觉有更简单的实现。与是，作者又双叒叕熬夜想了想，终于以 2 个 `flatMap()` 方法成功破局，一行代码暴击（不追求代码可读性为前提）：
+进一步我们可以使用 `FLATTEN` 语句改造实现同样的效果，可以不用 `map()` 函数，直接将需要格式化显示的结果作为 `rows` 分组后的数据的一个属性。
 
 ````
-```dataviewjs
-const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
-   .sort(p => p.file.name)
-
-const groupedValues = [];
-for (let page of pages) {
-    const length = Array.isArray(page.bought) ? page.bought.length : 1;
-    for (let i = 0; i < length; i++) {
-        groupedValues.push([
-            page.file.link,
-            getValue(page, 'bought', i),
-            getValue(page, 'paid', i),
-        ]);
-    }
-}
-
-// 重组数据
-const newPages = groupedValues.map(g => {
-    return {
-        link: g[0],
-        bought: g[1],
-        paid: g[2],
-    }
-})
-
-// 按 bought 进行分组
-const newGroupedValues = dv.array(newPages)
-    .groupBy(p => p.bought)
-
-dv.table(
-   ["购买", "支付", "页面"],
-   newGroupedValues.flatMap((g, i, arr) => 
-        g.rows.flatMap((r, i, arr) => {
-            if (i === 0) {
-                return [[g.key, r.paid, r.link]]
-            } else {
-                return [['--', r.paid, r.link]]
-            }
-        })
-   )
-)
-
-function getValue(page, key, i) {
-    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
-}
+```dataview
+LIST join(rows.desc, ", ")
+FROM "10 Example Data/assignments"
+FLATTEN file.link + " " + file.frontmatter.due AS desc
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
 ```
 ````
 
-最后，如果你脑子又一转，如果数据很多的情况下，是否可以将每个分组拆解出来单独显示呢？也就是说多个表格单独显示，像下面这样：
 
-![[Pasted image 20240513001831.png]]
 
-这必需安排起，只需要将上面的示例中的 `dv.table()` 部分改成下面的代码即可：
 
-```js
-for (let g of newGroupedValues) {
-    dv.span('- ' + g.key)
-    dv.table(
-        ["页面", "支付"],
-        g.rows.map(r => [r.link, r.paid])
-    )
-}
-```
+`$= dv.date('now').toFormat("M'月'dd'号'")`
 
-## 常见问题
+- `FLATTEN` 语句
+- 数据分组
+- 数据排序
+- 定制 DQL 查询输出
+- 在表格中显示图片
+- 属性查询
 
-在插件使用过程中或多或少会遇到些问题，下面我们搜集了一些常见问题供帮助读者排忧解难。
+## 中级篇：Dataview 进阶应用
 
-### 苹果系统中插入 HTML 代码中包含 `<img>` 标签并指定了本地图片，图片不显示问题。
+- 进度条
+- 标签云
+- 计算周期
+- 根据条件显示/隐藏结果
+- 文字搜索
+- 根据双链查询
+- 日期和时间操作
 
-下面是插入本地图片的一段常见代码，具有网页开发经验的读者觉得应该没毛病吧。
+## 高级篇：Dataview 高级技巧与探索
 
-````
-```dataviewjs
-const attachments = this.app.vault.getConfig("attachmentFolderPath")
-const basePath = this.app.vault.adapter.basePath
-const image = "Pokémon-Icon_001.png"
+- 和 chart.js 结合
+- 日历渲染
 
-const html = `
-<img src="${basePath}/${attachments}/${image}" />
-`
-
-dv.el("div", html)
-```
-````
-
-实际运行会发现图片并没有成功显示，控制台报 `net::ERR_FILE_NOT_FOUND` 错误。正确的使用姿势是在原有的路径上添加 `file:///` 前缀，即：`<img src="file://${basePath}/${attachments}/${image}" />`。
+## 总结
 
 ## 参考
-
-- [Can't use HTML tag `<img>` to show local picture - Bug graveyard - Obsidian Forum](https://forum.obsidian.md/t/cant-use-html-tag-img-to-show-local-picture/34272)
-- [Sorting groups in Dataview JS - Help - Obsidian Forum](https://forum.obsidian.md/t/sorting-groups-in-dataview-js/29126/4)
