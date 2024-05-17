@@ -25,7 +25,11 @@
   "recentFilesStore": [
     {
       "filepath": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
-      "timestamp": 1715755485552
+      "timestamp": 1715915704429
+    },
+    {
+      "filepath": "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
+      "timestamp": 1715915700365
     },
     {
       "filepath": "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
@@ -38,10 +42,6 @@
     {
       "filepath": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
       "timestamp": 1715685259984
-    },
-    {
-      "filepath": "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
-      "timestamp": 1715311828477
     }
   ],
   "starredFileStore": [],

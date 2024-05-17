@@ -32,6 +32,7 @@
   "revealActiveFile": false,
   "spacesStickers": true,
   "spaceRowHeight": 29,
+  "bannerHeight": 200,
   "spacesDisablePatch": false,
   "folderNoteInsideFolder": true,
   "sidebarTabs": true,

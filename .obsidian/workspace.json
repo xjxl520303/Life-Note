@@ -6,7 +6,6 @@
       {
         "id": "2ab174fea6412728",
         "type": "tabs",
-        "dimension": 49.78678038379531,
         "children": [
           {
             "id": "4438bc615e07309a",
@@ -14,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
                 "mode": "source",
                 "source": true
               }
@@ -22,25 +21,6 @@
           }
         ],
         "stacked": true
-      },
-      {
-        "id": "94cd5f22b9c87902",
-        "type": "tabs",
-        "dimension": 50.2132196162047,
-        "children": [
-          {
-            "id": "7add51b62439d834",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
-                "mode": "preview",
-                "source": false
-              }
-            }
-          }
-        ]
       }
     ],
     "direction": "vertical"
@@ -103,7 +83,7 @@
             }
           },
           {
-            "id": "d1c747355bac8473",
+            "id": "5affd60fff0a9e13",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -115,8 +95,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 449.5,
-    "collapsed": true
+    "width": 264.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -132,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -149,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -172,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md"
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md"
               }
             }
           },
@@ -182,18 +161,6 @@
             "state": {
               "type": "git-view",
               "state": {}
-            }
-          },
-          {
-            "id": "bfff48720db8c001",
-            "type": "leaf",
-            "state": {
-              "type": "all-properties",
-              "state": {
-                "sortOrder": "frequency",
-                "showSearch": false,
-                "searchQuery": ""
-              }
             }
           },
           {
@@ -210,7 +177,7 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md"
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md"
               }
             }
           },
@@ -223,11 +190,29 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
+      },
+      {
+        "id": "00371229898dddaf",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "bfff48720db8c001",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              }
+            }
+          }
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 272.5
+    "width": 499.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -240,23 +225,23 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "4438bc615e07309a",
+  "active": "cc3c5048ac02c60f",
   "lastOpenFiles": [
-    "附件/Pasted image 20240516182930.png",
-    "附件/Pasted image 20240516180032.png",
-    "附件/Pasted image 20240516121939.png",
-    "附件/Pasted image 20240516115704.png",
-    "附件/Pasted image 20240516114930.png",
-    "附件/Pasted image 20240516114029.png",
-    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
-    "博客/Obsidian/临时放置.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "附件/动画.gif",
-    "附件/Pasted image 20240513001831.png",
-    "附件/Pasted image 20240512235407.png",
-    "附件/Pasted image 20240512233848.png",
-    "附件/Pasted image 20240511193408.png",
+    "附件/Pasted image 20240517173908.png",
+    "附件/Pasted image 20240517172832.png",
+    "附件/Pasted image 20240517170551.png",
+    "附件/Pasted image 20240517170018.png",
+    "附件/Pasted image 20240517164859.png",
+    "附件/Pasted image 20240517161616.png",
+    "附件/Pasted image 20240517160559.png",
+    "附件/Pasted image 20240517154843.png",
+    "附件/Pasted image 20240517153559.png",
+    "附件/Pasted image 20240517152437.png",
+    "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "博客/Obsidian/临时放置.md",
     "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",

@@ -44,10 +44,80 @@ dv.table(["问候"], [[inlineGreet]])
 
 接下来我们分别使用了 `div.header(2, inlineGreet)` 函数来将问候输出为二级标题；使用 `dv.list([inlineGreet])` 将其输出为列表元素；使用 `dv.el("span", ...)` 函数来将其输出为任务（这里只是为了演示，通常我们是从文档中获取任务）；使用 `dv.taskList(page.file.tasks)` 函数将页面中的任务查询出来；最后使用 `dv.table(["问候"], [[inlineGreet]])` 函数将其输出为表格显示。
 
+## `DataArray` 接口介绍
 
+`DataArray` 接口是 Dataview 提供的列表数据操作的抽象，它是对 JavaScript 数组操作的扩展和基于 Dataview 环境的本地化。我们可过 `dv.array()` 将一个普通的数组转换成 `DataArray` 类型，也可以反向操作将其转换成普通的 JavaScript 数组，比如：`dv.list(dv.current()).array()`。
 
+下面是官方提供的 `DataArray` 接口定义，为了简少行数，删除了所有注释：
 
+```ts
+export type ArrayFunc<T, O> = (elem: T, index: number, arr: T[]) => O;
+export type ArrayComparator<T> = (a: T, b: T) => number;
+export interface DataArray<T> {
+    length: number;
+    where(predicate: ArrayFunc<T, boolean>): DataArray<T>;
+    filter(predicate: ArrayFunc<T, boolean>): DataArray<T>;
+    map<U>(f: ArrayFunc<T, U>): DataArray<U>;
+    flatMap<U>(f: ArrayFunc<T, U[]>): DataArray<U>;
+    mutate(f: ArrayFunc<T, any>): DataArray<any>;
+    limit(count: number): DataArray<T>;
+    slice(start?: number, end?: number): DataArray<T>;
+    concat(other: Iterable<T>): DataArray<T>;
+    indexOf(element: T, fromIndex?: number): number;
+    find(pred: ArrayFunc<T, boolean>): T | undefined;
+    findIndex(pred: ArrayFunc<T, boolean>, fromIndex?: number): number;
+    includes(element: T): boolean;
+    join(sep?: string): string;
+    sort<U>(key: ArrayFunc<T, U>, direction?: "asc" | "desc", comparator?: ArrayComparator<U>): DataArray<T>;
+    groupBy<U>(key: ArrayFunc<T, U>, comparator?: ArrayComparator<U>): DataArray<{ key: U; rows: DataArray<T> }>;
+    distinct<U>(key?: ArrayFunc<T, U>, comparator?: ArrayComparator<U>): DataArray<T>;
+    every(f: ArrayFunc<T, boolean>): boolean;
+    some(f: ArrayFunc<T, boolean>): boolean;
+    none(f: ArrayFunc<T, boolean>): boolean;
+    first(): T;
+    last(): T;
+    to(key: string): DataArray<any>;
+    expand(key: string): DataArray<any>;
+    forEach(f: ArrayFunc<T, void>): void;
+    array(): T[];
+    [Symbol.iterator](): Iterator<T>;
+    [index: number]: any;
+    [field: string]: any;
+}
+```
 
+接下来我们将分类介绍接口中的属性和方法的用法。
+
+### 数据读取
+
+一个数组通过索引来获取其对应的数据项的值是一个很常规的操作。这里我们有一个数组 `arr`，那么就可以通过 `arr[0]` 和 `arr[arr.length - 1]` 来分别读取第一项和最后一项的值，这对应 `DataArray` 中的 `first()` 和 `last()` 方法。如果数组项是一个对象值，那么我们想要获取读取对象中某个字段的值，就需要使用遍历方法，比如 `for` 语句，或者数组的 `forEach()` 方法，为了方便操作，`DataArray` 接口直接提供了一个通过属性来获取数组中对象值的方法 `to()`，也可以在 ` DataArray ` 实例中直接访问这个属性名。
+
+````
+```dataviewjs
+const arr = [1, 2, 3]
+const arr2 = [{name: 'jenemy', age: 34}, {name: 'xiaolu', age: 33}, {name: 'lulu', age: 25 }]
+
+const dvArr = dv.array(arr)
+const dvObjArr = dv.array(arr2)
+
+console.log(dvArr.length) // 3
+console.log(dvArr.first(), dvArr.last()) // 1 3
+console.log(dvArr[0], dvArr[dvArr.length - 1]) // 1 3
+
+console.log(dvObjArr.name.array()) // ['jenemy', 'xiaolu', 'lulu']
+console.log(dvObjArr['name'].array()) // ['jenemy', 'xiaolu', 'lulu']
+console.log(dvObjArr.to('name').array()) // ['jenemy', 'xiaolu', 'lulu']
+console.log(dvObjArr[0]) // {name: 'jenemy', age: 34}
+
+// 通过遍历获取属性值
+for (p of dvObjArr) {
+console.log(p.name) // jenemy, xiaolu, lulu
+}
+
+// 使用 `.forEach()` 遍历
+dvObjArr.forEach(p => console.log(p.name)) // jenemy, xiaolu, lulu
+```
+````
 
 - 获取当前文档内容
 - 显示列表、任务
