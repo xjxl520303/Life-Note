@@ -1,3 +1,9 @@
+---
+tags:
+  - Blog
+  - Obsidian
+  - Dataview
+---
 Dataview 提供的 DQL 查询语言为不同背景和需求的用户带来了便利，特别是对于那些不擅长或不愿意深入学习复杂编程语言的用户降低了使用门槛，让其数据查询和管理更多直观和易于上手。
 
 然而，用户的群体是多种多样的，不同的用户对体验的要求是不尽相同的。这种多样性体现在对编辑器或工具的选择上，还体现在对数据查询和管理的个性化需求上。就拿代码编辑器来举例，有些用户倾向于使用功能丰富、界面友好的集成开发环境（IDE）；有的用户则更喜欢轻便、快捷的文本编辑器；还有一部分极客喜欢 DIY 神器 Vim。
@@ -9,6 +15,8 @@ Dataview 提供的 DQL 查询语言为不同背景和需求的用户带来了便
 ## 快速入门
 
 在编程的世界中，有一个广泛接受的传统，那就是使用“Hello World”作为学习新编程语言时的第一个示例程序，本文也不例外。
+
+### 显示 Hello World
 
 任意新建一个文档将下面的内容复制粘贴并运行。
 
@@ -43,6 +51,148 @@ dv.table(["问候"], [[inlineGreet]])
 第一个输出使用浏览器的控制台作为载体，通过调用 JavaScript 的 `console.log()` 函数来实现。如果你不知道怎么显示开发者工具，1）在 Windows 或 Linux 下可以使用快捷键 <kbd>Ctrl+Shift+I</kbd>；2）macOS 请使用<kbd>Cmd+Opt+I</kbd>。
 
 接下来我们分别使用了 `div.header(2, inlineGreet)` 函数来将问候输出为二级标题；使用 `dv.list([inlineGreet])` 将其输出为列表元素；使用 `dv.el("span", ...)` 函数来将其输出为任务（这里只是为了演示，通常我们是从文档中获取任务）；使用 `dv.taskList(page.file.tasks)` 函数将页面中的任务查询出来；最后使用 `dv.table(["问候"], [[inlineGreet]])` 函数将其输出为表格显示。
+
+### 读取属性
+
+在 Obsidian 中我们可以在 Fronat matter 中定义 YAML 属性，也可以使用 Dataview 提供的内联属性在文体任意有效的位置定义属性。
+
+下面是一段包含了各种属性的文档内容片段，我们将基于此进行讲解。
+
+````
+---
+---
+description: 测试描述
+tags:
+  - 标签1
+  - 标签2
+---
+
+inlineProp1:: 测试
+inline_test:: 下划线命名测试
+InlineTest2:: 大写字母开头命名测试
+Test Long Split Words:: 不规则变量名测试
+**Bold Text**:: 加粗文本测试
+这是内联字段 [inlineProp2:: 在文本内部]
+我的名称不可见 (inlineProp3:: 我的变量名不可见)
+- 在列表中定义标签 #标签3 和内联变量 [inlineProp4:: 在列表内]
+- [ ] 在任务中定义标签 #标签4 和内联变量 [inlineProp5:: 在任务内]
+外链：[[2022-01-06]]
+````
+
+我们使用 `dv.current()` 获取当前页面的数据，然后使用 `Object.keys()` 方法来遍历所有属性。
+
+
+````
+```dataviewjs
+Object.keys(dv.current()).forEach(key => {
+  console.log(key);
+})
+```
+````
+
+> [!Tip] `dv.current()` 为 `dv.page("文档路径")` 的便捷方法。
+
+结果：
+
+![[Pasted image 20240520162344.png]]
+
+我们在命名变量时分别使用了驼峰式命名法、帕斯卡命名法、下划线命令法以及带有空格的属性名。从结果来看当前页面中定义的属性都在了，而且输出的数量远比我们定义的多，这是因为对于不规则的属性名，Dataview 内部进行了规范化。在 JavaScript 中属性通常以 `对象.属性名` 的方式来读取，同时也可以使用 `对象['属性名']` 的方式，后者在通常用于动态计算属性名和特殊属性名读取。
+
+````
+```dataviewjs
+const page = dv.current()
+console.log(page['test-long-split-words']) %% 不规则变量名测试 %%
+console.log(page['Test Long Split Words']) %% 不规则变量名测试 %%
+console.log(page.inline_test) %% 下划线命名测试 %%
+console.log(page.InlineTest2) %% 大写字母开头命名测试 %%
+console.log(page.inlineprop1) %% 测试 %%
+```
+````
+
+以 `Hello World` 字符串为属性变量名举例，建议使用 `hello-world`，其次是 `helloWorld` / `HelloWorld` / `hello_world` 这三者可自行选用，在不同的编程语言环境都有其适用的场景。
+
+为什么选择以 `hello-world` 的方式一方面是 YAML 中定义属性支持，然后 DQL 内联查询支持（`= hello-world`）, 再一个很重要的原因这是官方内部默认使用（比如将带空格的属性转化后的结果）。虽然方便了 DQL 的读取，但是使用 API 读取时，我们需要额外多输入中括号和引号（`dv.current()['hello-world']`），这种成本通常可以忽略不计。
+
+我们在前面通过遍历 `dv.current()` 在控制台显示所有属性，接下来我们看一下如何获取指定区域的属性。
+
+#### YAML 中的属性读取
+
+在 Obsidian 中 `tags`，`cssclasses` 和 `aliases` 是内置的默认属性，如果要获取自定义或者第三方插件提供的属性，则需要提前知识有哪些属性名，因为所有属性全挂在了 `dv.current()` 返回的对象中。要获取 YAML 中的属性我们需要使用 `file.frontmatter` 属性：
+
+````
+```dataviewjs
+console.log(dv.current().file.frontmatter) %% {description: '测试描述', tags: Array(2), hello-world: '你好呀'} %%
+```
+````
+
+#### 列表和任务中的属性读取
+
+Dataview 将任务作为一种特殊的列表来处理，可以使用 `page.file.lists` 来获取当前页面中的列表数据，使用 `page.file.tasks` 来获取任务数据。在获取的列表数据同时包含了所有的任务，可通过基属性 `task` 是否为 `true` 来判断当前列表是否为任务项。
+
+在列表中定义的属性会挂载在当前列表对象下，而标签则位于 `tags` 属性中，下面我们分别读取列表和任务中的标签和属性。
+
+````
+```dataviewjs
+const lists = dv.current().file.lists;
+const tasks = dv.current().file.tasks;
+
+lists.forEach(list => {
+  if (list.task) {
+    console.log(list.tags) %% ['#标签4'] %%
+    console.log(list.inlineProp5) %% 在任务内 %%
+  } else {
+    console.log(list.tags) %% ['#标签3'] %%
+    console.log(list.inlineProp4) %% 在列表内 %%
+  }
+})
+
+tasks.forEach(task => {
+  console.log(task.tags) %% ['#标签4'] %%
+  console.log(task.inlineProp5) %% 在任务内 %%
+})
+```
+````
+
+#### 外链文档中的属性获取
+
+在示例中我们使用外部链接引用了一篇笔记的地址，现在我们通过遍历 `page.file.outlinks` 属性来获取外链的元数据，然后将其 `path` 属性传入 `dv.page()` 中来获取页面的所有信息，接着使用 `file.tags` 来读取标签值。
+
+````
+```dataviewjs
+const links = dv.current().file.outlinks
+links.forEach(link => {
+  console.log(dv.page(link.path).file.tags.array()) // ['#daily', '#journal']
+})
+```
+````
+
+## 查询数据输出
+
+在 DQL 中我们可以将查询的结果以表格、任务和日历的方式渲染到当前查询脚本所在的代码块位置。在 JavaScript 中没有对应的日历视图 API，只有 `dv.list()` 方法对应 `LIST` 语句，`dv.taskList()` 方法对应 `TASK` 语句以及 `dv.table()` 方法对应 `TABLE` 语句。虽然没有提供日历输出的方法，但是我们可以 API 中执行 DQL 查询语句变相实现。
+
+### dv.list(element, text) 方法
+
+用于将结果渲染成列表，可接收 JavaScript 数组及 DataArray 类型。
+
+````
+```dataviewjs
+const vanillaArray = [1, 2, [3, 4, 5, [6]]]
+const dvArray = dv.array(vanillaArray)
+
+dv.list(dvArray)
+// dv.list(vanillaArray)
+```
+````
+
+### dv.taskList(tasks, groupByFile) 方法
+
+用于将结果渲染成任务列表，数据源必须从 `page.file.tasks` 中获取，默认情况下如果数据从多个文档中获取，则会按文档名进行分组，当然也可以将第二个参数指定为 `false` 来禁用分组。
+
+下面根据 `#daily` 标签查询任务来展示 `groupByFile` 参数的作用，查询语句为：`dv.taskList(dv.pages("#daily").file.tasks)`, 结果如下：
+
+![[Pasted image 20240520200926.png]]
+
+从结果来看，在指定了第 2 个参数为 `false` 后，任务的顺序发生了变化，右则的截图中的任务可能来自于多个页面中。
 
 ## `DataArray` 接口介绍
 
@@ -119,6 +269,8 @@ dvObjArr.forEach(p => console.log(p.name)) // jenemy, xiaolu, lulu
 ```
 ````
 
+
+
 - 获取当前文档内容
 - 显示列表、任务
 - 获取当前文档中的 YAML 属性、内联字段属性、任务中的属性
@@ -131,7 +283,11 @@ dvObjArr.forEach(p => console.log(p.name)) // jenemy, xiaolu, lulu
 
 使用 `DataArray#array()` 将 Dataview 列表转成普通的 JavaScript 数组。
 
+### 数据遍历
 
+数据遍历除了使用 `for` 和 `for of` 语句外，`DataArray` 接口中还定义了很多遍历方法。
+
+- `.forEach(f: ArrayFunc<T, void>): void`
 
 TODO:
 
