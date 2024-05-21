@@ -95,7 +95,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 264.5
+    "width": 400.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -104,6 +104,7 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
+        "dimension": 70.28846153846153,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -190,11 +191,12 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 3
       },
       {
         "id": "00371229898dddaf",
         "type": "tabs",
+        "dimension": 29.71153846153846,
         "children": [
           {
             "id": "bfff48720db8c001",
@@ -227,21 +229,23 @@
   },
   "active": "0a925568152689dd",
   "lastOpenFiles": [
-    "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "附件/Pasted image 20240520200926.png",
+    "附件/Pasted image 20240521201219.png",
+    "博客/Obsidian/临时放置.md",
     "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+    "附件/Pasted image 20240521182142.png",
+    "附件/Pasted image 20240521161051.png",
+    "附件/Pasted image 20240521151629.png",
+    "附件/Pasted image 20240521121123.png",
+    "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
+    "附件/Pasted image 20240521115942.png",
+    "附件/Pasted image 20240521115626.png",
+    "附件/Pasted image 20240521114009.png",
+    "附件/Pasted image 20240520200926.png",
     "附件/Pasted image 20240520162344.png",
     "附件/Pasted image 20240520161338.png",
     "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
-    "博客/Obsidian/临时放置.md",
-    "附件/Pasted image 20240517173908.png",
-    "附件/Pasted image 20240517172832.png",
-    "附件/Pasted image 20240517170551.png",
-    "附件/Pasted image 20240517170018.png",
-    "附件/Pasted image 20240517164859.png",
-    "附件/Pasted image 20240517161616.png",
-    "附件/Pasted image 20240517160559.png",
-    "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",
@@ -250,7 +254,6 @@
     "博客/Obsidian/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
     "博客/Obsidian/Obsidian 达人成长之路：Obsidian 插件开发.md",
     "博客/Obsidian/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Meta Bind 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Tasks 插件使用.md",

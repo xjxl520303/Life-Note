@@ -166,11 +166,11 @@ links.forEach(link => {
 ```
 ````
 
-## 查询数据输出
+### 查询数据输出
 
 在 DQL 中我们可以将查询的结果以表格、任务和日历的方式渲染到当前查询脚本所在的代码块位置。在 JavaScript 中没有对应的日历视图 API，只有 `dv.list()` 方法对应 `LIST` 语句，`dv.taskList()` 方法对应 `TASK` 语句以及 `dv.table()` 方法对应 `TABLE` 语句。虽然没有提供日历输出的方法，但是我们可以 API 中执行 DQL 查询语句变相实现。
 
-### dv.list(element, text) 方法
+#### dv.list(element, text) 方法
 
 用于将结果渲染成列表，可接收 JavaScript 数组及 DataArray 类型。
 
@@ -184,7 +184,11 @@ dv.list(dvArray)
 ```
 ````
 
-### dv.taskList(tasks, groupByFile) 方法
+结果：
+
+![[Pasted image 20240521115942.png]]
+
+#### dv.taskList(tasks, groupByFile) 方法
 
 用于将结果渲染成任务列表，数据源必须从 `page.file.tasks` 中获取，默认情况下如果数据从多个文档中获取，则会按文档名进行分组，当然也可以将第二个参数指定为 `false` 来禁用分组。
 
@@ -193,6 +197,155 @@ dv.list(dvArray)
 ![[Pasted image 20240520200926.png]]
 
 从结果来看，在指定了第 2 个参数为 `false` 后，任务的顺序发生了变化，右则的截图中的任务可能来自于多个页面中。
+
+#### dv.table(headers, elements) 方法
+
+用于将结果渲染成表格数据，`headers` 为一个数组，表示表头名称，而 `elements` 为表格数据，其值为数组，数组的每一项值同样为数组，用于表示表格的行数据。
+
+````
+```dataviewjs
+const headers = ["姓名", "年龄", "性别", "爱好"]
+const data = [
+  ["张三", 20, "男", "打篮球"],
+  ["李四", 25, "女", "踢足球"],
+  ["王五", 30, "男", "游泳"]
+]
+dv.table(headers, dv.array(data))
+```
+````
+
+结果：
+
+![[Pasted image 20240521114009.png]]
+
+下面我们通过查询书籍数据来演示实际使用：
+
+````
+```dataviewjs
+dv.table(["File", "Author", "Book topics", "Genres", "Total pages", "Cover image"], dv.pages('"10 Example Data/books"')
+  .sort( b => b.totalPages)
+  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.totalPages, b['Cover-Img']]))
+```
+````
+
+结果：
+
+![[Pasted image 20240521115626.png]]
+
+**注意**：虽然我们查询出来了图片的地址，但是并没有在表格中渲染出来，这个会留在系列文章中的案例篇进行讲解。
+
+#### 以日历输出
+
+Dataview 并没有提供 `dv.calendar()` 方法来将查询的数据渲染为日历显示，但是我们可以通过 `dv.execute(source)` 来执行 DQL 查询，实现在 API 中渲染日历的功能。
+
+````
+```dataviewjs
+const query = `
+CALENDAR file.day
+FROM "10 Example Data/dailys"
+`
+dv.execute(query)
+```
+````
+
+结果：
+
+![[Pasted image 20240521121123.png]]
+
+### HTML渲染
+
+我们使用的表格、任务和列表在 Obsidian 中实际上都是最终用特定的 HTML 标签元素表示的，比如说表格为 `<table></table>` 标签，列表分为有符号列表 `<ol></ol>`，无符号列表 `<ul></ul>`，定义列表 `<dl></dl>`，像日历这种比较复杂的组件则是由多个 `<div></div>` 等元素嵌套而成的。
+
+我们在 Obsidian 页面编辑时可以输入标题（1-6 号），正文内容，插入图片、代码等，这都可以使用 API 来动态设置。
+
+- `dv.header(level, text)` 用于渲染标题，其中 `level` 取值为 `1-6`。
+- `dv.paragraph(text)` 用于渲染段落，即 `<p></p>` 标签。
+- `dv.span(text)` 用于渲染行内元素，即 `<span></span>` 标签。
+- `dv.el(element, text)` 用于渲染指定的 `<element></element>` 标签内容。
+
+````
+```dataviewjs
+dv.header(2, "HTML渲染")
+dv.paragraph("HTML段落元素渲染")
+dv.span("行内容元素渲染")
+
+const html = `
+<div style="display: flex; align-items: flex-start;margin: 10px 0;">
+  <div width="60" height="60">
+    <img src="https://via.placeholder.com/60" style="border-radius:50%;" alt="Avatar">
+  </div>
+  <div style="margin-left: 10px;">
+    <div style="font-size: 18px; font-weight: bold;">User name</div>
+    <div style="font-size: 14px; color: #666;">User Description</div>
+  </div>
+</div>
+`
+dv.el("div", html)
+```
+````
+
+结果：
+
+![[Pasted image 20240521151629.png]]
+
+### Markdown 原始内容输出
+
+在 Obsidian 中我们可以通过标题栏右则的【更多选项】-> 【源码模式】来切换至 Markdown 原始内容视图。我们可以将任何 Markdown 文本内容渲染到页面中。
+
+````
+```dataviewjs
+const raw = `
+## 2号标题
+
+这是文本内容。
+
+- 列表
+- [x] 任务
+
+**文字加粗**
+双链：[[2022-08-03]]
+
+## 表格
+
+| 姓名 | 年龄 | 性别 | 爱好  |
+| -- | -- | -- | --- |
+| 张三 | 20 | 男  | 打篮球 |
+| 李四 | 25 | 女  | 踢足球 |
+| 王五 | 30 | 男  | 游泳  |
+`
+dv.paragraph(raw)
+```
+````
+
+结果：
+
+![[Pasted image 20240521161051.png]]
+
+上面我们是手动提供的 Markdown 原始数据进行演示的，如果我们相要获取查询页面中的列表、任务或者表格的原始数据，该如何作呢？Dataview 已经为我们准备好了开箱即用的方法：
+
+- `dv.markdownTable(headers, values)` 将结果输出为原始的 Markdown 表格表示形式，参数同 `dv.table()`。
+- `dv.markdownList(values)` 将结果输出为原始的 Markdown 列表形式，即：`- xxx`。
+- `dv.markdownTaskList(tasks)` 将结果输出为原始的 Markdown 任务形式，即：`- [ ] xxx` 或者 `- [x] xxxx`。
+
+将上述输出的 Markdown 原始数据使用 `dv.paragraph()` 挂载即可在页面中显示，当然也可以使用 `dv.el()` 选择其它的标签来作为容器。
+
+### 解析 DQL 查询语句
+
+DQL（数据查询语言）为普通用户提供了一种便捷的查询方式，使用户无需编写复杂的代码即可满足大部分数据管理需求。这种方式不仅简化了操作过程，还提高了使用效率和友好性。
+
+在有些场景下我们使用 DQL 查询语句会更加高效，可以将其结合在代码中发挥特定的作用。当然，也有些场景下我们必须用到，如前面提到的日历渲染。Dataview 为我们提供了以下几个方法来解析 DQL 查询语句或者 DataviewJS 语句。
+
+- `dv.execute(source)` 执行任意数据视图查询并将视图嵌入到当前页面中。
+- `dv.executeJs(source)` 执行任意 DataviewJS 查询并将视图嵌入到当前页面中。
+
+使用方式：
+
+````
+```dataviewjs
+dv.executeJs("dv.list([1, 2, 3, 4])") // 相当于 dv.list([1, 2, 3, 4])
+dv.execute("TASK FROM #daily")
+```
+````
 
 ## `DataArray` 接口介绍
 
@@ -269,29 +422,179 @@ dvObjArr.forEach(p => console.log(p.name)) // jenemy, xiaolu, lulu
 ```
 ````
 
-
-
-- 获取当前文档内容
-- 显示列表、任务
-- 获取当前文档中的 YAML 属性、内联字段属性、任务中的属性
-- 列表的遍历
-- 插入 HTML
-- 加载 HTML 和 CSS 文件
-
-
-使用 `dv.array(<array>)` 将普通的 JavaScript 数组转换成 Dataview 列表。
-
-使用 `DataArray#array()` 将 Dataview 列表转成普通的 JavaScript 数组。
-
 ### 数据遍历
 
-数据遍历除了使用 `for` 和 `for of` 语句外，`DataArray` 接口中还定义了很多遍历方法。
+数据遍历除了使用 `for` 和 `for of` 语句外，`DataArray` 接口中还定义了很多遍历方法，有的是 JavaScript 中相同的，有的是 Dataview 特有的。
 
-- `.forEach(f: ArrayFunc<T, void>): void`
+#### forEach() 方法
 
-TODO:
+方法签名为：`forEach(f: ArrayFunc<T, void>): void`，对数组的每一项执行指定的函数。
 
-- [ ] 如何读取 yaml 中的 JSON 属性
+````
+```dataviewjs
+dv.array([1, 2, 3, 4, 5]).forEach(n => dv.span(n)) // 页面显示：12345
+```
+````
+
+#### map() 方法
+
+方法签名为：`map<U>(f: ArrayFunc<T, U>): DataArray<U>`，对数组中的每一项执行指定的函数，并返回一个值。
+
+````
+```dataviewjs
+dv.list(dv.array([1, 2, 3, 4, 5]).map(x => x * 2)) // 渲染列表：2, 4, 6, 8, 10
+dv.list(dv.array([1, 2, 3, 4, 5]).map(x => x % 2 === 0)) // 渲染列表：false, true, false, true, false
+```
+````
+
+#### mutate() 方法
+
+方法签名为：`mutate(f: ArrayFunc<T, any>): DataArray<any>`，这个方法实际上是对 `map()` 遍历对象数组操作的一种特定场景下的简化操作。
+
+下面我们一步步来解读其用法。
+
+我们知道使用 `map()` 方法可以对普通数组（如：`[1, 2, 3, 4]`），执行遍历操作如：`x => x * 2` 或者 `x => x % 2 === 0` 来返回布尔值，但是我们无法使用 `mutate()` 来实现同样的功能。
+
+接下来我们看一下对象数组（如：`const arr = [{a: 1, b: 2}, {a: 3, b: 4}, {a: 5, b: 6}]`），使用 `map()` 方法我们可以执行操作 `x => x.a + x.b`，但是同样在 `mutate()` 方法中无法使用。接下来通过 `map()` 方法为对象添加一个属性 `c`，代码为：`x => {x.c = x.a + x.b; return x}`，然后我们这次发现可以使用 `mutate()` 发挥作用了：`arr.mutate(x => x.c = x.a + x.b)`，进一步我们尝试：`arr.mutate(x => delete x.b)` 以及 `arr.mutate(x => x.b = x.a + x.b)`。
+
+**总结**：`mutate()` 方法适用于修改遍历项（仅对象）的值，如添加属性、删除属性以及修改属性值操作。它是在不改变遍历项数据类型情况下，`map()` 方法的一种简化操作。
+
+下面我们看一下在实际操作中的运用。
+
+````
+```dataviewjs
+dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 Example Data/books"')
+  .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
+  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
+```
+````
+
+结果：
+
+![[Pasted image 20240521182142.png]]
+
+#### flatMap() 方法
+
+方法签名为：`flatMap<U>(f: ArrayFunc<T, U[]>): DataArray<U>`，通过对数据数组中的元素应用函数来映射每个元素，然后展平结果以生成新数组。
+
+这是一个很重要的方法，应用得当在很多场景下能够简化操作，但是这个方法有点不好理解，下面我们来一一解读其用法。
+
+首先我们将在 `mutate()` 方法讲解时我们使用的简单数组 `[1, 2, 3, 4]` 和 `const arr = [{a: 1, b: 2}, {a: 3, b: 4}, {a: 5, b: 6}]` 使用 `flatMap()` 方法进行同样操作：
+
+````
+```dataviewjs
+const arr = dv.array([{a: 1, b: 2}, {a: 3, b: 4}, {a: 5, b: 6}])
+
+dv.list(dv.array([1, 2, 3, 4]).flatMap(x => [x * 2])) // 页面显示 [2, 4, 6, 8]
+dv.list(dv.array([1, 2, 3, 4]).flatMap(x => [x % 2 === 0])) // 页面显示 [false, true, false, true]
+
+dv.list(arr.flatMap(x => [x.a + x.b])) // 页面显示 [3, 7, 11]
+dv.list(arr.flatMap(x => {x.c = x.a + x.b; return [x]})) // 页面显示 [{a: 1, b: 2, c: 3}, {a: 3, b: 4, c: 7}, {a: 5, b: 6, c: 11}]
+```
+````
+
+从上面的示例可以看出，使用 `flatMap()` 方法改写 `map()` 方法只需要将结果套上一层数组。
+
+读者可能会疑惑，就这还需要单独搞一个方法出来多此一举吗？其实不然，下面我们来揭示其真正发挥作用的地方。
+
+在使用 `map()` 方法时不会改变数组的长度，这是一个共识。现在我想把数组 `[1, 2, 3, 4]` 变成 `[1, 2, [3], 2, 3, [5], 3, 4, [7]]`，其中嵌套数组值为第 `i` 项加上 `i + 1` 项的值，其中 `i` 为数组索引。这个时候就无法使用 `map()` 来实现了，需要使用 `for` 语句或者 `forEach()` 方法来遍历数组，然后声明一个新的数组来存放结果：
+
+````
+```dataviewjs
+const arr = dv.array([1, 2, 3, 4])
+const result = []
+for (let i = 0; i < arr.length; i++) {
+  if (i < arr.length - 1) {
+    result.push(arr[i], arr[i + 1], [arr[i] + arr[i + 1]])
+  }
+}
+console.log(result) // [1, 2, [3], 2, 3, [5], 3, 4, [7]]
+```
+````
+
+那么使用 `flatMap()` 实现如何呢？
+
+很简单，只需要一行代码：`arr.flatMap((x, i, arr) => i < arr.length - 1 && [arr[i], arr[i + 1], [arr[i] + arr[i + 1]]]).array()`。
+
+上面的示例我们使用 `flatMap()` 实现了数组**增加元素**的操作，接下来我们来看一下如何**删除元素**。
+
+我们通常使用 `filter()`  方法来过滤数据，如 `[1, 2, 3, 4].filter(x => x % 2 === 0)` 来得到偶数组成的数组，而使用 `flatMap()` 删除不需要的数组项，只需要返回 `[]` 即可，如：`[1, 2, 3, 4].flatMap(x => x % 2 === 0 ? [x] : [])`。
+
+最后，说一下 `flatMap()` 之所以叫这个名字，是因为它实际上是先执行了 `map()` 操作，然后再执行了深度为 `1` 的 `flat()` 操作。
+
+````
+```dataviewjs
+const arr = [{a: 1, b: 2, c: [1, 2]}, {a: 3, b: 4, c: [3, 4]}, {a: 5, b: 6, c: [5, 6]}]
+
+console.log(arr.map(x => x.c).flat()) // [1, 2, 3, 4, 5, 6]
+console.log(arr.flatMap(x => x.c)) // [1, 2, 3, 4, 5, 6]
+```
+````
+
+### 数据查询与过滤
+
+在 JavaScript 中数据数据查询通常使用 `find()/findIndex()/findLastIndex()`, `includes()` 和 `indexOf()/lastIndexOf()` 这几种方法，而过滤则使用 `filter()`。在 DataArray 中支持 ` find()/findIndex()`, `includes()`，`indexOf()` 和 `filter()` 方法。
+
+#### where() 方法
+
+在 Dataview 中我们通常使用 `where(predicate: ArrayFunc<T, boolean>): DataArray<T>` 方法来过滤数据，同样也可以使用 `filter()` 方法，两者是一样的，只不过后者是 JavaScript 中数组的常用方法。
+
+下面我们接着讲解 `mutate()` 方法时使用的书籍查询示例，加上一个条件判断：
+
+````
+```dataviewjs
+dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 Example Data/books"')
+  .where(b => b.author === "Dora D" && b.genres.includes("Dystopia"))
+  .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
+  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
+```
+````
+
+结果：
+
+![[Pasted image 20240521201219.png]]
+
+> [!Warning] 需要注意的是使用 `where()` 方法查询数据时可能会修改原始数据。
+
+下面以 `filter()` 方法来举例：
+
+```js
+const arr = [1, 2, 3, 4, 5, 6]
+const result = arr.filter((d, i, arr) => {
+  if (i < arr.length - 1) arr[i + 1] += 10
+  return d < 5
+})
+console.log(result, arr) // [1] (6) [1, 12, 13, 14, 15, 16]
+
+const arr2 = [1, 2, 3, 4, 5, 6]
+const result2 = arr2.filter((d, i, arr) => {
+  arr.push(3)
+  return d < 4
+})
+console.log(result2, arr2) // [1, 2, 3] (12) [1, 2, 3, 4, 5, 6, 3, 3, 3, 3, 3, 3]
+
+const arr3 = [1, 2, 3, 4, 5, 6]
+const result3 = arr3.filter((d, i, arr) => {
+  arr.pop()
+  return d < 5
+})
+console.log(result3, arr3) // [1, 2, 3] (3) [1, 2, 3]
+```
+
+对 `arr` 的过滤中我们将当前遍历的数据项的下一项执行了加 `10` 操作，导致第 2 次执行时其值为 `12`，依次类推，最终只有第一次执行时满足过滤条件。
+
+对 `arr2` 的过滤中我们每执行一次过滤函数就在数组的后面加上数字 `3`，观察结果并没有对扩充后的数据项进行遍历，因为这会进入一个死循环。
+
+对 `arr3` 的过滤中我们每执行一次过滤函数就从数组尾部移出一个元素，这最终导致执行 3 次后已再元小于 `5` 的元素了，因为 `4` 已经移出数组了。
+
+### 条件判断
+#### every(), some() 和 none() 方法
+
+### 分组与展开操作
+
+
+
+这几个方法都是条件 `every(f: ArrayFunc<T, boolean>): boolean` 方法用于
 
 ## Luxon 库介绍
 
