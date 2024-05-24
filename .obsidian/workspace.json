@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "abe1087449dbce93",
+        "id": "4d9627c54bf7b240",
         "type": "tabs",
         "children": [
           {
-            "id": "0a925568152689dd",
+            "id": "efef610371c616a8",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -67,14 +67,6 @@
             }
           },
           {
-            "id": "76a1b383f816eb18",
-            "type": "leaf",
-            "state": {
-              "type": "surfing-tab-tree",
-              "state": {}
-            }
-          },
-          {
             "id": "212a9bd7f0f24ad0",
             "type": "leaf",
             "state": {
@@ -83,7 +75,7 @@
             }
           },
           {
-            "id": "97f8a3a338141b12",
+            "id": "95695785485dd896",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -91,11 +83,11 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 400.5
+    "width": 347.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -104,7 +96,7 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
-        "dimension": 70.28846153846153,
+        "dimension": 75.86538461538461,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -183,7 +175,7 @@
             }
           },
           {
-            "id": "e15043948d7c9514",
+            "id": "b9628aa0f3619068",
             "type": "leaf",
             "state": {
               "type": "quiet-outline",
@@ -191,12 +183,12 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 7
       },
       {
         "id": "00371229898dddaf",
         "type": "tabs",
-        "dimension": 29.71153846153846,
+        "dimension": 24.134615384615383,
         "children": [
           {
             "id": "bfff48720db8c001",
@@ -214,7 +206,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 499.5
+    "width": 392.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -227,25 +219,25 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "0a925568152689dd",
+  "active": "efef610371c616a8",
   "lastOpenFiles": [
-    "附件/Pasted image 20240521201219.png",
+    "附件/Pasted image 20240524191254.png",
     "博客/Obsidian/临时放置.md",
     "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
     "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "附件/Pasted image 20240521182142.png",
-    "附件/Pasted image 20240521161051.png",
-    "附件/Pasted image 20240521151629.png",
-    "附件/Pasted image 20240521121123.png",
-    "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
-    "附件/Pasted image 20240521115942.png",
-    "附件/Pasted image 20240521115626.png",
-    "附件/Pasted image 20240521114009.png",
-    "附件/Pasted image 20240520200926.png",
-    "附件/Pasted image 20240520162344.png",
-    "附件/Pasted image 20240520161338.png",
+    "附件/Pasted image 20240524175351.png",
+    "附件/企业微信截图_17165421759306.png",
+    "附件/Pasted image 20240524165035.png",
     "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "附件/Pasted image 20240524110023.png",
+    "附件/Pasted image 20240523190803.png",
+    "附件/Pasted image 20240523180842.png",
+    "附件/Pasted image 20240523174255.png",
+    "附件/Pasted image 20240523171501.png",
+    "附件/Pasted image 20240522200121.png",
+    "附件/Pasted image 20240522153302.png",
+    "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",

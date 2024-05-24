@@ -25,6 +25,7 @@
   "activeSpace": "",
   "defaultDateFormat": "MMM dd yyyy",
   "spacesEnabled": true,
+  "syncFormulaToFrontmatter": true,
   "spacesPerformance": false,
   "currentWaypoint": 4,
   "enableFolderNote": true,

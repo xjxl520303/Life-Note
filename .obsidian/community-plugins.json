@@ -27,5 +27,6 @@
   "make-md",
   "obsidian-footnotes",
   "obsidian-linter",
-  "obsidian-minimal-settings"
+  "obsidian-minimal-settings",
+  "remember-cursor-position"
 ]

@@ -4,13 +4,17 @@ tags:
   - Obsidian
   - Dataview
 ---
+本文为【Obsidian 达人成长之路】系列第 2 篇，主要讲解 Dataview 插件的 JavaScript API 调用方式的详尽用法，努力让每一个读者有所收获并应用到自己的 Obsidian 知识管理库中。
+
+由于作者写作水平有限，在表达上正在努力提高自已的写作水平，以期望帮助更多的人了解 Obsidian 的主流插件来丰富自己的笔记功能，实现更多的想法。
+
+提前高能预警：由于文章内容较长，涉及到代码，所以建议读者在电脑上阅读以获得更佳的体验。这样更方便复制示例内容在自己的 Obsidian 仓库中运行以加深理解和消化内容。
+
 Dataview 提供的 DQL 查询语言为不同背景和需求的用户带来了便利，特别是对于那些不擅长或不愿意深入学习复杂编程语言的用户降低了使用门槛，让其数据查询和管理更多直观和易于上手。
 
 然而，用户的群体是多种多样的，不同的用户对体验的要求是不尽相同的。这种多样性体现在对编辑器或工具的选择上，还体现在对数据查询和管理的个性化需求上。就拿代码编辑器来举例，有些用户倾向于使用功能丰富、界面友好的集成开发环境（IDE）；有的用户则更喜欢轻便、快捷的文本编辑器；还有一部分极客喜欢 DIY 神器 Vim。
 
 在这方面，Dataview 的优势在于其灵活性和可扩展性。与其说 Dataview 提供了 2 种方式来满足不同用户的需求，不如说它为用户提供了一个开放平台，让用户可以根据自己的喜欢和需求来定制和优化自己的查询结果。
-
-这是《Obsidian 达人成长之路》系列的第 2 篇，专注于 Dataview JavaScript API 的使用，这对于希望充分利用 Obsidian 笔记工具高级功能的用户来说是非常有价值的。
 
 ## 快速入门
 
@@ -85,7 +89,7 @@ Test Long Split Words:: 不规则变量名测试
 ````
 ```dataviewjs
 Object.keys(dv.current()).forEach(key => {
-  console.log(key);
+    console.log(key);
 })
 ```
 ````
@@ -101,11 +105,11 @@ Object.keys(dv.current()).forEach(key => {
 ````
 ```dataviewjs
 const page = dv.current()
-console.log(page['test-long-split-words']) %% 不规则变量名测试 %%
-console.log(page['Test Long Split Words']) %% 不规则变量名测试 %%
-console.log(page.inline_test) %% 下划线命名测试 %%
-console.log(page.InlineTest2) %% 大写字母开头命名测试 %%
-console.log(page.inlineprop1) %% 测试 %%
+console.log(page['test-long-split-words']) // 不规则变量名测试
+console.log(page['Test Long Split Words']) // 不规则变量名测试
+console.log(page.inline_test) // 下划线命名测试
+console.log(page.InlineTest2) // 大写字母开头命名测试
+console.log(page.inlineprop1) // 测试
 ```
 ````
 
@@ -121,7 +125,7 @@ console.log(page.inlineprop1) %% 测试 %%
 
 ````
 ```dataviewjs
-console.log(dv.current().file.frontmatter) %% {description: '测试描述', tags: Array(2), hello-world: '你好呀'} %%
+console.log(dv.current().file.frontmatter) // {description: '测试描述', tags: Array(2), hello-world: '你好呀'}
 ```
 ````
 
@@ -137,18 +141,18 @@ const lists = dv.current().file.lists;
 const tasks = dv.current().file.tasks;
 
 lists.forEach(list => {
-  if (list.task) {
-    console.log(list.tags) %% ['#标签4'] %%
-    console.log(list.inlineProp5) %% 在任务内 %%
-  } else {
-    console.log(list.tags) %% ['#标签3'] %%
-    console.log(list.inlineProp4) %% 在列表内 %%
-  }
+    if (list.task) {
+        console.log(list.tags) // ['#标签4']
+        console.log(list.inlineProp5) // 在任务内
+    } else {
+        console.log(list.tags) // ['#标签3']
+        console.log(list.inlineProp4) %% 在列表内 %%
+    }
 })
 
 tasks.forEach(task => {
-  console.log(task.tags) %% ['#标签4'] %%
-  console.log(task.inlineProp5) %% 在任务内 %%
+    console.log(task.tags) %% ['#标签4'] %%
+    console.log(task.inlineProp5) %% 在任务内 %%
 })
 ```
 ````
@@ -206,9 +210,9 @@ dv.list(dvArray)
 ```dataviewjs
 const headers = ["姓名", "年龄", "性别", "爱好"]
 const data = [
-  ["张三", 20, "男", "打篮球"],
-  ["李四", 25, "女", "踢足球"],
-  ["王五", 30, "男", "游泳"]
+    ["张三", 20, "男", "打篮球"],
+    ["李四", 25, "女", "踢足球"],
+    ["王五", 30, "男", "游泳"]
 ]
 dv.table(headers, dv.array(data))
 ```
@@ -223,8 +227,8 @@ dv.table(headers, dv.array(data))
 ````
 ```dataviewjs
 dv.table(["File", "Author", "Book topics", "Genres", "Total pages", "Cover image"], dv.pages('"10 Example Data/books"')
-  .sort( b => b.totalPages)
-  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.totalPages, b['Cover-Img']]))
+    .sort( b => b.totalPages)
+    .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.totalPages, b['Cover-Img']]))
 ```
 ````
 
@@ -271,13 +275,13 @@ dv.span("行内容元素渲染")
 
 const html = `
 <div style="display: flex; align-items: flex-start;margin: 10px 0;">
-  <div width="60" height="60">
-    <img src="https://via.placeholder.com/60" style="border-radius:50%;" alt="Avatar">
-  </div>
-  <div style="margin-left: 10px;">
-    <div style="font-size: 18px; font-weight: bold;">User name</div>
-    <div style="font-size: 14px; color: #666;">User Description</div>
-  </div>
+    <div width="60" height="60">
+        <img src="https://via.placeholder.com/60" style="border-radius:50%;" alt="Avatar">
+    </div>
+    <div style="margin-left: 10px;">
+        <div style="font-size: 18px; font-weight: bold;">User name</div>
+        <div style="font-size: 14px; color: #666;">User Description</div>
+    </div>
 </div>
 `
 dv.el("div", html)
@@ -393,7 +397,7 @@ export interface DataArray<T> {
 
 ### 数据读取
 
-一个数组通过索引来获取其对应的数据项的值是一个很常规的操作。这里我们有一个数组 `arr`，那么就可以通过 `arr[0]` 和 `arr[arr.length - 1]` 来分别读取第一项和最后一项的值，这对应 `DataArray` 中的 `first()` 和 `last()` 方法。如果数组项是一个对象值，那么我们想要获取读取对象中某个字段的值，就需要使用遍历方法，比如 `for` 语句，或者数组的 `forEach()` 方法，为了方便操作，`DataArray` 接口直接提供了一个通过属性来获取数组中对象值的方法 `to()`，也可以在 ` DataArray ` 实例中直接访问这个属性名。
+一个数组通过索引来获取其对应的数据项的值是一个很常规的操作。这里我们有一个数组 `arr`，就可以通过 `arr[0]` 和 `arr[arr.length - 1]` 来分别读取第一项和最后一项的值，这对应 `DataArray` 中的 `first()` 和 `last()` 方法。如果数组项是一个对象值，想要获取读取对象中某个字段的值，就需要使用遍历方法，比如 `for` 语句，或者数组的 `forEach()` 方法，为了方便操作，`DataArray` 接口直接提供了一个通过属性来获取数组中对象值的方法 `to()`，也可以在 `DataArray` 实例中直接访问这个属性名。
 
 ````
 ```dataviewjs
@@ -414,7 +418,7 @@ console.log(dvObjArr[0]) // {name: 'jenemy', age: 34}
 
 // 通过遍历获取属性值
 for (p of dvObjArr) {
-console.log(p.name) // jenemy, xiaolu, lulu
+    console.log(p.name) // jenemy, xiaolu, lulu
 }
 
 // 使用 `.forEach()` 遍历
@@ -451,7 +455,7 @@ dv.list(dv.array([1, 2, 3, 4, 5]).map(x => x % 2 === 0)) // 渲染列表：false
 
 方法签名为：`mutate(f: ArrayFunc<T, any>): DataArray<any>`，这个方法实际上是对 `map()` 遍历对象数组操作的一种特定场景下的简化操作。
 
-下面我们一步步来解读其用法。
+下面我们一步步来追本溯源，解读其适用的场景。
 
 我们知道使用 `map()` 方法可以对普通数组（如：`[1, 2, 3, 4]`），执行遍历操作如：`x => x * 2` 或者 `x => x % 2 === 0` 来返回布尔值，但是我们无法使用 `mutate()` 来实现同样的功能。
 
@@ -464,8 +468,8 @@ dv.list(dv.array([1, 2, 3, 4, 5]).map(x => x % 2 === 0)) // 渲染列表：false
 ````
 ```dataviewjs
 dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 Example Data/books"')
-  .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
-  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
+    .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
+    .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
 ```
 ````
 
@@ -477,7 +481,7 @@ dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 
 
 方法签名为：`flatMap<U>(f: ArrayFunc<T, U[]>): DataArray<U>`，通过对数据数组中的元素应用函数来映射每个元素，然后展平结果以生成新数组。
 
-这是一个很重要的方法，应用得当在很多场景下能够简化操作，但是这个方法有点不好理解，下面我们来一一解读其用法。
+这是一个很重要的方法，应用得当在很多场景下能够简化操作，但是这个方法初次接触有点不好理解，下面我们来一一解读其用法。
 
 首先我们将在 `mutate()` 方法讲解时我们使用的简单数组 `[1, 2, 3, 4]` 和 `const arr = [{a: 1, b: 2}, {a: 3, b: 4}, {a: 5, b: 6}]` 使用 `flatMap()` 方法进行同样操作：
 
@@ -504,9 +508,9 @@ dv.list(arr.flatMap(x => {x.c = x.a + x.b; return [x]})) // 页面显示 [{a: 1,
 const arr = dv.array([1, 2, 3, 4])
 const result = []
 for (let i = 0; i < arr.length; i++) {
-  if (i < arr.length - 1) {
-    result.push(arr[i], arr[i + 1], [arr[i] + arr[i + 1]])
-  }
+    if (i < arr.length - 1) {
+        result.push(arr[i], arr[i + 1], [arr[i] + arr[i + 1]])
+    }
 }
 console.log(result) // [1, 2, [3], 2, 3, [5], 3, 4, [7]]
 ```
@@ -544,9 +548,9 @@ console.log(arr.flatMap(x => x.c)) // [1, 2, 3, 4, 5, 6]
 ````
 ```dataviewjs
 dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 Example Data/books"')
-  .where(b => b.author === "Dora D" && b.genres.includes("Dystopia"))
-  .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
-  .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
+    .where(b => b.author === "Dora D" && b.genres.includes("Dystopia"))
+    .mutate(b => b.percent = (b.pagesRead / b.totalPages * 100).toFixed(2) + "%")
+    .map(b => [b.file.link, b.author, b.booktopics, b.genres, b.percent]))
 ```
 ````
 
@@ -561,22 +565,22 @@ dv.table(["File", "Author", "Book topics", "Genres", "Progress"], dv.pages('"10 
 ```js
 const arr = [1, 2, 3, 4, 5, 6]
 const result = arr.filter((d, i, arr) => {
-  if (i < arr.length - 1) arr[i + 1] += 10
-  return d < 5
+    if (i < arr.length - 1) arr[i + 1] += 10
+    return d < 5
 })
 console.log(result, arr) // [1] (6) [1, 12, 13, 14, 15, 16]
 
 const arr2 = [1, 2, 3, 4, 5, 6]
 const result2 = arr2.filter((d, i, arr) => {
-  arr.push(3)
-  return d < 4
+    arr.push(3)
+    return d < 4
 })
 console.log(result2, arr2) // [1, 2, 3] (12) [1, 2, 3, 4, 5, 6, 3, 3, 3, 3, 3, 3]
 
 const arr3 = [1, 2, 3, 4, 5, 6]
 const result3 = arr3.filter((d, i, arr) => {
-  arr.pop()
-  return d < 5
+    arr.pop()
+    return d < 5
 })
 console.log(result3, arr3) // [1, 2, 3] (3) [1, 2, 3]
 ```
@@ -587,14 +591,659 @@ console.log(result3, arr3) // [1, 2, 3] (3) [1, 2, 3]
 
 对 `arr3` 的过滤中我们每执行一次过滤函数就从数组尾部移出一个元素，这最终导致执行 3 次后已再元小于 `5` 的元素了，因为 `4` 已经移出数组了。
 
-### 条件判断
-#### every(), some() 和 none() 方法
+#### find() 和 findIndex() 方法
+
+`find(pred: ArrayFunc<T, boolean>): T | undefined` 方法返回数组中满足提供的测试函数的第一个元素的值，否者返回 `undefined`。如果需要查询某个值的索引，则使用 `findIndex(pred: ArrayFunc<T, boolean>, fromIndex?: number): number` 方法。
+
+下面我们通过这两个方法来找出 6:00-6:30 第一次早起的日期和在日记中记录的索引位置，需要注意的是由于第一篇日记没有相关数据，所以这里的 `index` 结果为 `2`。
+
+````
+```dataviewjs
+const dt = dv.luxon.DateTime
+const link = dv.pages('"10 Example Data/dailys"').find(p => {
+    const wakeUpTime = p['wake-up'] && dt.fromFormat(p['wake-up'], 'HH:mm').startOf('minute')
+    const start = dt.fromObject({ hour: 6, minute: 0 }).startOf('minute')
+    const end = dt.fromObject({ hour: 6, minute: 30 }).startOf('minute')
+    return wakeUpTime > start && wakeUpTime < end
+}).file.link
+
+const index = dv.pages('"10 Example Data/dailys"').findIndex(p => {
+    const wakeUpTime = p['wake-up'] && dt.fromFormat(p['wake-up'], 'HH:mm').startOf('minute')
+    const start = dt.fromObject({ hour: 6, minute: 0 }).startOf('minute')
+    const end = dt.fromObject({ hour: 6, minute: 30 }).startOf('minute')
+    return wakeUpTime > start && wakeUpTime < end
+})
+
+dv.span(`第 ${index + 1} 天(${link})开始 6:00-6:30 早起`)
+```
+````
+
+结果：
+
+![[Pasted image 20240522153302.png]]
+
+#### includes() 方法
+
+`includes(element: T): boolean` 方法用于判断数组中是否包含某个数据项。
+
+对于数组 `[1, 2, 3]` 我们可以使用 `dv.array([1, 2, 3]).includes(2)` 来判断 `2` 是否在数组中。下面是一个判断页面是否在日记目录中的示例：
+
+````
+```dataviewjs
+console.log(dv.pages('"10 Example Data/dailys"').includes(dv.page("2022-01-12"))) // true
+console.log(dv.pages('"10 Example Data/dailys"').includes(dv.page("2023-01-12"))) // false
+```
+````
+
+#### indexOf() 方法
+
+`indexOf(element: T, fromIndex?: number): number` 方法返回数组中第 `fromIndex` 次出现给定元素的下标，如果不存在则返回 ` -1 `。这个方法的使用场景目前作者能想的是多个同名文件（如未命名的）的查找，不过这里不打算这个作为示例，而是以普通的数字数组更方便直白。
+
+````
+```dataviewjs
+const data = dv.array([1, 2, 3, 2, 45, 23, 2, 32, 43242, 5435, 2, 23])
+console.log(data.indexOf(2)) // 1
+console.log(data.indexOf(2, data.length - 1)) // -1
+console.log(data.indexOf(2, 4)) // 6
+```
+````
+
+### 测试判断
+
+在 JavaScript 中可以通过数组的 `every()` 方法测试一个数组内的所有元素是否都能通过指定函数的测试，使用 `some()` 方法测试数组中是否至少有一个元素通过了由提供的函数实现的测试。如果在数组中找到一个元素使得提供的函数返回 `true`，则返回 `true`；否则返回 `false`。而 DataArray 同样也提供了这两个方法，同时还提供了一个和 `every()` 相反的 `none()` 方法。
+
+````
+```dataviewjs
+const data = dv.array([11, 20, 23, 43, 123, 13, 55])
+console.log(data.every(item => item > 10)) // true
+console.log(data.none(item => item > 10)) // false
+console.log(data.some(item => item > 100)) // true
+```
+````
 
 ### 分组与展开操作
 
+在 DQL 查询语句中我们使用 `GROUP BY` 来将数据按指定的字段进行分组，而使用 `FLATTEN` 来对查询结果进行展开。但是在使用 API 时我们需要自己来解析分组后的数据，可自定义渲染，虽然很灵活，但是也增加了成本。
+
+DataArray 接口提供了 `groupBy()` 方法来对数据进行分组，`expan()` 方法来展开数据。
+
+#### groupBy() 方法
+
+方法的签名为： `groupBy<U>(key: ArrayFunc<T, U>, comparator?: ArrayComparator<U>): DataArray<{ key: U; rows: DataArray<T> }>`，第一个参数为一个函数，一般返回字段名称，后续会介绍其它用法。第二个参数为一个比较函数，默认情况下按升序排序。
+
+`groupBy()` 方法调用后返回一个结果数组，数组项为一个对象，其中 `key` 属性表示分组的名称，`rows` 表示分组的数据。
+
+为了方便理解，接下来我们将采用 DQL 和 API 对比的方式来举例。
+
+##### 示例一：一对多分组
+
+下面我们来查询书籍并按作者进行分组。这个示例中一个作者对应多本书籍，因此我们需要将分组后的数据 `rows` 进行展开。
+
+````
+```dataview
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+GROUP BY author AS 作者
+```
+
+```dataviewjs
+dv.table(['作者', '书籍'], dv.pages('"10 Example Data/books"')
+    .groupBy((p) => p['author'])
+    .flatMap(p => {
+        const result = []
+        if (p.rows.length > 1) {
+            p.rows.forEach((r, i) => {
+                if (i > 0) {
+                    result.push(['', r])
+                } else {
+                    result.push([p.key, r])
+                }
+            })
+        } else {
+            result.push([p.key, p.rows.first()])
+        }
+        return result
+    })
+    .map(r => {
+       return [r[0], r[1].file.link]
+    }))
+```
+````
+
+结果：
+
+![[Pasted image 20240522200121.png]]
+
+##### 示例二：多对多分组
+
+同样是查询书籍信息，这次我们查询书籍的分类信息。这是一个多对多的关系，一本书可以归为多种类型，而一个类型也可以包含多本书籍。
+
+在使用 DQL 查询语言时，需要注意一点，我们使用了 `FLATTEN` 语句来展开分类，让每一个分类对应一本书籍，不然就会显示成多个分类对应一本书籍，这显然不符合结果。
+
+在使用 API 处理这种多对多分组时，我们就需要分别对 `key` 和 `rows` 进行遍历展开才能得到和 DQL 查询~~类似~~的结果。
+
+````
+```dataview
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+FLATTEN genres
+GROUP BY genres AS 类别
+```
+
+```dataviewjs
+dv.table(['类别', '书籍'], dv.pages('"10 Example Data/books"')
+    .groupBy((p) => p['genres'])
+    .flatMap(p => {
+        const result = []
+
+        if (p.rows.length > 1) {
+            p.rows.forEach((r, i) => {
+                if (i > 0) {
+                    if (Array.isArray(p.key)) {
+                        p.key.flatMap(k => {
+                            result.push([k, r])
+                        })
+                    } else {
+                        result.push([p.key, r])
+                    }
+                } else {
+                    if (Array.isArray(p.key)) {
+                        p.key.flatMap(k => {
+                            result.push([k, r])
+                        })
+                    } else {
+                        result.push([p.key, r])
+                    }
+                }
+            })
+        } else {
+            if (Array.isArray(p.key)) {
+                p.key.flatMap(k => {
+                    result.push([k, p.rows.first()])
+                })
+            } else {
+                result.push([p.key, p.rows.first()])
+            }
+        }
+
+        return result
+    })
+    .sort(p => p[1].file.name)
+    .sort(p => p[0])
+    .flatMap((r, i, arr) => {
+        if (!r) return []
+
+        const result = []
+        const key = r[0]
+    
+        for (j = i; j < arr.length; j++) {
+            if (i === j) {
+                let exist = false
+                // 如果已经存在就不再添加
+                for (let k = j - 1; k > 0; k--) {
+                    if (key === arr[k][0]) {
+                        exist = true
+                        break
+                    }
+                }
+
+                if (!exist) {
+                    result.push(r)
+                } else {
+                    result.push(['', arr[j][1]])
+                }
+            } else {
+                if (arr[j][0] === key) {
+                    result.push(['', arr[j][1]])
+                    arr.splice(j, 1)
+                }
+            }
+        }
+        return result
+    })
+    .map(r => {
+       return [r[0], r[1].file.link]
+    }))
+```
+````
+
+结果：
+
+![[Pasted image 20240523171501.png]]
+
+上述代码虽然我们实现了类似的结果，但是观察结果会发现我们丢失了分组信息：原数据有 8 个分组，我们的结果为 13 个分组。代码中，通过两个 `sort()` 方法分别按分组分类名和文件名进行了排序；通过两个 `flatMap()` 方法分别处理了文档名称的展开和分类同名的空白显示。
+
+##### 示例三：根据计算结果分组
+
+下面这个示例我们不返回字段名，而是返回一个根据条件判断自定义的名称。
+
+````
+```dataview
+LIST rows.file.link
+FROM "10 Example Data/assignments"
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
+```
+
+```dataviewjs
+dv.list(dv.pages('"10 Example Data/assignments"')
+    .groupBy(p => {
+        if (p.due < dv.date("2022-05-12")) {
+            return "已过期"
+        }
+        return "还有机会"
+    })
+    .flatMap(g => {
+        return [g.key, g.rows.map(r => r.file.link)]
+    }))
+```
+````
+
+结果：
+
+![[Pasted image 20240523174255.png]]
+
+从结果来看还是有细微差别的，左边分组名和数据是放置在一个 `<li>` 标签中，而右边则是将分组名和数据单独放置在一个 `<li>` 标签中。
+
+#### expand() 方法
+
+`expand(key: string): DataArray<any>` 方法的作用不同于 `FLATTEN` 语句，它可以用于列表和任务的展开，需要指定 `key` 为 `children` 或者 `subtasks`，但是结果不能保证是按原来的顺序输出。
+
+这个方法在 Dataview Example Valut 示例库也没有找到相应的示例，说明其适用范围很小，很冷门。作者本以为能够实现将嵌套的任务展开，然而却...
+
+````
+- [ ] 1
+- [ ] 2
+    - [ ] 3
+    - [ ] 4
+    - [ ] 5
+        - [ ] 6
+
+```dataviewjs
+dv.list(dv.current().file.tasks.expand('subtasks').map(t => t.text))
+dv.taskList(dv.current().file.tasks.expand('subtasks'))
+```
+````
+
+结果：
+
+![[Pasted image 20240523180842.png]]
+
+### 其它方法
+
+由于篇幅有限就不一一讲解所有的方法了。`sort()` 方法有在前面的示例中应用到，剩下的都比较简单，直接上示例：
+
+````
+```dataviewjs
+const arr = dv.array([1, 2, 3, 4, 2, 1, 23, 12])
+console.log(arr.distinct().array()) // [1, 2, 3, 4, 12, 23]
+console.log(arr.join('#')) // 1#2#3#4#2#1#23#12
+console.log(arr.limit(2).array()) // [1, 2]
+console.log(arr.slice(0, 3).array()) // [1, 2, 3]
+console.log(arr.concat(dv.array([5, 6, 7, 8])).array()) // [1, 2, 3, 4, 2, 1, 23, 12, 5, 6, 7, 8]
+```
+````
+
+## 进阶用法
+
+现在开始我们来介绍在入门中没有提及到的方法，这些知识点会让你应对复杂的需求时更加游刃有余，有更多的思路。
+
+### 更多页面获取方式
+
+在前面的示例中我们使用 `dv.current()` 来获取代码所在当前页面，使用 `dv.page(path)` 来获取单个文档页面，使用 `dv.pages(source)` 来获取指定目录的文档。现在我们来进一步了解 `dv.pages()` 的其它用法。
+
+````
+```dataviewjs
+dv.list(dv.pages().limit(5).map(p => p.file.link)) // 获取所有页面，返回前5个链接
+dv.list(dv.pages('#daily').limit(5).map(p => p.file.link)) // 获取所有带有daily标签的页面，返回前5个链接
+dv.list(dv.pages('#daily or #clientC').map(p => p.file.link)) // 获取所有带有daily或clientC标签的页面，返回链接列表
+dv.list(dv.pages('"10 Example Data/books" and -(#daily and #journal)').map(p => p.file.link)) // 获取目录名为"10 Example Data/books"且不带有daily和journal标签的页面，返回链接列表
+dv.list(dv.pages('"10 Example Data/books" or #clientC').map(p => p.file.link)) // 获取目录名为"10 Example Data/books"或带有clientC标签的页面，返回链接列表
+```
+````
+
+>[!Tip] 需要注意的是目录名必需加上双引号然后再放在单引号内。
+
+如果只相要获取文档的完整路径，可以直接使用 `dv.pagePaths(source)` 方法，如将所有路径以列表显示：`dv.list(dv.pagePaths('#daily'))`。
+
+结果：
+
+![[Pasted image 20240523190803.png]]
+
+### 插入链接
+
+作者有在这个系列的教程中的 DQL 查询语言篇中详细介绍了内部和外部链接以及双链的概念，现在我们来看一下在 API 中如何操作链接。
+
+在 Obsidian 中使用链接来唯一描述一个文档、标题和块。在 Dataview 中定义了 `Link` 类来描述链接，它有以下属性：
+
+- `path: string` 表示链接指向的文件路径。
+- `display?: string` 链接的显示名称，为可选字段。
+- `subpath?: string`  如果存在的话就指向文件内部的标题或者块 ID。
+- `embed: boolean` 是否为嵌入的链接。
+- `type: "file" | "header" | "block"` 链接的类型，会影响到 `subpath` 的结果。
+
+#### 获取链接元数据
+
+在 DQL 查询语言中我们使用 `meta()` 函数来获取链接的元数据信息，而在 API 中则将其拆分成 3 个独立的函数，分别对应其 `type` 的 3 种类型。
+
+- `dv.fileLink(path, [embed?], [display-name])` 对应类型为 `file`，用于链接文件。
+- `dv.sectionLink(path, section, [embed?], [display?]` 对应类型 `header`，用于链接文档中的标题。
+- `dv.blockLink(path, blockId, [embed?], [display?]` 对应类型 `block`，用于链接文档中的段落。
+
+````
+```dataviewjs
+console.log(dv.fileLink("2022-02-04")) // Link {path: '2022-02-04', display: undefined, subpath: undefined, embed: false, type: 'file'}
+console.log(dv.fileLink("2022-02-04", true)) // Link {path: '2022-02-04', display: undefined, subpath: undefined, embed: true, type: 'file'}
+console.log(dv.fileLink("2022-02-04", false, '显示名称')) // Link {path: '2022-02-04', display: '显示名称', subpath: undefined, embed: false, type: 'file'}
+console.log(dv.sectionLink("2022-02-04", 'Metadata', false, '显示名称')) // Link {path: '2022-02-04', display: '显示名称', subpath: 'Metadata', embed: false, type: 'header'}
+console.log(dv.blockLink("2022-02-04", '220763', true, '显示名称')) // Link {path: '2022-02-04', display: '显示名称', subpath: '220763', embed: true, type: 'block'}
+```
+````
+
+#### 页面中显示链接
+
+要在文档中显示我们通过 `dv.fileLink()` 等方法创建的链接，只需要使用在入门中提及的渲染 HTML 方法即可。
+
+这里我们来使用 `dv.span()` 渲染来展示块引用的效果：
+
+````
+```dataviewjs
+dv.span(dv.blockLink("2022-02-04", '220763', true, '显示名称'))
+```
+````
+
+结果：
+
+![[Pasted image 20240524110023.png]]
+
+> [!Tip] 在 obsidian 中我们使用 `[[]]` 来嵌入链接，如果所指向的文件不存在，在鼠标点击链接时会自动创建这个链接文件。如果相要将嵌入的链接的内容显示出来只需要在双括号前加一个感叹号，即 `![[]]`，这就等同于在代码中将 `embed` 设置为 `true`，这个时候 `display` 指定的名称将会失效。
+
+### 日期和时间操作
+
+我们知道在 Obsidian 中的每一个文档都有一个 `file` 对象内部属性，其 `cday` / `ctime` 和 `mday` / `mtime` 分别表示文档的创建日期和时间以及修改日期和时间。
+
+在创建日记类文档时，会自动以当前日期作为文件名。为此，在 `file` 对象中还提供了一个属性 `day` 来获取这个日期文件名（即返回日期值）。
+
+在 API 中 Dataview 提供了 `dv.date(text)` 和 `dv.duration(text)` 来分别表示日期和时间以及持续时间。它们的返回值分别对应于底层的 `dv.luxon.DateTime` 和 `dv.luxon.Duration` 对象。关于 Luxon 日期和时间操作库我们会在文章中单独介绍其用法。
+
+````
+```dataviewjs
+const now = new dv.luxon.DateTime(new Date())
+const dur = dv.luxon.Duration
+
+console.log(dv.date("2022-02-04").toFormat("yyyy-MM-dd")) // 2022-02-04
+console.log(dv.date(dv.blockLink("2022-02-04", '220763', true, '显示名称')).toISODate()) // 2022-02-04
+console.log(dv.date(now).toISOTime()) // 11:32:58.843+08:00
+console.log(dv.date(now).offsetNameLong) // 中国标准时间
+
+console.log(dv.duration('8h30m').toObject()) // {hours: 8, minutes: 30}
+console.log(dv.duration('8h30m').toFormat("h'小时'm'分钟'")) // 8小时30分钟
+console.log(dv.duration('8h30m').toHuman()) // 8小时、30分钟
+console.log(dv.duration(dur.fromObject({hours: 8, minutes: 30})).toHuman()) // 8小时、30分钟
+```
+````
+
+### 查询评估
+
+这里介绍的方法对于基于 Dataview API 进行二次开发的读者或许有帮助。使用这些方法我们可以对 Dataview 的查询结果进行评估：添加/删除值、改变文档路径、强制显示/不显示分组 ID 以及对查询过程中出现报错进行捕捉处理等。
+
+#### dv.query() 和 dv.tryQuery() 方法
+
+`dv.query(source, [file, settings])` 执行 Dataview 查询并将结果作为结构化返回返回。这里的 `source` 为 DQL 查询语句，因此我们可以得到 4 种结构化的输出类型。
+
+在 Dataview 源码中将查询结果声明为类型 `QueryResult`，这是一个联合类型，下面是相关的源码：
+
+```ts
+export type IdentifierMeaning = { type: "group"; name: string; on: IdentifierMeaning } | { type: "path" };
+export type TableResult = { type: "table"; headers: string[]; values: Literal[][]; idMeaning: IdentifierMeaning };
+export type ListResult = { type: "list"; values: Literal[]; primaryMeaning: IdentifierMeaning };
+export type TaskResult = { type: "task"; values: Grouping<SListItem> };
+export type CalendarResult = {
+    type: "calendar";
+    values: {
+        date: DateTime;
+        link: Link;
+        value?: Literal[];
+    }[];
+};
+
+export type QueryResult = TableResult | ListResult | TaskResult | CalendarResult;
+```
+
+从上面的 TypeScript 类型声明来看，符合我们已知的 4 种查询类型 `table` | `list` | `task` 和 `calendar`，每一种类型都有其特殊的数据结构。
+
+下面我们单独介绍每一种类型，但会在第一个 `TableResult` 类型中重点介绍相关的知识点，后面几种不再详细描述细节。同时，还会在第一个类型中介绍可选参数 `file` 和 `settings` 的作用。
+
+##### TableResult 类型
+
+我们使用前面提到过的书籍查询例子，并将结果使用输出为 JSON 格式。
+
+````
+```dataviewjs
+const query = `
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+GROUP BY author AS 作者
+`
+const queryResult = await dv.query(query)
+console.log(JSON.stringify(queryResult))
+```
+````
+
+下面是控制台中输出的数据，我们将其中文件元数据使用 `Link` 来指代，这样有利于关注重要部分。
+
+```json
+{
+    "value": {
+        "type": "table",
+        "values": [
+            [ null, [ Link ] ],
+            [ "Alice A", [ Link ] ],
+            [ "Berta B", [ Link, Link ] ],
+            [ "Conrad C", [ { Link }, { Link } ] ],
+            [ "Dora D", [ { Link } ] ]
+        ],
+        "headers": [
+            "作者",
+            "书籍"
+        ],
+        "idMeaning": {
+            "type": "group",
+            "name": "作者",
+            "on": {
+                "type": "path"
+            }
+        }
+    },
+    "successful": true
+}
+```
+
+我们现在来分析一下上面这个结果 JSON 数据：
+
+`successful` 值为 `true` 意味着查询是成功的。如果我们提供的数据不存在但是查询语法是正确的，那么 `successful` 仍然为 `true`，只不过 `value.values` 结果为 `[]`。另外一种情况就是查询语法不正确，这种情况下就会返回 `false`，并且会返回一个类似：`Failure {error: 'Error: \n-- PARSING FAILED … \n', successful: false}` 的信息。
+
+如果去翻阅这部分的源码会发现上实际上 `dv.query()` 和 `dv.tryQuery()` 的区分在于返回结果，前者将结果使用 `Success` 和 `Failure` 类型包裹了一下，而后者没有。
+
+`value` 属性中包含了查询结果数据的相关信息，其中 `type` 表明了结果类型为表格，`values` 为结果数据，`headers` 为表格的表头名称，`idMeaning` 为一个对象，其中 `type` 为 `group` 表明使用了分组，如果我们没有使用 `GROUP BY` 语句，这里将会是 `path` 值，同时也不会有 `name` 和 `on` 属性值。`name` 是在使用 `GROUP UP` 语句时指定 `AS` 名称，而 `on` 的值始终为 `{ type: "path" }`。
+
+分析完结果数据，现在我们来看一下可选参数 `file` 和 `settings` 的作用。
+
+`file` 默认为当前代码所在文档的路径，格式为 `xxx.md`，我们可以通过传入自定义的路径来修改这个值。这个可选参数有什么用途呢？目前作者对 Obsidian 探索还不够深入，就留给读者去挖掘，这里在给出一个示例来演示其作用。
+
+````
+```dataviewjs
+const query = `
+TABLE WITHOUT ID file.link AS 替换后文件
+WHERE file = this.file
+`
+const currentFile = dv.current().file
+const queryResult = await dv.query(query, '实例候选.md')
+queryResult.value.headers.push('原来的文件')
+queryResult.value.values[0].push([currentFile.link])
+dv.table(queryResult.value.headers, queryResult.value.values)
+```
+````
+
+结果：
+
+![[Pasted image 20240524165035.png]]
+
+>![Tip] `dv.query()` 方法返回值签名为 `Promise<Result<QueryResult, string>>`，因些我们需要使用 `await dv.query()` 来获取异步值，然后也可以使用 `dv.query().then(v => {//...})` 以 Promise API 方式来处理。
+
+`settings` 可先参数是一个 `QueryApiSettings` 类型，目前只有一个配置属性 `forceId: boolean`，这个值将覆盖 `WITHOUT ID` 的设置。当值为 `true` 时会包含链接或者分组名字段，`false` 则排序。
+
+修改上面介绍 `file` 参数的示例中的 `dv.query()` 为 `dv.query(query, '实例候选.md', { forceId: true })`，会得到一个显示文件链接的结果：
+
+![[企业微信截图_17165421759306.png]]
+
+##### ListResult 类型
+
+这里我们同样使用前面分组时的示例，来看一下解析后数据：
+
+````
+```dataviewjs
+const query = `
+LIST rows.file.link
+FROM "10 Example Data/assignments"
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
+`
+const queryResult = await dv.query(query)
+console.log(JSON.stringify(queryResult))
+```
+````
+
+结果：
+
+```json
+{
+    "value": {
+        "type": "list",
+        "values": [
+            {
+                "$widget": "dataview:list-pair",
+                "key": "还有机会",
+                "value": [ Link, Link, ...  ]
+            },
+            {
+                "$widget": "dataview:list-pair",
+                "key": "已过期",
+                "value": [ Link, Link, ... ]
+            }
+        ],
+        "primaryMeaning": {
+            "type": "group",
+            "name": "choice(due < date(\"2022-05-12\"), \"已过期\", \"还有机会\")",
+            "on": {
+                "type": "path"
+            }
+        }
+    },
+    "successful": true
+}
+```
+
+从结果数据来分析，会发现在 `primaryMeaning.name` 中，分组字段不是一个常规的属性名，而是一个条件判断语句。在结果中我们还发现有一个特殊的字段 `$widget`。如果试图将其删除，那么在使用 `dv.list(queryResult.value.values)` 时将会得到一个错误提示结果：`- **<unknown widget ''>**`，然后我们翻阅相关部分源码，会发现 `ListResult` 的查询结果数据为 `ListPairWidget` 类型，它实现了抽象类 `Widget`，而后者则定义了一个 `$widget` 属性，用于标识组件。
+
+Dataview 目前定义了 2 种类型分别为 `ListPairWidget` ID 为 `dataview:list-pair` 和 `ExternalLinkWidget` ID 为 `dataview:external-link`。我们可以根据其定义来强制将 `ListPairWidget` 显示为 `ExternalLinkWidget`
+。
+
+下面是演示代码：
+
+````
+```dataviewjs
+const query = `
+LIST rows.file.link
+FROM "10 Example Data/assignments"
+GROUP BY choice(due < date("2022-05-12"), "已过期", "还有机会")
+`
+const queryResult = await dv.query(query)
+queryResult.value.values.forEach(row => {
+    row.value = row.value.slice(0, 2)
+    row.display = row.key
+    row.$widget = 'dataview:external-link'
+})
+dv.list(queryResult.value.values)
+```
+````
+
+结果：
+
+![[Pasted image 20240524175351.png]]
+
+>![Tip] 如果读者有那个精力也可以去扩展自己的 Widget，作者就浅尝辄止，不再过多去探索了。
+
+##### TaskResult 类型
+
+用于表示任务类查询的结果。我们可以遍历所有任务将未完成的任务强制完成，或者改变任务中的任何属性，需要注意的是由于在 Dataview 结果或者任务原始位置将任务状态改变，Dataview 都会重新执行查询。如果在查询结果中改变状态，而代码中又将其全部标记为已完成，这会陷入一个死角，所以不建议在文档的代码区域来改变任务的状态信息，而是结合 Obsidian 的命令来一健完成或取消完成任务更加合理。
+
+下面给出一个改变任务状态的示例代码：
+
+````
+```dataviewjs
+const query = `
+TASK
+WHERE file = this.file
+`
+const queryResult = await dv.query(query)
+queryResult.value.values.forEach(row => {
+    row.annotated = true
+    row.checked = true
+    row.completed = true
+    row.fullCompleted: true
+    row.status = 'x'
+})
+dv.taskList(queryResult.value.values)
+```
+````
+
+##### CalendarResult 类型
+
+我们在前面说过 Dataview API 并没有提供输出日历的方法，因此这里我们解析出来的日历数据就得另寻他法来渲染。我们这里就不再额外说明了，有一个渲染年度日历数据的案例会在我们系列文章的第 3 篇进行讲解。
+
+这一小节最后再说一下 `dv.tryQuery()` 方法，它的使用和 `dv.query()` 一样，只不过没有 `Success` 和 `Failure` 类型封装，而是直接返回 `{ type: 'xx', values: 'xx' }` 结构的数据，对于 `TableResult` 类型的数据其在 `value` 中的属性也自动变成 `{ type: 'xx', headers: [xx], idMeaning: {...}, values: [...]}` 的结构。最后如果不符合 DQL 查询语法会直接在文档中抛出错误。
+
+#### dv.queryMarkdown() 和 dv.tryQueryMarkdown() 方法
+
+这 2 个方法的实际用法同 `dv.query()` 和 `dv.tryQuery()`，只不过它是将结果以 Markdown 语法原始格式输出。
+
+````
+```dataviewjs
+const query = `
+TABLE rows.file.link AS 书籍
+FROM "10 Example Data/books"
+GROUP BY author AS 作者
+`
+const queryResult = await dv.tryQueryMarkdown(query)
+console.log(queryResult)
+dv.paragraph(queryResult)
+```
+````
+
+输出的 Markdown 格式结果：
+
+````
+| 作者       | 书籍                                                                                                                      |
+| -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| \-       | <ul><li>[[10 Example Data/books/books_7.md\\|books_7]]</li></ul>                                                        |
+| Alice A  | <ul><li>[[10 Example Data/books/books_2.md\\|books_2]]</li></ul>                                                        |
+| Berta B  | <ul><li>[[10 Example Data/books/books_3.md\\|books_3]]</li><li>[[10 Example Data/books/books_6.md\\|books_6]]</li></ul> |
+| Conrad C | <ul><li>[[10 Example Data/books/books_4.md\\|books_4]]</li><li>[[10 Example Data/books/books_5.md\\|books_5]]</li></ul> |
+| Dora D   | <ul><li>[[10 Example Data/books/books_1.md\\|books_1]]</li></ul>
+````
+
+在文档中的渲染结果：
+
+![[Pasted image 20240524191254.png]]
+
+这个结果渲染明显有问题，所以我提了一个 [issue](https://github.com/blacksmithgu/obsidian-dataview/issues/2343) 给官方，期望下个版本能解决。
+
+#### dv.evaluate() 和 dv.tryEvaluate() 方法
 
 
-这几个方法都是条件 `every(f: ArrayFunc<T, boolean>): boolean` 方法用于
+### 自定义视图
+
+
+辅助方法
 
 ## Luxon 库介绍
 
