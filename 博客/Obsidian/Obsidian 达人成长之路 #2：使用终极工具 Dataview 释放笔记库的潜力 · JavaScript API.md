@@ -1239,11 +1239,215 @@ dv.paragraph(queryResult)
 
 #### dv.evaluate() 和 dv.tryEvaluate() 方法
 
+这两个方法的作用实际上是执行 DQL 查询语法中的表达式。同样两个函数的区别在于执行成功与失败是否有包装一层方便用户自行处理异常情况的区分。
 
+两个方法的第二个可选参数 `context` 为一个对象，用于为表达式中的变量提供值。
+
+为了方便参考，我直接将官方支持的表达式贴出来：
+
+```
+# Literals
+1                   (number)
+true/false          (boolean)
+"text"              (text)
+date(2021-04-18)    (date)
+dur(1 day)          (duration)
+[[Link]]            (link)
+[1, 2, 3]           (list)
+{ a: 1, b: 2 }      (object)
+
+# Lambdas
+(x1, x2) => ...     (lambda)
+
+# References
+field               (directly refer to a field)
+simple-field        (refer to fields with spaces/punctuation in them like "Simple Field!")
+a.b                 (if a is an object, retrieve field named 'b')
+a[expr]             (if a is an object or array, retrieve field with name specified by expression 'expr')
+f(a, b, ...)        (call a function called `f` on arguments a, b, ...)
+
+# Arithmetic
+a + b               (addition)
+a - b               (subtraction)
+a * b               (multiplication)
+a / b               (division)
+a % b               (modulo / remainder of division)
+
+# Comparison
+a > b               (check if a is greater than b)
+a < b               (check if a is less than b)
+a = b               (check if a equals b)
+a != b              (check if a does not equal b)
+a <= b              (check if a is less than or equal to b)
+a >= b              (check if a is greater than or equal to b)
+
+# Strings
+
+a + b               (string concatenation)
+a * num             (repeat string <num> times)
+
+# Special Operations
+[[Link]].value      (fetch `value` from page `Link`)
+```
+
+使用如下：
+
+````
+test:: 测试变量
+
+```dataviewjs
+dv.paragraph(dv.evaluate("x + y + z", {x: 1, y: 2, z: 3}).value) // 6
+dv.paragraph(dv.evaluate("x + y + z", {x: 1, y: 2, z: 3}).successful) // true
+dv.paragraph(dv.tryEvaluate("12 + val", {val: "world"})) // 12world
+dv.paragraph(dv.tryEvaluate("hello + val", {val: "world"})) // -world
+dv.paragraph(dv.tryEvaluate("val*3", {val: "world"})) // worldworldworld
+dv.paragraph(dv.tryEvaluate("this.test")) // 测试变量
+dv.paragraph(dv.tryEvaluate("length(this.file.tasks)")) // 0
+dv.paragraph(dv.tryEvaluate("1 + 2 * 10")) // 21
+dv.paragraph(dv.tryEvaluate("this.file.name")) // Untitled
+dv.paragraph(dv.tryEvaluate("date(now)")) // 11:34 上午 - 5 25, 2024
+dv.paragraph(dv.tryEvaluate("date(now) + dur(1d30m)")) // 12:06 下午 - 5 26, 2024
+```
+````
+
+### 文件 I/O 操作
+
+I/O 操作是指输入(Input)/输出(Output)操作，通常用于读取/写入文件。在 Dataview 中我们使用 `dv.io.csv(path, [origin-file])` 来解析 CSV 文件，使用 `dv.io.load(path, [origin-file])` 来读取文件的内容，使用 `dv.io.normalize(path, [origin-file])` 将相对路径转换成绝对路径。
+
+#### dv.io.csv() 方法
+
+首先我们在当前编辑的文件同目录创建一个名为 `person.csv` 的 CSV 文件，然后复制以下内容粘贴进去：
+
+```csv
+姓名,性别,年龄
+张三,男,20
+李四,女,23
+stu1,男,18
+stu2,女,19
+```
+
+现在，我们来通过 `dv.io.csv()` 方法读取数据，看一下读取数据后会被转换成什么样的结构。
+
+````
+```dataviewjs
+const data = await dv.io.csv("person.csv")
+console.log(data.array())
+```
+````
+
+因为 `dv.io.csv()` 是一个异步方法，因此我们需要在调用方法时加上 `await` 关键词。数据读取后会返回一个 DataArray 结构的数据，通过前面的讲解，我们可以直接使用 `array()` 方法将数据输出为 JavaScript 数组的形式。
+
+CSV 数据经过 Dataview 解析后每一行（除了表头）会转换成 `{表头名: 数据值}` 的格式。接下来我们来将其渲染到页面中。
+
+````
+```dataviewjs
+const data = await dv.io.csv("person.csv")
+const headers = Object.keys(data[0])
+const values = data.map(item => Object.values(item))
+dv.table(headers, values)
+```
+````
+
+结果：
+
+![[Pasted image 20240525163938.png]]
+
+可选择参数 `origin-file` 的作用是指定解析文件所基于的相对目录，如果文档中存在多个同名的文件，在 `path` 中并没有带路径的话，默认在当前目录中查找。如果我们将第二个参数指定为 `/` 就会从根目录寻找。
+
+如果指定的文件不存在，则会返回 `undefined`。
+#### dv.io.load() 方法
+
+这个方法用于读取文件，对于文本文件（如：Markdown, CSV, TXT 等）会直接原样输出文本内容，对于其它文件（如：PDF）可能会显示为乱码、特殊字符、转义序列、二进制表示，或者可能根本不显示这些数据，甚至抛出错误。
+
+使用方式同 `dv.io.csv()`，只不过返回的数据是字符串（文本），需要自己去解析。
+
+#### dv.io.normalize() 方法
+
+这个方法的作用是规范路径，将不带路径目录的链接转换成基于当前 Vault 的绝对路径。
+
+现在我们在根目录创建了一个 `person.csv` 文件，同时也在目录 `dir1/dir2` 和 `dir1/dir2/dir3` 中同时创建，然后来看一下使用效果：
+
+````
+```dataviewjs
+console.log(dv.io.normalize("not-exist")) // not-exist
+console.log(dv.io.normalize("not-exist", "/")) // not-exist
+console.log(dv.io.normalize("not-exist.csv")) // not-exist.csv
+console.log(dv.io.normalize("not-exist.csv", "/")) // not-exist.csv
+console.log(dv.io.normalize("person.csv")) // dir1/dir2/dir3/person.csv
+console.log(dv.io.normalize("person.csv", "/")) // person.csv
+console.log(dv.io.normalize("person.csv", "not/exist/")) // person.csv
+console.log(dv.io.normalize("person.csv", "dir1/dir2/")) // dir1/dir2/person.csv
+```
+````
+
+从结果来看，如果不指定第二个参数会返回当前传入的第一个参数。在指定第二个参数的情况下，如果文件不存在则原样返回，如果指定的路径不存在同样如此。只有在路径和文件都正确的情况下来能得到正确的路径。
 ### 自定义视图
 
+使用 `dv.view(path, input)` 方法来构建自己的视图，是一项挺有创造性的事情，它可以把我们介绍的知识点全部融入进来创建可复用的，可分发的功能集。
 
-辅助方法
+使用这个方法我们可以将 JavaScript 脚本和样式放置在一个目录中，然后将其异步加载并传入参数运行，默认名称约定为 `view.js` 和 `view.css`。
+
+下面我们用一个问候函数来举例，更多高级的用法后续案例分析篇会重点讲解。
+
+````
+%% views/demo/view.js %%
+```js
+function greet(name) {
+    return dv.el('h1', `你好，${name}`, { cls: 'demo' })
+}
+
+greet(input.name)
+```
+
+%% views/demo/view.css %%
+```css
+.demo {
+    color: red!important;
+}
+```
+
+```dataviewjs
+await dv.view("views/demo", { name: "Dataview" })
+```
+````
+
+结果：
+
+![[Pasted image 20240525203648.png]]
+
+代码中，所有传入的参数都存放在 `input` 对象中，样式我们使用了 `!important` 来提升优先级，不然会被 `h1, .markdown-rendered h1` 所覆盖。
+
+### 辅助方法
+
+我们在前面的代码中判断数组使用的是 `Array.isArray()` 方法，实际上官方也提供了一个同名的方法为 `dv.isArray()`，此外还提供了
+
+- `dv.compare(a, b)` 比较任意 JavaScript 值，如果 `a > b` 则返回 `1`，相等返回 `0`，小于则返回 `-1`。
+- `dv.equal(a, b)` 判断任意两个 JavaScript 值是否相等。
+- `dv.clone(value)` 深拷贝值。
+- `dv.parse(value)` 主要用于将字符串解析为链接、日期和持续时间。
+
+举例：
+
+````
+```dataviewjs
+const a = {a: 1, b: 2, c: [1, 2, 3, [4, [5, 6]]], d: {e: 1, f: 2}}
+const b = {a: 1, b: 2, c: [1, 2, 3, [4, [5, 6]]], d: {e: 1, f: 2}}
+const c = {a: 1, b: 2, c: b.c, d: {e: 1, f: 2}}
+const d = {a: 1, b: 2, c: b.c, d: 5}
+const e = dv.clone(a)
+console.log(dv.isArray(a.c)) // true
+console.log(dv.equal(a, b)) // true
+console.log(dv.equal(a, c)) // true
+console.log(dv.equal(a, d)) // false
+console.log(dv.equal(a, e)) // true
+console.log(dv.compare(a, b)) // 0
+console.log(dv.compare(a, c)) // 0
+console.log(dv.compare(a, d)) // -1
+console.log(dv.parse("[[Welcome]]")) // Link {path: 'Welcome', display: undefined, subpath: undefined, embed: false, type: 'file'}
+console.log(dv.parse("2024-05-25")) // DateTime {ts: 1716566400000, _zone: SystemZone, loc: Locale, invalid: null, weekData: null, …}
+console.log(dv.parse("1d")) // Duration {values: {…}, loc: Locale, conversionAccuracy: 'casual', invalid: null, matrix: {…}, …}
+```
+````
 
 ## Luxon 库介绍
 
@@ -1648,7 +1852,6 @@ console.log(d.endOf('minute').toISOTime()) // 12:23:59.999+08:00
 ```
 ````
 
-
 ### Duration 使用
 
 持续时间（Duration）指一个时间段的长度，比如几天、几小时、几分钟等。
@@ -1830,6 +2033,16 @@ console.log(dur.fromMillis(1715245618057).toObject()) // {milliseconds: 17152456
 console.log(dur.fromMillis(1715245618057).rescale().toObject()) // {years: 59, months: 1, hours: 9, minutes: 6, seconds: 58, milliseconds: 55}
 ```
 ````
+
+## 总结
+
+相较于DQL查询语言，使用API可以更灵活地处理数据，但是也不是万能的，这取决于使用者的专业能力和需求。
+
+文章的写作周期比较长，因为这部分内容说实话还真不好写，主要受限于作者个人的实践不够，无法给出比较贴切的实例。
+
+文章比较长，虽然极力想囊括所有API的用法，但还是有些过于庞大，有些地方写得太细了，有些地方写得太粗糙了。如果你发现了文章中的错误，欢迎指正。
+
+最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（jenemy_xl）沟通交流一起成长。
 
 ## 参考
 
