@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "91f5a7cdcb7a0828",
+        "id": "1ff86ef76d19983e",
         "type": "tabs",
         "children": [
           {
-            "id": "530d85492f262e1f",
+            "id": "67e9b63834e29a68",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -66,7 +66,7 @@
             }
           },
           {
-            "id": "eb2ba09db5404a0b",
+            "id": "e384bdf72a9ebed6",
             "type": "leaf",
             "state": {
               "type": "file-tree-view",
@@ -74,23 +74,15 @@
             }
           },
           {
-            "id": "ef51d368f2f1516a",
+            "id": "fdf06298c6a013ba",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
               "state": {}
             }
-          },
-          {
-            "id": "f91e0f55bdd28218",
-            "type": "leaf",
-            "state": {
-              "type": "surfing-tab-tree",
-              "state": {}
-            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -183,7 +175,7 @@
             }
           },
           {
-            "id": "0e7be9166f255a6b",
+            "id": "7d23ed0bf34c6a40",
             "type": "leaf",
             "state": {
               "type": "quiet-outline",
@@ -191,7 +183,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 7
       }
     ],
     "direction": "horizontal",
@@ -204,15 +196,16 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "media-extended:Open media": false,
-      "file-tree-alternative:File Tree Alternative Plugin": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "templater-obsidian:Templater": false,
-      "vscode-editor:Create Code File": false
+      "vscode-editor:Create Code File": false,
+      "open-vscode:VSCode": false,
+      "file-tree-alternative:File Tree Alternative Plugin": false,
+      "media-extended:Open media": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "530d85492f262e1f",
+  "active": "67e9b63834e29a68",
   "lastOpenFiles": [
     "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
     "附件/Pasted image 20240525203648.png",

@@ -1,6 +1,7 @@
 {
   "newNotePlaceholder": "Untitled",
   "defaultInitialization": false,
+  "navigatorEnabled": true,
   "filePreviewOnHover": false,
   "flowMenuEnabled": true,
   "markSans": false,
@@ -24,6 +25,7 @@
   "activeSpace": "",
   "defaultDateFormat": "MMM dd yyyy",
   "spacesEnabled": true,
+  "syncFormulaToFrontmatter": true,
   "spacesPerformance": false,
   "currentWaypoint": 4,
   "enableFolderNote": true,
@@ -31,6 +33,7 @@
   "revealActiveFile": false,
   "spacesStickers": true,
   "spaceRowHeight": 29,
+  "bannerHeight": 200,
   "spacesDisablePatch": false,
   "folderNoteInsideFolder": true,
   "sidebarTabs": true,
@@ -74,6 +77,8 @@
   "fmKeyColor": "color",
   "fmKeySticker": "sticker",
   "fmKeyContexts": "_contexts",
+  "fmKeyTemplate": "_template",
+  "fmKeyTemplateName": "_templateName",
   "fmKeySort": "_sort",
   "fmKeyFilter": "_filters",
   "fmKeyLinks": "_links",
@@ -85,12 +90,12 @@
   "autoMigration08": false,
   "releaseNotesPrompt": 0.9,
   "enableDefaultSpaces": true,
-  "enableTagSpaces": true,
   "showSpacePinIcon": true,
   "minimalFix": false,
   "experimental": false,
   "systemName": "生活点点滴滴记录",
   "defaultSpaceTemplate": "",
   "selectedKit": "default",
-  "actionMaxSteps": 100
+  "actionMaxSteps": 100,
+  "enableTagSpaces": true
 }

@@ -18,7 +18,7 @@ Dataview 提供的 DQL 查询语言为不同背景和需求的用户带来了便
 
 ## 快速入门
 
-在编程的世界中，有一个广泛接受的传统，那就是使用“Hello World”作为学习新编程语言时的第一个示例程序，本文也不例外。
+在编程的世界中，有一个广泛流行的传统，那就是使用“Hello World”作为学习新编程语言时的第一个示例程序，本文也不例外。
 
 ### 显示 Hello World
 
@@ -1088,7 +1088,7 @@ dv.table(queryResult.value.headers, queryResult.value.values)
 
 ![[Pasted image 20240524165035.png]]
 
->![Tip] `dv.query()` 方法返回值签名为 `Promise<Result<QueryResult, string>>`，因些我们需要使用 `await dv.query()` 来获取异步值，然后也可以使用 `dv.query().then(v => {//...})` 以 Promise API 方式来处理。
+>![Tip] `dv.query()` 方法返回值签名为 `Promise<Result<QueryResult, string>>`，因此我们需要使用 `await dv.query()` 来获取异步值，然后也可以使用 `dv.query().then(v => {//...})` 以 Promise API 方式来处理。
 
 `settings` 可先参数是一个 `QueryApiSettings` 类型，目前只有一个配置属性 `forceId: boolean`，这个值将覆盖 `WITHOUT ID` 的设置。当值为 `true` 时会包含链接或者分组名字段，`false` 则排序。
 
