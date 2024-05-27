@@ -13,7 +13,7 @@
   "fontColorType": "default",
   "fontWeight": 600,
   "maxResults": 5,
-  "showStarredFiles": false,
+  "showbookmarkedFiles": true,
   "showRecentFiles": false,
   "maxRecentFiles": 5,
   "storeRecentFile": true,
@@ -24,14 +24,33 @@
   "unresolvedLinks": false,
   "recentFilesStore": [
     {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+      "timestamp": 1716811150204
+    },
+    {
+      "filepath": "博客/Obsidian/临时放置.md",
+      "timestamp": 1716810568426
+    },
+    {
+      "filepath": "日记/2024-05-27.md",
+      "timestamp": 1716803949728
+    },
+    {
       "filepath": "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-      "timestamp": 1716644582632
+      "timestamp": 1716781622260
+    },
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+      "timestamp": 1716780959757
     }
   ],
-  "starredFileStore": [],
+  "bookmarkedFileStore": [],
   "searchDelay": 0,
   "replaceNewTabs": true,
   "newTabOnStart": false,
   "closePreviousSessionTabs": false,
-  "omnisearch": false
+  "omnisearch": false,
+  "showOmnisearchExcerpt": true,
+  "showStarredFiles": false,
+  "starredFileStore": []
 }

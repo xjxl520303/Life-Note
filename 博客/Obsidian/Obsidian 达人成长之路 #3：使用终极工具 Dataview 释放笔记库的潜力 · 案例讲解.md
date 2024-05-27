@@ -381,6 +381,103 @@ FLATTEN arr3
 
 ![[Pasted image 20240517164859.png]]
 
+### 根据不同的条件来查询日记
+
+在 Obsidian 中日记文件通常以 `xxxx-xx-xx` 的日期格式创建。我们可以通过 DQL 来精确查询完整年/月/日的日记，也可以查询指定年份、月份和具体某天的日记。下面我们以 10 Example Data/daily 中的日记数据 `wake-up` 为例。
+
+>[!Tip] obsidian 为日记提供了一个专门的属性 `file.day` 来方便我们获取以日期表示的文件名。
+
+#### 日期精确查询
+
+要查询一个精确的日期，只需要使用表达式来判断两个 DateView 对象是否相等。在 DQL 查询语言中可以使用一个等号来判断相等，如果要查询多个日期也可以使用逻辑运算符 `OR` 来添加条件。
+
+需要注意的是，在比较时需要将目标日期使用 `date()` 方法封装后才能进行比较，因为 `file.day` 是一个 DateView 对象，不能和字符串去比较，比如：`file.day = "2022-01-04"` 就是一个无效表达。
+
+````
+```dataview
+LIST WITHOUT ID file.link + " 起床时间：" + wake-up
+WHERE file.day = date(2022-01-04) OR file.day = date(2022-01-24)
+```
+````
+
+结果：
+
+![[Pasted image 20240527170356.png]]
+
+#### 忽略年份/月份查询
+
+有些情况下我们并不关心是哪一年、哪一个月的日记中所记载的事项，只想知道某个月的某一天或着每年每个月 17 号自己做了些什么。
+
+>[!Tip] 如果使用 API 来查询的话还可以结合：[jjonline/calendar.js: 中国农历（阴阳历）和西元阳历即公历互转JavaScript库 (github.com)](https://github.com/jjonline/calendar.js) 来查询每年自己农历生日的日记信息。
+
+要查询这样的数据，需要将日期使用 `dateformat()` 方法进行格式化后进行比较。
+
+````
+按月-日查询：
+
+```dataview
+LIST WITHOUT ID file.link + " 起床时间：" + wake-up
+WHERE dateformat(file.day, "MM-dd") = "02-17"
+```
+
+按日查询：
+
+```dataview
+LIST WITHOUT ID file.link + " 起床时间：" + wake-up
+WHERE dateformat(file.day, "dd") = "17"
+```
+````
+
+结果：
+
+![[Pasted image 20240527184049.png]]
+
+第一个查询结果因为 2020 和 2021 年日记数据中没有内联字段 `wake-up`，所以没有数据。第二个查询前 2 个也是同样的原因，第 4 个结果我们可以看出，只要文件面中包含符合日期的格式就会被解析出来。
+
+#### 根据日记中特定属性查询
+
+上面 2 个示例中我们在查询结果中显示了内联属性 `wake-up`，会发现有的日记并没有定义这个属性，同时在已有的数据情况下，我们还可以进一步进行过滤，例如：起床时间在 6:00 ~ 6:30 的日期。
+
+由于在 DQL 查询语言中我们无法将 `wake-up` 的值读取并传入 `date()` 函数，所以只能采取一种不友好的方式来实现：将时间按 `:` 拆分后单独判断。
+
+>[!Tip] 我们无法将内联属性传 `date()` 函数，但是使用 `FLATTEN AS` 声明的日期、`file.day` 和 `file.frontmatter.xx` 的日期值还是可以传入正常解析的。
+
+下面是两方式实现示例：
+
+````
+```dataview
+LIST WITHOUT ID file.link + " 起床时间：" + wake-up
+FROM "10 Example Data/dailys"
+WHERE wake-up
+FLATTEN number(split(wake-up, ":")[0]) AS hour
+FLATTEN number(split(wake-up, ":")[1]) AS minute
+WHERE hour = 6 AND minute <= 30
+```
+
+```dataviewjs
+const dt = dv.luxon.DateTime
+
+const start = dt.fromObject({ hour: 6, minute: 0 })
+const end = dt.fromObject({ hour: 6, minute: 30 })
+
+dv.list(
+    dv.pages('"10 Example Data/dailys"')
+        .where(p => p["wake-up"])
+        .filter(p => {
+            const time = dt.fromFormat(p["wake-up"], "HH:mm")
+            return time >= start && time <= end
+        })
+        .map(p => `${p.file.link} 起床时间：${p["wake-up"]}`)
+)
+```
+````
+
+结果：
+
+![[Pasted image 20240527200105.png]]
+
+在处理时需要注意，在表示 6 点时，数据源中有少部分是 `6:xx` 其它为 `06:xx`。我们上面的代码中无须担心会被其影响，因为在使用 `number()` 方法时，`06` 会变成数字 `6`，而在脚本实现中 `dt.fromFormat()` 方法会自动处理。如果是字符串比较就需要慎重一些，将其考虑在内。
+
 
 
 
