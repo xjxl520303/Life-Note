@@ -1,0 +1,1 @@
+[marcusolsson/obsidian-projects: Plain text project planning in Obsidian (github.com)](https://github.com/marcusolsson/obsidian-projects)

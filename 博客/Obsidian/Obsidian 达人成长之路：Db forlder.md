@@ -1,0 +1,1 @@
+[RafaelGB/obsidian-db-folder: Obsidian Plugin to Allow Notion like database based on folders (github.com)](https://github.com/RafaelGB/obsidian-db-folder)

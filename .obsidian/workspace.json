@@ -82,12 +82,11 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 347.5
+    "width": 219.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -183,7 +182,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 7
       },
       {
         "id": "00371229898dddaf",
@@ -221,9 +220,18 @@
   },
   "active": "1072b0068a5173be",
   "lastOpenFiles": [
+    "附件/Pasted image 20240528194056.png",
+    "附件/Pasted image 20240528190213.png",
+    "附件/Pasted image 20240528185401.png",
+    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Db forlder.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Projects 插件.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
+    "附件/Pasted image 20240528155240.png",
+    "附件/Pasted image 20240528152438.png",
     "附件/Pasted image 20240527200105.png",
     "博客/Obsidian/临时放置.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "附件/Pasted image 20240527184049.png",
     "日记/2024-05-27.md",
     "附件/Pasted image 20240527170356.png",
@@ -232,18 +240,11 @@
     "附件/Pasted image 20240525203648.png",
     "附件/Pasted image 20240525163938.png",
     "附件/Pasted image 20240524191254.png",
-    "附件/Pasted image 20240524175351.png",
-    "附件/企业微信截图_17165421759306.png",
-    "附件/Pasted image 20240524165035.png",
-    "附件/Pasted image 20240524110023.png",
-    "附件/Pasted image 20240523190803.png",
     "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
     "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
-    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
     "博客/Obsidian/Obsidian 达人成长之路：Obsidian 插件开发.md",
     "博客/Obsidian/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
@@ -262,7 +263,6 @@
     "博客/Go",
     "博客/Obsidian",
     "日记",
-    "README.md",
     "博客",
     "附件",
     "Spaces"

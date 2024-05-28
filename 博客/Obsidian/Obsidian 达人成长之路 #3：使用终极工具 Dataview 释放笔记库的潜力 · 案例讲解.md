@@ -477,18 +477,196 @@ dv.list(
 ![[Pasted image 20240527200105.png]]
 
 在处理时需要注意，在表示 6 点时，数据源中有少部分是 `6:xx` 其它为 `06:xx`。我们上面的代码中无须担心会被其影响，因为在使用 `number()` 方法时，`06` 会变成数字 `6`，而在脚本实现中 `dt.fromFormat()` 方法会自动处理。如果是字符串比较就需要慎重一些，将其考虑在内。
+### 查询特定标题下的任务
 
+创建一个页面，在页面中复制以下面容：
 
+````
+# title 1
 
+- [ ] task 1
+- list 1
 
-- `FLATTEN` 语句
-- 数据分组
-- 数据排序
-- 定制 DQL 查询输出
-- 在表格中显示图片
-- 属性查询
+## title 2
+
+- [x] task 2
+- [ ] task 2.1
+- list 2
+
+### title 3
+
+- [ ] task 3
+- list 3
+````
+
+现在我们来看如何在当前页面中查询标题 `title 2` 下的任务。
+
+````
+```dataview
+TASK
+WHERE file = this.file AND meta(section).subpath = "title 2"
+```
+````
+
+结果：
+
+![[Pasted image 20240528152438.png]]
+
+>[!Tip] 我们在查询中使用的 `section` 属性只存在于 `TASK` 查询中，虽然在 Dataview 中任务也是一种列表项，内部使用了 `task` 属性是否为 `true` 来判断列表为任务。但是，需要注意的是换成 `LIST` 查询就会出现执行错误。
+
+进一步，如果想判断任务是否完成，还可以结合 `completed` 和 `fullyCompleted` 属性来过滤任务：`WHERE file = this.file AND meta(section).subpath = "title 2" AND completed`。
+
+接下来我们来使用 API 的方式同样实现任务的查询，但在这里我们有 3 种方式来实现。
+
+1. 直接从 `file.tasks` 获取任务，以 `dv.taskList()` 输出。
+2. 从 `file.lists` 获取列表，并通过 `task` 属性为 `true` 来判断任务，以 `dv.taskList()` 输出。
+3. 接着第 2 种，但以 `dv.list()` 输出，同时模拟任务显示。
+
+参考代码如下：
+
+````
+```dataview
+TASK
+WHERE file = this.file AND meta(section).subpath = "title 2"
+```
+
+```dataviewjs
+dv.taskList(
+    dv.current().file.tasks
+        .where(t => t.section.subpath === "title 2")
+)
+
+dv.taskList(
+    dv.current().file.lists
+        .where(t => t.section.subpath === "title 2" && t.task)
+)
+
+dv.list(
+    dv.current().file.lists
+        .where(t => t.section.subpath === "title 2" && t.task)
+        .map(t => `- [${t.checked ? "x" : " "}] ${t.text}`)
+)
+```
+````
+
+结果：
+
+![[Pasted image 20240528155240.png]]
+
+实现一、二都没有问题，优先采用实现一，第三种实现只是模拟，不能反向操作，对查询结果任务状态的改变不会反应到原任务。从结果截图中还可以看出第三种显示又是列表又是任务，两者叠加在一起了，其实我们可以换一种方式，使用 `dv.paragraph()` 来渲染，就会好看一点，就不具体展开了。
 
 ## 中级篇：Dataview 进阶应用
+
+### 链接查询
+
+Obsidian 作为双链笔记应用中的佼佼者，提供了强大的链接支持。而我们作为使用者，能够熟练掌握并应用链接，同时在 Dataview 中根据需求写出相应的查询语句或代码，更是如虎添翼。
+
+链接在 Obsidian 中可以理解成一个文件（主要是指 Markdown 文件）的抽象，查询链接实际就是在查询一个文件名或者其内容。
+
+如果初学读者没有阅读过系列文章前 2 篇，不了解 Obsidian 中的链接建议先去补充一下基础知识。这里我也简单汇总一下链接的知识点。
+
+- 链接以 `[[xxx]]` 的语法引入文档中，如果在前面加感叹号，即：`![[xxx]]`，则表示将链接的内容嵌入文档中。
+- 我们将当前文档引入的链接称之为**出链**（Outgoing links），如果有其它文档引用了当前文档，则将其它文档称之为**外链**（Backlinks）。
+- 链接有 4 种方式：`[[xxx]]` | `[[xxx#x]` | `[[xxx#^x]` 和 `[[xxx#^x|x]`，分别表示链接到文档、标题、段落（又叫块）以及使用显示别名。
+
+#### 查询不存在的引用链接
+
+在 Obsidian 中使用 `[[xxx]]` 引用链接时，不一定要求链接指向的文件存在于库中，因此，会存在大量空链接。页面中引用的链接存放在 `file.outlinks` 属性中，我们可以读取其中的值来进一步判断链接是否存在。
+
+````
+```dataview
+TABLE WITHOUT ID key AS "unresolved link", rows.file.link AS "referencing file"
+FROM "10 Example Data"
+FLATTEN file.outlinks as outlinks
+WHERE !(outlinks.file) AND !(contains(meta(outlinks).path, "/"))
+GROUP BY outlinks
+```
+````
+
+上面代码 `!(outlinks.file)` 用于判断 `[[]]` 的情况，对于 `[[xxx]]` 通过 `meta()` 函数得到的链接描述信息中 `path` 值为 `xxx`，而有效的链接路径为：`xx/xx/xxx.md` 的形式，因此示例中判断路径是否包含 `/` 是可以排除这种无效链接的。
+
+在 Dataview 提供的 API 中，我们使用 `dv.app.metadataCache` 来获取 Obsidian API 中链接文本对象，这个对象有两个属性，分别为：
+
+- `resolvedLinks: Record<string, Record<string, number>>` 包含所有已解析的链接。
+- `unresolvedLinks: Record<string, Record<string, number>>` 包含所有未解析的链接。
+
+假如文档 `测试.md` 包含一个不存在的 `[[xxx]]` 链接，那么在 `unresolvedLinks` 中表示如下：
+
+```json
+{
+	"测试.md": {
+	    "xx": 1
+	}
+}
+```
+
+`xx` 代表链接名称，它的值是一个数字，表示在当前文档中出现的次数。
+
+下面我们来遍历输出当前文档中不存在的链接：
+
+```js
+dv.list(Object.keys(dv.app.metadataCache.unresolvedLinks[dv.current().file.path]))
+```
+
+如果要查询库中所有不存在的链接，将遍历方式修改一下：
+
+```js
+dv.list(new Set(Object.values(dv.app.metadataCache.unresolvedLinks).flatMap(l => Object.keys(l)).sort()).values())
+```
+
+这里需要使用 `Set()` 来去重，因为同一个链接可能在不同的页面引用多次。
+
+上面我们只是将仓库中所有不存在的链接遍历并以列表的形式显示出来了，现在我们进一步将每一个链接所包含的文件列举出来：
+
+````
+```dataviewjs
+const unresolvedLinksMap = dv.app.metadataCache.unresolvedLinks
+
+const res = {}
+for (let page in unresolvedLinksMap) { // page 为文件路径
+    const unresolved = Object.keys(unresolvedLinksMap[page])
+    if (unresolved.length === 0) continue
+    for (let link of unresolved) { // file 为链接名
+        if (!res[link]) res[link] = {link, usages: []}
+        res[link].usages.push(dv.fileLink(page))
+    }
+}
+
+dv.table(["Unresolved Link", "Contained in"], Object.values(res).map(l => [dv.fileLink(l.link), l.usages]))
+```
+````
+
+结果部分截图：
+
+![[Pasted image 20240528190213.png]]
+
+进一步阅读：[List non existing, linked pages - Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/20%20Dataview%20Queries/List%20non%20existing%2C%20linked%20pages/)
+
+#### 查询所有未被使用的附件
+
+在 Obsidian 中文档是以 Markdown 格式保存的，所以其它文档类型我们都可以视作附件。当然这也不是绝对的，如果安装的插件自带了特定格式的源文件我们不能将其作附件。
+
+要获得所有文件列表，我们需要用到 `app.vault.getFiles()` 方法，并过滤掉所有 Markdown 文件得到附件列表。同时，查询所有文档中的外链，过滤掉指向 Markdown 文档的链接。如果非 Markdown 文档的链接列表中包含附件列表中的文件，则说明附件已使用。
+
+注意：这里的 `app` 是一个全局属性，可以在 Dataviewjs 代码块直接访问。
+
+````
+```dataviewjs
+const allNonMdFiles = app.vault.getFiles().filter(f => f.extension !== "md")
+const allNonMdOutlinks = dv.pages().file.outlinks.path.filter(link => !link.endsWith(".md"))
+const notReferenced = allNonMdFiles.filter(f => !allNonMdOutlinks.includes(f.path))
+dv.list(dv.array(notReferenced).map(link => dv.fileLink(link.path)))
+```
+````
+
+结果部分截图：
+
+![[Pasted image 20240528194056.png]]
+
+如果要指定多个非附件文档后缀，比如截图中的 `.loom` 文件后缀，可以将第一行代码中的过滤语句修改成：`['md', 'loom'].includes(file.extension)`。
+
+
+
 
 - 进度条
 - 标签云
