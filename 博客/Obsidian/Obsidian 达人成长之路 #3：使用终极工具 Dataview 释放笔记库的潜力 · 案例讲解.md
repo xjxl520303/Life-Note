@@ -58,6 +58,87 @@ JavaScript API 示例：
 
 > [!Warning] 在文件名不要包含 `#` 符号，在使用链接时会被错误的识别为标签或者页面标题。
 
+### 在查询结果中显示图片
+
+在 Obsidian 中，`[网站名称](网页地址)` 用于插入网页链接，`![图片名称](图片地址)` 用于嵌入图片（这里也可以是其它媒体，如音频、视频等），图片进一步还能指定宽度，语法为 `![图片名称|宽度](图片地址)`。
+
+图片的地址除了网页地址外，也可能为本地图片，语法为 `![[图片名称.后缀]]`，在 YAML 中为 `"[[图片名称.后缀]]"`。在使用 DQL 查询语法获取图片地址时就需要对两种类型作区分。
+
+现在我们在 Front Matter 中添加一个属性 `cover-img`，其值为图片的链接数组。然后，我们来看一下如何在文档中显示图片：
+
+````
+---
+cover-img: 
+- https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546512443i/43451211.jpg
+- "[[Pasted image 20240529150343.png]]"
+---
+
+`= "![图片名称|50](" + this.cover-img[0] + ")"`
+`= "!" + this.cover-img[1]`
+`= embed(link(this.cover-img[1], "50"))`
+
+```dataview
+TABLE WITHOUT ID map(cover-img, (img) => choice(typeof(img)="link", embed(link(img, "50")), "![anyName|50](" + img + ")")) AS 图片
+WHERE file = this.file
+```
+````
+
+结果：
+
+![[Pasted image 20240529163127.png]]
+
+上面的示例中，我们分别使用了 3 种方式来展示图片：
+
+1. 使用 `![xx|xx](xx.xx)` 的方式，这是 URL 图片地址显示方式。
+2. 使用 `![[xx.xx]]` 的方式，这种方式虽然简单，但是不能指定链接图片宽度，灵活度不够。
+3. 使用 `![[xx.xx|xx]]` 的方式，这是链接的推荐显示方式，需要调用 `embed()` 和 `link()` 函数来实现。
+
+处理 Obsidian 内部图片链接时，我们利用 `link()` 函数的第二个参数来指定图片的宽度，实际上它是用于指定链接别名的，这里刚好利用其发挥额外作用了。
+
+>[!Tip] 不要像上面示例中那样在 YAML 中放入链接，如果必须放需要加上双引号才能正确读取出来，否则被识别成数组。但是又衍生出另一个问题，文档属性区域会显示一个警告图标，提示：未匹配到类型，建议使用文本。
+
+下面我们来看一下在现实场景中的应用：
+
+````
+``` dataview
+TABLE author, genres, EmbededCoverImg as ""
+FROM "10 Example Data/books"
+FLATTEN choice(typeof(cover-img)="link",
+	embed(link(meta(
+		choice(
+			typeof(cover-img)="link", 
+				cover-img, this.file.link
+		)
+	).path, "50")), "![anyName|50](" + cover-img + ")") AS EmbededCoverImg
+```
+````
+
+结果：
+
+![[Pasted image 20240529170641.png]]
+
+下面现给出一个 API 实现方式参考：
+
+````
+```dataviewjs
+dv.table(["File", "Author", "Genres", ""], dv.pages('"10 Example Data/books"')
+    .map(p => {
+        let img;
+
+        if (!p['cover-img']) {
+            img = ''
+        } else if (typeof p['cover-img'] === 'object' && p['cover-img'].path) { // 没办法直接判断 Link 对象
+            img = dv.fileLink(p['cover-img'].path, true, '50')
+        } else {
+            img = `![anyName|50](${p['cover-img']})`
+        }
+        
+        return [p.file.link, p.author, p.genres, img]
+    }))
+```
+````
+
+
 ### 数据分组
 
 数组分组适用于数据具有一对多或多对多的关系，例如一个作者对应多本书籍，那么我们在查询数据时就可以按作者去分组。
@@ -381,6 +462,48 @@ FLATTEN arr3
 
 ![[Pasted image 20240517164859.png]]
 
+### SORT 语句
+
+我们通常在使用 `SORT` 语句时，主要是针对文件的创建日期、日记等进行排序。这里单独提出来讲解的目的在于，让大家知道怎么对一个分类属性进行手动干预排序。下面以 `"10 Example Data/food"` 文件中的 `recipe-type` 属性为例。
+
+默认查询并根据 `recipe-type` 进行分组后的显示顺序为 `meat` , `onepot` 和 `vegetarian`，现在我们将其变成 `onepot`, 'meat' 和 `vegetarian` 的顺序，看看怎么实现：
+
+````
+```dataview
+TABLE rows.file.link
+FROM "10 Example Data/food"
+WHERE recipe-type
+GROUP BY recipe-type
+SORT choice(recipe-type="onepot", "1", choice(recipe-type="meat", "2", "3")) ASC
+```
+````
+
+结果：
+
+![[Pasted image 20240530145453.png]]
+
+上面示例中，我们对应对的 3 个属性值的顺序调整，如果数量量很多，几十个又该如何处理呢？
+
+我们可以用一个对象将属性作为键值，排序的权重（顺序值，如 `1`, `2`, ...）作为值，然后以一个立即执行函数根据参数值获取顺序：
+
+````
+```dataview
+TABLE WITHOUT ID Person.name AS 姓名
+FLATTEN [{name: "晓露"}, {name: "一佰度"}, {name: "周工"}, {name: "狼人头"}, {name: "腰哥"}, {name: "黑黑"}] AS Person
+WHERE file = this.file
+SORT default(((x) => {
+    "狼人头":1,
+    "晓露": 2
+}[x])(Person.name), 99) ASC
+```
+````
+
+结果：
+
+![[Pasted image 20240530152109.png]]
+
+`default()` 函数中第二个参数，我们只需要指定为比数据量大就可以了，后续没有指定顺序的值就会按默认的排序方式来执行。
+
 ### 根据不同的条件来查询日记
 
 在 Obsidian 中日记文件通常以 `xxxx-xx-xx` 的日期格式创建。我们可以通过 DQL 来精确查询完整年/月/日的日记，也可以查询指定年份、月份和具体某天的日记。下面我们以 10 Example Data/daily 中的日记数据 `wake-up` 为例。
@@ -477,6 +600,62 @@ dv.list(
 ![[Pasted image 20240527200105.png]]
 
 在处理时需要注意，在表示 6 点时，数据源中有少部分是 `6:xx` 其它为 `06:xx`。我们上面的代码中无须担心会被其影响，因为在使用 `number()` 方法时，`06` 会变成数字 `6`，而在脚本实现中 `dt.fromFormat()` 方法会自动处理。如果是字符串比较就需要慎重一些，将其考虑在内。
+
+### 查询联系人的最后一次见面日期
+
+下面是日记中和联系人的见面信息记录：
+
+````
+#### Appointments
+My next appointment with (person:: [[AB1908]]) is on (appointment:: 2022-06-02).
+Also I have an appointment at (appointment:: 2022-05-24 13:17) with (person:: [[Bob]])
+````
+
+现在我们来查询和每一个人的最后一次约会日期以及目前为止过去了多少天，并按降序排序（最近日期显示在前面）：
+
+````
+```dataview
+TABLE WITHOUT ID
+contactedPerson AS "Person",
+max(rows.file.link) AS "Last contact",
+min(rows.elapsedDays) + " days" AS "Elapsed days"
+FROM "10 Example Data/dailys"
+WHERE person
+FLATTEN (date(today) - file.day).days AS elapsedDays
+FLATTEN person AS contactedPerson
+GROUP BY contactedPerson
+SORT max(rows.file.day) DESC
+```
+````
+
+结果：
+
+![[Pasted image 20240529180837.png]]
+
+从这个示例中我们可学到一点日记小技巧：如何使用 `(xx: xx)` 内联字段来记录信息，并在后期进行查询。
+
+示例中显示的是最后一次见面日期，如果要查询日记信息中第一次见面时间，可以将查询语句中的第 3 行改成 `min(rows.file.link) As "First contact"`。
+
+### 按周显示数据
+
+下面这个示例，我们通过指定的周数 `2022-W5` 查询日记中的 ` note ` 属性的值，并以本地化的时间显示星期数。
+
+````
+```dataview
+TABLE WITHOUT ID "**" + dateformat(file.day, "cccc") + "**" AS "Day" , choice(typeof(note) = "array", note, array(note)) AS "Notes"
+FROM "10 Example Data/dailys"
+FLATTEN "2022-W5" AS Week
+WHERE string(file.day.year) = split(Week, "-W")[0] AND string(file.day.weekyear) = split(Week, "-W")[1]
+SORT file.name
+```
+````
+
+结果：
+
+![[Pasted image 20240529191626.png]]
+
+关于日期格式符可以参见：[Formatting (moment.github.io)](https://link.juejin.cn/?target=https%3A%2F%2Fmoment.github.io%2Fluxon%2F%23%2Fformatting%3Fid%3Dtable-of-tokens "https://moment.github.io/luxon/#/formatting?id=table-of-tokens")
+
 ### 查询特定标题下的任务
 
 创建一个页面，在页面中复制以下面容：
@@ -554,6 +733,33 @@ dv.list(
 ![[Pasted image 20240528155240.png]]
 
 实现一、二都没有问题，优先采用实现一，第三种实现只是模拟，不能反向操作，对查询结果任务状态的改变不会反应到原任务。从结果截图中还可以看出第三种显示又是列表又是任务，两者叠加在一起了，其实我们可以换一种方式，使用 `dv.paragraph()` 来渲染，就会好看一点，就不具体展开了。
+
+### 合并数据到同一个表格列
+
+在 `TABLE` 查询输出时，我们可以将两个属性进行合并成一个列表进行显示。
+
+````
+```dataview
+TABLE WITHOUT ID [Person.name, Person.nickname] AS 称呼
+FLATTEN [{name: "晓露", nickname: "球球"}, {name: "周工", nickname: "露露"}, {name: "狼人头", nickname: "Jenemy"}, {name: "腰哥"}] AS Person
+WHERE file = this.file
+```
+````
+
+如果数据中缺少其中某个属性，则会显示为 `-`，下面我们通过 `filter()` 函数来处理一下，过滤掉不存在的属性。
+
+````
+```dataview
+TABLE WITHOUT ID name AS 称呼
+FLATTEN [{name: "晓露", nickname: "球球"}, {name: "周工", nickname: "露露"}, {name: "狼人头", nickname: "Jenemy"}, {name: "腰哥"}] AS Person
+WHERE file = this.file
+FLATTEN filter([Person.name, Person.nickname], (x) => x) AS name
+```
+````
+
+对比结果：
+
+![[Pasted image 20240530160245.png]]
 
 ## 中级篇：Dataview 进阶应用
 
@@ -665,21 +871,439 @@ dv.list(dv.array(notReferenced).map(link => dv.fileLink(link.path)))
 
 如果要指定多个非附件文档后缀，比如截图中的 `.loom` 文件后缀，可以将第一行代码中的过滤语句修改成：`['md', 'loom'].includes(file.extension)`。
 
+### 计算连续头痛的周期和持续时间
 
+通过 YAML 中的属性 `wellbeing.pain-type` 是否包含 `head` 来判断当日是否有头痛记录，然后计算持续的天数以及上一次的间隔周期。
 
+````
+```dataviewjs
+const dt = dv.luxon.DateTime
+const dur = dv.luxon.Duration
 
-- 进度条
-- 标签云
-- 计算周期
-- 根据条件显示/隐藏结果
-- 文字搜索
-- 根据双链查询
-- 日期和时间操作
+// 返回一个由每个页面的前一天的页面（如果存在）组成的集合，并按日期降序排序。需要注意的是，并不是所有日期都有前一天的数据。
+let startDates = dv.pages('"10 Example Data/dailys"')
+    .mutate(p => p.previousDay = dv.page(dt.fromMillis(p.file.day - dv.duration("1d"))
+        .toFormat('yyyy-MM-dd')))
+        .sort(p => p.file.name)
+
+// 结束日期的数据：当日没有记录数据，但前一天有记录。
+const endDates = dv.array(dv.clone(startDates)[0]).where(p => !checkCriteria(p) && checkCriteria(p.previousDay))
+
+// 开始日期的数据：当日有记录数据，但前一天无记录。
+startDates = startDates.where(p => checkCriteria(p) && !checkCriteria(p.previousDay))
+
+// 存放周期数据
+const cycles = []
+
+for (let i = 0; i < endDates.length; i++) {
+    cycles.push([
+        startDates[i].file.link,
+        endDates[i].file.link,
+        dur.fromMillis(endDates[i].file.day - startDates[i].file.day),
+        i === 0 ? '' : dur.fromMillis(startDates[i].file.day - endDates[i-1]?.file.day),
+        i === 0 ? '' : dur.fromMillis(startDates[i].file.day - startDates[i-1]?.file.day).toFormat("d '天'")
+    ])
+}
+
+// 输出为表格
+dv.table(["开始", "结束", "持续时间", "间隔", "间隔周期"], cycles)
+
+function checkCriteria(p) {
+    return p && p.wellbeing && (p.wellbeing["pain-type"] || []).contains("head")
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240511181827.png]]
+
+### 根据复选框动态显示内容
+
+当前页面中以作者名为任务名，当任务完成时自动去查询在日记中有引用自该作者的语录，当取消完成时，自动移除相关语录信息。
+
+````
+- [x] Michel Foucault
+- [ ] Walter Benjamin
+- [ ] Karl Marx
+
+```dataviewjs
+const checklist = dv.current().file.tasks.where(t => t.completed)
+const authors = ["Michel Foucault", "Walter Benjamin", "Karl Marx"]
+
+// 这里将原来代码中的 3 段代码用一个遍历重写了
+authors.forEach(author => {
+    if (isActive(author)) {
+        dv.header(2, `${author} quotes`)
+        dv.list(dv.pages('"10 Example Data/dailys"').flatMap(p => p.file.lists)
+            .where(l => l.author == author)
+            .text)
+    }
+})
+
+function isActive(name) {
+// 原代码使用 `t.text == name` 来判断并不准确
+// 因为我们安装了 tasks 插件后，任务完成会自动加上表情符号和完成日期。
+    return checklist.where(t => t.text.contains(name))[0]
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240511193408.png]]
+
+### 按照文件中的顺序对重复的元数据字段进行分组
+
+这个案例对日记中以下数据中的 `bought` 进行查询并显示出对应的 `paid` 数据。
+
+````
+#### Money spent
+
+bought:: piece of cake
+paid:: 7.99$
+
+bought:: buddha bowl
+paid:: 8.5$
+
+bought:: jacket
+paid:: 99$
+````
+
+从数据可以看出 `bought` 和 `paid` 在页面中是重复出现，这在 Obsidian 中将会被解析成 `bought: ['piece of cake', 'buddha bowl', 'jacket']` 和 `paid: ['7.99$', '8.5$', '99$']`。
+
+下面是查询代码：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+dv.table(["页面", "购买", "支付"], groupedValues)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240512233848.png]]
+
+从上面的结果来看，物品有一部分是经常购买的，比如说：`piece of cake`，现在我有一个想法浮现在脑海，我们能不能进一步根据 `bought` 的具体值再进行一次分组呢，相同组的名字以 `--` 显示，下面是期望得到的效果：
+
+![[Pasted image 20240512235407.png]]
+
+然后，我进入了无休止的尝试中…
+
+最终，我实现出了想要的结果，但是这个代码有点长，不太好理解，也并不优雅：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+   .sort(p => p.file.name)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+// 重组数据
+const newPages = groupedValues.map(g => {
+    return {
+        link: g[0],
+        bought: g[1],
+        paid: g[2],
+    }
+})
+
+// 按 bought 进行分组
+const newGroupedValues = dv.array(newPages)
+    .groupBy(p => p.bought)
+    .flatMap(g => g.rows)
+
+dv.table(
+    ["购买", "支付", "页面"],
+    newGroupedValues.flatMap((g, i, arr) => {
+        let j = 0; // 用于判断 bought 是否连续
+
+        // 找到连续的 bought
+        if (i > 0 && g.bought !== arr[i - 1].bought) {
+            j = i;
+        }
+
+        // 计算连续的数量
+        while (j < arr.length - 1 && arr[j+1].bought === g.bought) {
+            j++;
+        }
+
+        if (j > i) {
+            return Array(j - i + 1).fill(0).map((_, k) => {
+                if (k === 0) {
+                    return [g.bought, g.paid, g.link]
+                } else {
+                    // 相同名字显示 --
+                    return ['--', arr[i + k].paid, arr[i + k].link]
+                }
+            })
+        }
+
+        // 单个 bought
+        if (i === j && g.bought !== arr[i - 1].bought) {
+            return [[g.bought, g.paid, g.link]]
+        }
+    })
+)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+上述代码是在 `groupedValues` 的基础上对数据进行了一次重映射，然后使用 `dv.array()` 方法将普通的 JavaScript 数组转换成 `DataArray<T>` 类型，然后使用其 `groupBy()` 方法按 `bought` 字段进行分组，然后使用 `flatMap()` 映射返回 `rows` 的值。
+
+> [Tips] 使用 `groupBy()` 分组后返回一个包含 `key` 和 `rows` 的对象，其中 `key` 为分组名称，`rows` 是分组后的数据。
+
+`flatMap()` 方法是一个很重要的函数，关于其用法可自行去脑补，后面处理分组数据部分写出来后，思索着应该还有更简单的实现。与是，作者又双叒叕熬夜想了想，终于以 2 个 `flatMap()` 方法成功破局，一行代码暴击（不追求代码可读性为前提）：
+
+````
+```dataviewjs
+const pages = dv.pages('"10 Example Data/dailys"').where(p => p.bought)
+   .sort(p => p.file.name)
+
+const groupedValues = [];
+for (let page of pages) {
+    const length = Array.isArray(page.bought) ? page.bought.length : 1;
+    for (let i = 0; i < length; i++) {
+        groupedValues.push([
+            page.file.link,
+            getValue(page, 'bought', i),
+            getValue(page, 'paid', i),
+        ]);
+    }
+}
+
+// 重组数据
+const newPages = groupedValues.map(g => {
+    return {
+        link: g[0],
+        bought: g[1],
+        paid: g[2],
+    }
+})
+
+// 按 bought 进行分组
+const newGroupedValues = dv.array(newPages)
+    .groupBy(p => p.bought)
+
+dv.table(
+   ["购买", "支付", "页面"],
+   newGroupedValues.flatMap((g, i, arr) => 
+        g.rows.flatMap((r, i, arr) => {
+            if (i === 0) {
+                return [[g.key, r.paid, r.link]]
+            } else {
+                return [['--', r.paid, r.link]]
+            }
+        })
+   )
+)
+
+function getValue(page, key, i) {
+    return page[key] && Array.isArray(page[key]) ? page[key][i] : page[key];
+}
+```
+````
+
+最后，如果你脑子又一转，在数据很多的情况下，是否可以将每个分组拆解出来单独显示呢？也就是说多个表格单独显示，像下面这样：
+
+![[Pasted image 20240513001831.png]]
+
+这必需安排起，只需要将上面的示例中的 `dv.table()` 部分改成下面的代码即可：
+
+```js
+for (let g of newGroupedValues) {
+    dv.span('- ' + g.key)
+    dv.table(
+        ["页面", "支付"],
+        g.rows.map(r => [r.link, r.paid])
+    )
+}
+```
 
 ## 高级篇：Dataview 高级技巧与探索
 
 - 和 chart.js 结合
 - 日历渲染
+
+### 使用选项卡切换数据
+
+在查询数据时，有的数据不同的状态会有不同的结果，我们可以按状态来进行条件显示。将状态作为选项卡，而其关联的内容作为选项卡内容。
+
+````
+```dataviewjs
+const createButton = name => {
+    const btn = dv.el('button', name)
+    btn.addEventListener('click', () => {
+        event.preventDefault()
+        removeTable()
+        renderTable(name)
+    })
+
+    return btn
+}
+
+const buttons = ['Watching', 'Going to watch', 'Watched all', 'Stopped watching']
+
+const renderTable = name => {
+    const pages = dv.pages('"10 Example Data/shows"').where(p => p.status === name)
+    dv.header(2, name)
+    dv.table(
+        ['Title', 'Rating', 'Runtime', 'Seasons', 'Episodes'],
+        pages.map(p => {
+            let watchedEp = 0
+            const totalEp = p.episodes
+
+            p.file.tasks.forEach(t => {
+                if (t.checked) {
+                    watchedEp++
+                }
+            })
+
+            return [p.file.link, p.rating, p.runtime, p.seasons, `${watchedEp}/${totalEp}`]
+        })
+    )
+}
+
+const removeTable = () => {
+    this.container.lastChild.remove()
+    this.container.lastChild.remove()
+}
+
+buttons.forEach(button => createButton(button))
+
+renderTable('Watching')
+```
+````
+
+![[动画.gif]]
+
+上面的代码中，我们使用 `dv.el()` 来创建了按钮并添加了事件处理逻辑。在选项卡被选中时，根据选项卡名去过滤查询结果，并将上一次渲染的 HTML 节点移除掉。
+
+进一步，我们还可以实现同一份数据结果以不同的方式渲染：
+
+````
+```dataviewjs
+const views = ['Table', 'List', 'Tasks']
+
+const changeView = viewName => {
+    removeView()
+
+    if (viewName === 'Table') {
+        dv.header(2, 'Some table')
+        dv.table(['File', 'Day'], dv.pages('"10 Example Data/dailys"').limit(7).map(p => [p.file.link, p.day]))
+    }
+
+    if (viewName == 'List') {
+        dv.list(dv.pages('"10 Example Data/dailys"').limit(7).file.name)
+    }
+
+    if (viewName == 'Tasks') {
+        dv.taskList(dv.page("10 Example Data/projects/project_2").file.tasks)
+    }
+}
+
+const createButtons = () => {
+    const buttonContainer = dv.el('div', '', {cls: 'tabButtons'})
+    views.forEach(view => {
+        const button = dv.el('button', view)
+
+        button.addEventListener('click', event => {
+            event.preventDefault()
+            changeView(view)
+        })
+
+        buttonContainer.append(button)
+    })
+}
+
+const removeView = () => {
+    Array.from(this.container.children).forEach(el => {
+        if (!el.classList.contains('tabButtons')) {
+            el.remove()
+        }
+    })
+}
+
+createButtons()
+```
+````
+
+结果：
+
+![[动画2.gif]]
+
+### 使用不同的表情符来显示时间缀
+
+这个案例我们查询任务计划数据，来获取未完成的任务距离现在过去了多长时间，并对其按时间长度自定义不同的表情符来显示得分。
+
+- 如果月数超过6个月，则添加 "🥳" 表情符号。
+- 如果剩余的月数（在超过6个月后）超过3个月，则添加 "🎉" 表情符号。
+- 如果剩余的月数（在超过9个月后）仍然有剩余，则添加 "🎁" 表情符号。
+
+````
+```dataviewjs
+const projects = dv.pages('"10 Example Data/projects"')
+    .where(p => p.status !== undefined && p.status !== "finished")
+    .mutate(p => {
+        p.age = p.started && p.started instanceof dv.luxon.DateTime ? dv.luxon.Duration.fromMillis(Date.now() - p.started.toMillis()) : null
+        p.emojiAgeScore = getEmojiScore(p)
+    })
+
+dv.table(["Score", "Project", "Started", "Age"], projects.map(p => [p.emojiAgeScore, p.file.link, p.started, p.age ? p.age.toFormat("y'年' M'个月' w'周'") : 'N/A']))
+
+function getEmojiScore(p) {
+    const age = p.age.shiftTo('months').toObject()
+    let score = ""
+
+    score += addEmojis("🥳", age.months / 6)
+    score += addEmojis("🎉", (age.months % 6) / 3)
+    score += addEmojis("🎁", age.months % 6 % 3)
+
+    return score
+}
+
+function addEmojis(emoji, max) {
+    let emojis = ""
+    for (let i = 0; i < Math.floor(max); i++) emojis += emoji
+    return emojis
+}
+```
+````
+
+结果：
+
+![[企业微信截图_17170585746313.png]]
 
 ## 总结
 

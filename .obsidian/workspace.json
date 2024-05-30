@@ -67,26 +67,27 @@
             }
           },
           {
-            "id": "212a9bd7f0f24ad0",
-            "type": "leaf",
-            "state": {
-              "type": "file-tree-view",
-              "state": {}
-            }
-          },
-          {
             "id": "95695785485dd896",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
               "state": {}
             }
+          },
+          {
+            "id": "ae39073c20438325",
+            "type": "leaf",
+            "state": {
+              "type": "file-tree-view",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 219.5
+    "width": 317.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -182,7 +183,7 @@
             }
           }
         ],
-        "currentTab": 7
+        "currentTab": 3
       },
       {
         "id": "00371229898dddaf",
@@ -220,26 +221,26 @@
   },
   "active": "1072b0068a5173be",
   "lastOpenFiles": [
-    "附件/Pasted image 20240528194056.png",
-    "附件/Pasted image 20240528190213.png",
-    "附件/Pasted image 20240528185401.png",
-    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "附件/企业微信截图_17170585746313.png",
+    "附件/动画2.gif",
+    "博客/Obsidian/临时放置.md",
     "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+    "附件/Pasted image 20240530160245.png",
+    "附件/Pasted image 20240530152109.png",
+    "附件/Pasted image 20240530145453.png",
+    "附件/Pasted image 20240529191626.png",
+    "附件/Pasted image 20240529180837.png",
+    "附件/Pasted image 20240529170641.png",
+    "附件/Pasted image 20240529163127.png",
+    "附件/Pasted image 20240529144756.png",
+    "附件/Pasted image 20240528194056.png",
+    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "博客/Obsidian/Obsidian 达人成长之路：Db forlder.md",
     "博客/Obsidian/Obsidian 达人成长之路：Projects 插件.md",
     "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
-    "附件/Pasted image 20240528155240.png",
-    "附件/Pasted image 20240528152438.png",
-    "附件/Pasted image 20240527200105.png",
-    "博客/Obsidian/临时放置.md",
-    "附件/Pasted image 20240527184049.png",
     "日记/2024-05-27.md",
-    "附件/Pasted image 20240527170356.png",
     "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
     "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
-    "附件/Pasted image 20240525203648.png",
-    "附件/Pasted image 20240525163938.png",
-    "附件/Pasted image 20240524191254.png",
     "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
     "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
