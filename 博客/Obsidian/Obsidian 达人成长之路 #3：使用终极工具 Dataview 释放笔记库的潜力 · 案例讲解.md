@@ -46,6 +46,7 @@ JavaScript API 示例：
 修改时间：`$= dv.current().file.mtime` %% 2024-05-15 12:05:44 %%
 标签：`$= dv.current().file.tags` %% Blog, Dataview, Obsidian %%
 内联字段查询：`$= dv.current().topic` %% basic inline queries %%
+文本截取 `$= dv.func.truncate(dv.current().description, 20, "…")` %% Showcase basic synt… %%
 文本截取：`$= dv.evaluate("truncate(this.description, 20, \"…\")").value` %% Showcase basic synt… %%
 或者：`$= dv.tryEvaluate("truncate(this.description, 20, \"…\")")` %% Showcase basic synt… %%
 条件判断：`$= dv.current().topic ? 'Set' : 'Missing!'` %% Set %%
@@ -59,7 +60,7 @@ JavaScript API 示例：
 
 > [!Tip] 使用内联 API 查询出来的标签在结果显示上和内联 DQL 的结果略有不同，前者是可交互的结果，后者为纯文本。
 
-> [!Warning] 在 API 中没有对应的 `truncate()` 函数使用，但是我们可以 `dv.evalute()` 或者 `dv.tryEvaluate()` 函数在 API 中执行 DQL 查询。
+> [!Tip] 有没有发现在 API 中没有对应的 `truncate()` 函数使用（骗人的：所有 DQL 查询语句能用的函数都在 `dv.func` 对象中，这里就是 `dv.func.truncate()`），但是我们还可以 ` dv.evalute() ` 或者 ` dv.tryEvaluate() ` 函数在 API 中执行 DQL 查询。
 
 > [!Warning] 在文件名不要包含 `#` 符号，在使用链接时会被错误的识别为标签或者页面标题。
 
