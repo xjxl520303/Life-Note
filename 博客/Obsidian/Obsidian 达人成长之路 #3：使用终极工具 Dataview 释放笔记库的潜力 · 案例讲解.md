@@ -4,6 +4,11 @@ tags:
   - Dataview
   - Obsidian
 ---
+本文为 Obsidian 达人成长之路系列第三篇，主要梳理了 Dataview 示例库 **Dataview Example Valut** 中的一些案例，并加上个人的一些理解和分析，以方便读者能够触类旁通，应用到自己的笔记中。
+
+虽然文章按初级、中级和高级来进行了分类，但是对于不同的作者可能认知不一样，不一定合理，读者可根据标题选择感兴趣的章节阅读。
+
+在文章中我并没有标明每一个示例来自于 Dataview 示例仓库中的具体案例名称，有的原文章内容较多我会给出进一步阅读指引链接。
 
 ## 初级篇：Dataview 基础应用
 
@@ -127,7 +132,7 @@ dv.table(["File", "Author", "Genres", ""], dv.pages('"10 Example Data/books"')
 
         if (!p['cover-img']) {
             img = ''
-        } else if (typeof p['cover-img'] === 'object' && p['cover-img'].path) { // 没办法直接判断 Link 对象
+        } else if (dv.func.typeof(p['cover-img']) === 'link') {
             img = dv.fileLink(p['cover-img'].path, true, '50')
         } else {
             img = `![anyName|50](${p['cover-img']})`
@@ -138,6 +143,7 @@ dv.table(["File", "Author", "Genres", ""], dv.pages('"10 Example Data/books"')
 ```
 ````
 
+代码中 `dv.func.typeof()` 方法同 DQL 查询语句中的函数 `typeof()`。
 
 ### 数据分组
 
@@ -636,6 +642,26 @@ SORT max(rows.file.day) DESC
 
 示例中显示的是最后一次见面日期，如果要查询日记信息中第一次见面时间，可以将查询语句中的第 3 行改成 `min(rows.file.link) As "First contact"`。
 
+### 计算每天的醒来时长
+
+下面这个案例中，我们查询日记数据中的 `wake-up` 和 `go-to-sleep` 行内属性，来计算出醒来时长。
+
+````
+```dataview
+TABLE wake-up, go-to-sleep, wakeTime
+FROM "10 Example Data/dailys"
+LIMIT 10
+FLATTEN dateformat(file.day, "yyyy-MM-dd") as dt
+FLATTEN date(dt + "T" + go-to-sleep) - date(dt + "T" + wake-up) as wakeTime
+```
+````
+
+结果：
+
+![[Pasted image 20240531115539.png]]
+
+进一步阅读：[Calculate waking phase with wake up and go to sleep times - Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/20%20Dataview%20Queries/Calculate%20waking%20phase%20with%20wake%20up%20and%20go%20to%20sleep%20times/)
+
 ### 按周显示数据
 
 下面这个示例，我们通过指定的周数 `2022-W5` 查询日记中的 ` note ` 属性的值，并以本地化的时间显示星期数。
@@ -761,7 +787,143 @@ FLATTEN filter([Person.name, Person.nickname], (x) => x) AS name
 
 ![[Pasted image 20240530160245.png]]
 
+### 进度条
+
+在 HTML 中有一个标签 `<progress>` 来渲染进度条，我们可以很容易的使用内联查询 JS 或 `dv.el()` 函数来实现。
+
+````
+pagesRead:: 42
+totalPages:: 130
+
+`$= const value = Math.round((dv.current().pagesRead / dv.current().totalPages) * 100); "<progress value='" + value + "' max='100'></progress>" + " " + value + "%"`
+````
+
+结果：
+
+![[Pasted image 20240530183919.png]]
+
+下面这个案例中，我们在页面中设置了两个内联字段来分别表示当前进度值和目标总数值，并根据不同的进度显示不同的图片。
+
+````
+wordcount:: 3900
+targetcount:: 15000
+
+```dataviewjs
+const pagePath = "Add a NaNoWriMon to your vault"
+const inlineWordcount = "wordcount"
+const inlineTargetcount = "targetcount"
+const name = "Bulba"
+const images = ["Pokémon-Icon_001.png", "Pokémon-Icon_002.png", "Pokémon-Icon_003.png"]
+
+const page = dv.page(pagePath)
+let image = images[0]
+const percentage = Math.round(page[inlineWordcount] / page[inlineTargetcount] * 100)
+
+if (percentage > 33 && percentage < 66) {
+    image = images[1]
+} else if (percentage > 66) {
+    image = images[2]
+}
+
+const attachments = this.app.vault.getConfig("attachmentFolderPath")
+const basePath = this.app.vault.adapter.basePath
+
+const html = `<div class="monwrapper" style="display:flex;align-items:center;">
+<img src="${basePath}/${attachments}/${image}" class="mon" style="margin-right:10px;"></img>
+<div>
+<div class="monname">${name}</div>
+<div class="progressbar"><progress max="100" value="${percentage}"></progress> Lv. ${percentage}</div></div>
+</div>`;
+dv.el("div", html)
+```
+````
+
+结果：
+
+![[Pasted image 20240530174437.png]]
+
+代码中 `this.app.vault.getConfig("attachmentFolderPath")` 用于获取我们配置的附件文件夹路径。`getConfig()` 方法也可以读取 `.obsidian/app.json` 中的其它配置。`this.app.vault.adapter.basePath` 用于获取当前笔记在操作系统中的路径，如：`D:\Test_Note`。
+
+>[!Tip] 如果在 Mac 中发现图片并没有成功显示，控制台报 `net::ERR_FILE_NOT_FOUND` 错误。正确的使用姿势是在原有的路径上添加 `file:///` 前缀，即：`<img src="file://${basePath}/${attachments}/${image}" />`。
+
+下面我们再看一个复杂的进度条案例。
+
+查询项目数据，并对每个目标及包含的项目的完成情况进行可视化显示。
+
+````
+```dataviewjs
+const DQL = await dv.tryQuery(`
+TABLE WITHOUT ID
+	G AS Goals,
+	rows.OUT,
+	map(rows, (r) => r.Lt),
+	map(rows, (r) => r.Lc),
+	map(rows, (r) => "<progress style='width:80px;' value='" + (r.Lc/r.Lt)*100 + "' max='100'></progress>" + "&nbsp;&nbsp;<span style='font-size:smaller;color:var(--text-muted)'>" + round((r.Lc/r.Lt)*100) + "%</span>")
+FROM #goal 
+FLATTEN file.outlinks AS OUT
+WHERE OUT.file.tasks
+FLATTEN length(OUT.file.tasks) AS Lt
+FLATTEN length(filter(OUT.file.tasks, (p) => p.completed)) AS Lc
+GROUP BY file.link AS G
+SORT G ASC
+`)
+
+const globalValues = DQL.values
+	.map(row => {
+	console.log(row)
+	return [
+		row[0], //Goals Link
+		removeBulletpoints(row[1]), // Project links
+		removeBulletpoints(row[4]), // progress bars
+		"<progress value='" + sumUp(row[3])/sumUp(row[2]) * 100 
+		+ "' max='100'></progress><br><span style='font-size:smaller;'>" 
+		+ Math.round(sumUp(row[3])/sumUp(row[2]) * 100) + "% completed</span>" 
+	]})
+
+dv.table(["Goals", "Projects", "Progress", "Goal Progress"], globalValues);
+
+
+function removeBulletpoints(array) {
+	return array.join("<br>")
+}
+
+function sumUp(val) {
+	return val.reduce((acc, val) => acc + val, 0)
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240530175840.png]]
+
+这个例子中查询的数据源有 2 个目标 `Goal 1` 和 `Goal 2`，两个文件中分别外链了 `Project 1~9`，并且都标记了 `#goal` 标签。所以 DQL 查询语句先通过标签来获取 2 个目标文件，然后通过外链获取所有项目中的任务，并根据每个任务文件中的任务数和完成数来生成进度条。
+
+例子中的 `removeBulletpoints()` 函数去除 Bullet 的方式让我们又 Get 到了新技能：如何去掉列表丑陋的小点点。
+
+````
+name:: 标题1
+name:: 标题2
+name:: 标题3
+
+```dataview
+TABLE WITHOUT ID name AS 姓名
+where file = this.file
+```
+
+```dataview
+TABLE WITHOUT ID join(name, "<br>") AS 姓名
+where file = this.file
+```
+````
+
+结果：
+
+![[Pasted image 20240530182704.png]]
+
 ## 中级篇：Dataview 进阶应用
+
+中级篇主要介绍一些复合操作以及 `dv.view()` 的使用。
 
 ### 链接查询
 
@@ -1151,10 +1313,229 @@ for (let g of newGroupedValues) {
 }
 ```
 
+### 显示标签云
+
+这个案例中我们将仓库中所有标签按引用次数，设定不同的权重并使用 `dv.view()` 来加载脚本和样式。
+
+````
+%% 查询代码 %%
+```dataviewjs
+await dv.view("00 Meta/dataview_views/tagcloud", 
+{
+values: dv.pages('"10 Example Data/dailys"').where(p => p.person).person
+})
+```
+
+%% 脚本 %%
+```js
+dv.container.className += ' tagcloud';
+
+const uniqueValues = {};
+input.values.forEach(val => {
+    if (uniqueValues[val]) {
+        uniqueValues[val]++;
+    } else {
+        uniqueValues[val] = 1;
+    }
+});
+
+const quantities = Array.from(new Set(Object.values(uniqueValues).sort((a, b) => b - a)));
+const sizeClassMap = {
+    small: 1,
+    medium: 2,
+    big: 3,
+};
+
+if (quantities.length > 3) {
+    const third = Math.floor(quantities.length / 3);
+    sizeClassMap.small = quantities[quantities.length - third];
+    sizeClassMap.medium = quantities[third * 2];
+    sizeClassMap.big = quantities[third];
+}
+
+Object.keys(uniqueValues).forEach(t => {
+    const sizeClass =
+        uniqueValues[t] <= sizeClassMap.small ? 'small' : uniqueValues[t] <= sizeClassMap.medium ? 'medium' : 'big';
+    dv.span(t, { cls: 'cloud-item ' + sizeClass });
+});
+
+```
+%% 样式 %%
+```css
+.cloud-item {
+  display: inline-block;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 4px;
+  background: rgba(221, 221, 221, 0.2);
+}
+
+.cloud-item.small {
+  font-size: 0.85em;
+}
+
+.cloud-item.medium {
+  font-size: 1.1em;
+}
+
+.cloud-item.big {
+  font-size: 1.4em;
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240530171237.png]]
+
+上述代码位 `00 Meta/dataview_views` 目录中。
+
+### 根据任务属性自定义渲染
+
+这个案例中，根据任务描述文本中定义的内联属性 `priority` 的值 `high` | `medium` | `low` 来添加不同的标识样式。
+
+````
+```dataviewjs
+// define pages
+const pages = dv.pages('"10 Example Data/projects"')
+
+// OPEN TASKS
+const tasks = pages.file.tasks.where(t => t.priority && !t.completed)
+
+// priorities color
+const red = "<span style='border-left: 3px solid red;'>&nbsp;</span>"
+const orange = "<span style='border-left: 3px solid orange;'>&nbsp;</span>"
+const green = "<span style='border-left: 3px solid rgb(55 166 155);'>&nbsp;</span>"
+
+// regex to remove the field priority in text
+const regex = /\[priority[^\]]+\]/g
+
+// assign colors according to priority
+for (let task of tasks){
+task.visual = "";
+
+    if (task.priority === "high") {
+        task.visual = red
+    } else if (task.priority === "medium") {
+        task.visual = orange
+    } else if (task.priority === "low") {
+        task.visual = green
+    }
+    task.visual += task.text.replace(regex, "");
+}
+
+// render open tasks sorted after priority
+const order = [ "low", "medium", "high"]
+dv.taskList(tasks.sort((a, b) => order.indexOf(b.priority) - order.indexOf(a.priority)), false)
+```
+````
+
+结果：
+
+![[Pasted image 20240531145021.png]]
+
+进一步阅读：[Colorcode tasks based on meta data - Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/20%20Dataview%20Queries/Colorcode%20tasks%20based%20on%20meta%20data/)
+
 ## 高级篇：Dataview 高级技巧与探索
 
-- 和 chart.js 结合
-- 日历渲染
+高级篇的内容主要是一些不常用，但是实用，需要更多的代码的内容，或者需要结合第三方插件的内容。
+
+### 表格列求和
+
+在电子表格中，我们可以对列数据进行运算，如求和、未平均值等。下面我们来看一下如何在 Dataview 查询的结果中实现对列数据的求和。
+
+````
+```dataviewjs
+const query = `TABLE praying, training, situps, steps
+FROM "10 Example Data/dailys"
+WHERE file.day.month = 2`
+
+const nameOfTotalRow = "Sums";
+
+let DQL = await dv.tryQuery(query);
+const sums = [nameOfTotalRow];
+
+// 如果在 DQL 查询语句中添加了 `WITHOUT ID`，这里就需要改成从 `0` 开始遍历
+for (let i = 1; i < DQL.headers.length; i++) {
+	let sum = 0;
+	const dataType = getDatatypeOfColumn(i, DQL.values)
+	
+    // 只有数字和持续时间的数据类型才会被计算
+	if (!["number", "duration"].includes(dataType)) {
+		sums.push("")
+		continue;
+	}
+    
+    // 计算每一列的总和
+	for (let k = 0; k < DQL.values.length; k++) {
+		// 行 `k`, 列 `i` 的值
+		let currentValue = DQL.values[k][i];
+		if (currentValue) sum += currentValue 
+	}
+	if (!sum) sum = ""
+	sums.push(dataType === "duration" ? dv.luxon.Duration.fromMillis(sum) : sum);
+}
+
+function getDatatypeOfColumn(columnNo, values) {
+	let i = 0;
+	let datatype;
+	while (i < DQL.values[0].length && (!datatype || datatype === "null")) {
+		datatype = dv.func.typeof(DQL.values[i][columnNo])
+		i++;
+	}
+	return datatype;
+}
+
+// 添加分隔线
+let hrArray = Array(DQL.headers.length).fill('<hr style="padding:0; margin:0 -10px;">');
+DQL.values.push(hrArray)
+DQL.values.push(sums)
+
+dv.table(DQL.headers, DQL.values)
+```
+````
+
+结果：
+
+![[Pasted image 20240530192412.png]]
+
+### 在文档中搜索文字
+
+要在文档中搜索指定的单词，我们首先需要将文件读到内容中，可使用 `dv.io.load()` 方法，然后再通过正则去匹配文本。
+
+````
+```dataviewjs
+const word = "but"
+
+const regex = new RegExp("(\\S+\\s?){0,2}(\\b"+word+"\\b)(\\s\\S+){0,2}", "gi")
+const pages = await Promise.all(
+    dv.pages('"30 Dataview Resources"')
+    .map(async (page) => {
+        const content = await dv.io.load(page.file.path);
+        const matches = content.match(regex);
+        return {
+            link: page.file.link,
+            count: ( matches || []).length,
+            matches
+        };
+    })
+)
+
+dv.table(
+        ["Note", "Count", `Matches for "${word}"`],
+            pages
+            .filter(p => p.count)
+            .sort((a, b) => b.count - a.count)
+            .map(p => [p.link, p.count, p.matches])  
+    );
+```
+````
+
+结果：
+
+![[Pasted image 20240531110948.png]]
+
+上面的正则表达式中 `\b` 用于匹配单词边界（英文句子单词之间以空格分隔），然后最左边的 `(\\S+\\s?){0,2}` 和右边的 `(\\s\\S+){0,2}` 用于匹配目标单词前后的两个相邻单词。基中 `+` 符表示匹配 1 次或多次，`?` 表示匹配 0 次或多次，`\s` 表示匹配一个空白字符（包括空格、制表符、换页符和换行符），`\S` 表示匹配一个非空白符。`dv.io.load()` 方法用于将文件加载到内存中。
 
 ### 使用选项卡切换数据
 
@@ -1205,6 +1586,8 @@ buttons.forEach(button => createButton(button))
 renderTable('Watching')
 ```
 ````
+
+结果：
 
 ![[动画.gif]]
 
@@ -1305,6 +1688,190 @@ function addEmojis(emoji, max) {
 
 ![[企业微信截图_17170585746313.png]]
 
+代码中 `shiftTo('months').toObject()` 函数用于将时间缀转换成类似：`xx个月` 的形式。
+
+关于 Luxon 的使用可以阅读系列文章第 2 篇中 Luxon 章节。
+
+### 将数据渲染成日历
+
+下面这个案例可以好好研究一下如何运用 Luxon 填充每天的数据和构造 HTML 结构。
+
+````
+```dataviewjs
+const values = dv.pages('"10 Example Data/dailys"').where(p => p.wellbeing?.mood)
+const year = 2022
+const color = "green"
+const emptyColor = "#e4e4e4"
+const dt = dv.luxon.DateTime
+
+// 创建日历数据
+let date = dt.utc(year)
+const calendar = []
+S
+for (let i = 1; i <= 12; i++) {
+    calendar[i] = []
+}
+
+// 填充日历数据
+while (date.year === year) {
+    calendar[date.month].push(getDayEl(date, determineColor(date)))
+
+    date = addOneDay(date);
+}
+
+// 渲染日历
+calendar.forEach((month, i) => {
+    const monthEl = `<span style="display:inline-block;width:30px;font-size:small">${dt.utc(year, i).monthShort}</span>`
+    dv.el("div", monthEl + month.reduce((acc, cur) => `${acc} ${cur}`, ""))
+})
+
+function addOneDay(date) {
+    return dt.fromMillis(date + dv.duration("1d"))
+}
+
+function getDayEl(date, color) {
+    const sizeOfDays = "12px"
+    return `<span style="width:${sizeOfDays};height:${sizeOfDays};border-radius:2px;background-color:${color};display:inline-block;font-size:4pt;" title="${date.toFormat('yyyy-MM-dd')}"></span>`
+}
+
+function determineColor(date) {
+	const page = values.find(p => p.file.day.startOf('day').equals(date.startOf('day')));
+	if (!page) return emptyColor;
+
+
+	let opacity = (page.wellbeing.mood / 4) ;
+	return `rgba(177, 200, 51, ${opacity})`;
+
+}
+```
+````
+
+结果：
+
+![[Pasted image 20240530172043.png]]
+
+进一步阅读：[Render a year overview for your data - Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/20%20Dataview%20Queries/Render%20a%20year%20overview%20for%20your%20data/)
+
+### 使用 Chart.js 渲染图表
+
+要在 Obsidian 中渲染图表，我们需要用到 [Obsidian-Charts](https://github.com/phibr0/obsidian-charts) 这个插件。
+
+````
+```dataviewjs
+let chartType = 'bar'; //bar or line
+
+let xAxis = "xAxis: {type:'time', time: {unit: 'day'}}"; // {type:'category'}";
+let yAxis = "yAxis: {suggestedMin: 0, ticks: {stepSize: 1}";
+
+let autoLabels = true; // 自动设置标签
+var labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]; // autoLabels 为 false 时，手动设置标签
+
+var colors = [['#ff6384'],['#36a2eb'],['#ffce56'],['#4bc0c0'],['#9966ff'],['#ff9f40']];
+
+let sDQL = '\
+	TABLE WITHOUT ID \
+		file.name as "Date", \
+		wellbeing.mood as "Mood", \
+		wellbeing.health as "Health", \
+		wellbeing.pain as "Pain" \
+	FROM "10 Example Data/dailys" \
+	WHERE date(file.name).year = 2022 \
+	SORT file.name'
+	
+let DQL = await dv.tryQuery(sDQL);
+var allRows = DQL.values;
+var allLabels = allRows.map(r => r[0]);
+var allSeries = DQL.headers.slice(1);
+
+if (autoLabels) {
+	labels = allLabels;
+}
+
+var datasets = [];
+for (let i = 0; i < allSeries.length; i++) {	
+	let seriesName = allSeries[i];
+	let backCol = colors[i%colors.length];
+	let bordCol = colors[i%colors.length];
+	let bWidth = 1;
+
+	var dataPoints = [];
+	if (!autoLabels) {
+		dataPoints = labels.map(l => {
+			let labelIndex = allLabels.indexOf(l);
+			if (labelIndex < 0) { return 0 }
+			else { return allRows[labelIndex][i+1] }
+		})	
+	} else {
+		dataPoints = allRows.map(r => r[i+1]);
+	}
+
+	let chartDataset = {label: seriesName, 
+						data: dataPoints, 
+						backgroundColor: backCol,
+						borderColor: bordCol, 
+						borderWidth: bWidth};
+		   
+	datasets.push(chartDataset);
+}
+
+// 如果我们使用固定的标签数组，请使xAxis基于类别
+xAxis = (autoLabels ? xAxis : "xAxis: {type:'category'}");
+
+// chart.js 选项配置
+const chartData = {
+	type: chartType,
+	data: {	
+		labels: labels,
+		datasets: datasets
+	},
+	options: {  
+		scales: { xAxis, yAxis }
+	}
+}
+window.renderChart(chartData, this.container);
+```
+````
+
+结果：
+
+![[Pasted image 20240530173135.png]]
+
+### 使用 Heatmap Calendar 插件显示热力图
+
+这个案例我们来使用插件 [Richardsl/heatmap-calendar-obsidian: An Obsidian plugin for displaying data in a calendar similar to the github activity calendar](https://github.com/Richardsl/heatmap-calendar-obsidian) 渲染一个步数的热力图。
+
+````
+```dataviewjs
+const calendarData = {
+    year: 2022,
+    entries: []
+}
+
+for (let page of dv.pages('"10 Example Data/dailys"').filter(p => p.steps)) {
+    calendarData.entries.push({
+        date: page.file.name,
+        intensity: page.steps,
+        content: await dv.span(`[](${page.file.name})`) // 用于预览
+    })
+}
+renderHeatmapCalendar(this.container, calendarData)
+```
+````
+
+结果：
+
+![[Pasted image 20240531154412.png]]
+
 ## 总结
 
+由于文章跨度时间较长，自己写得有些麻木了，比较枯燥，随时写作时间的拉长，部分内容就直接贴代码了，望读者理解，自行去研究。
+
+Obsidian 常用的第三方核心插件较多，作者在 Dataview 上花费了较多的时间（一个半月多）。因为其它插件尚未去研究，所以有一定知识局限性，不能从宏观上来更好的提供和其它插件的结合应用，后期争取给大家带更多的插件使用保姆级教程。
+
+文章难免会出现一些文字在描述上不合理，不专业的地方以及错误字，往广大读者指正和提供更好的建议。
+
+最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长。
+
 ## 参考
+
+- [Dataview Example Vault (s-blu.github.io)](https://s-blu.github.io/obsidian_dataview_example_vault/)
