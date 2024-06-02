@@ -473,46 +473,56 @@ path: "10 Example Data/books"
     </tr>
   </thead>
   <tbody>
-    <% it.files.forEach((file, index) => { %>
-      <% 
-		        const readReg = /pagesRead:: (\d+)/ig
-		        const totalPages = file.content.match(readReg)
-		        let pagesRead = 0
-		        if (totalPages && totalPages.length > 0) {
-		          pagesRead = parseInt(totalPages[0].split('::')[1].trim())
-		        }
-		      %>
-      <tr>
-        <td>
-          <span class="cm-hmd-internal-link">
-            <span class="is-unresolved">
-              <a class="cm-underline" table-index="-1>" href="<%= file.link %>" target="_blank">
-                <%= file.name %>
-              </a>
+    <% it.files.forEach((file, index)=> { %>
+      <%
+        const readReg = /pagesRead:: (\d+)/ig;
+        const totalPages = file.content.match(readReg);
+        let pagesRead = 0;
+        if (totalPages && totalPages.length> 0) {
+          pagesRead = parseInt(totalPages[0].split('::')[1].trim())
+        }
+      %>
+        <tr>
+          <td>
+            <span class="cm-hmd-internal-link">
+              <span class="is-unresolved">
+                <a class="cm-underline" table-index="-1>" href="<%= file.link %>" target="_blank">
+                  <%= file.name %>
+                </a>
+              </span>
             </span>
-          </span>
-        </td>
-        <td><%= file.frontmatter.author %></td>
-        <td>
-          <ul>
-            <% file.frontmatter.genres.forEach(genre => {%>
-              <li><%= genre %></li>
-            <% }) %>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <% if (file.frontmatter.booktopics && Array.isArray(file.frontmatter.booktopics)) { %>
-              <% file.frontmatter.booktopics.forEach(topic => {%>
-                <li><%= topic %></li>
+          </td>
+          <td>
+            <%= file.frontmatter.author %>
+          </td>
+          <td>
+            <ul>
+              <% file.frontmatter.genres.forEach(genre=> {%>
+                <li>
+                  <%= genre %>
+                </li>
               <% }) %>
-            <% } %>
-          </ul>
-        </td>
-        <td><%= pagesRead %></td>
-        <td><%= file.frontmatter.totalPages %></td>
-      </tr>
-    <% }) %>
+            </ul>
+          </td>
+          <td>
+            <ul>
+              <% if (file.frontmatter.booktopics && Array.isArray(file.frontmatter.booktopics)) { %>
+                <% file.frontmatter.booktopics.forEach(topic=> {%>
+                  <li>
+                    <%= topic %>
+                  </li>
+                <% }) %>
+              <% } %>
+            </ul>
+          </td>
+          <td>
+            <%= pagesRead %>
+          </td>
+          <td>
+            <%= file.frontmatter.totalPages %>
+          </td>
+        </tr>
+      <% }) %>
   </tbody>
 </table>
 ```
