@@ -4,22 +4,32 @@
     "type": "split",
     "children": [
       {
-        "id": "1f34435aececf9ed",
+        "id": "8b1e4dbe376d246b",
         "type": "tabs",
         "children": [
           {
-            "id": "473c0625e13f2b1d",
+            "id": "f23a21e4d57a328b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-                "mode": "preview",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+                "mode": "source",
                 "source": false
               }
             }
+          },
+          {
+            "id": "1118d1816a5a2bd4",
+            "type": "leaf",
+            "state": {
+              "type": "swar8080/AVAILABLE_PLUGIN_UPDATES",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 1,
+        "stacked": true
       }
     ],
     "direction": "vertical"
@@ -66,7 +76,7 @@
             }
           },
           {
-            "id": "e384bdf72a9ebed6",
+            "id": "814db614ff17be4f",
             "type": "leaf",
             "state": {
               "type": "file-tree-view",
@@ -74,7 +84,7 @@
             }
           },
           {
-            "id": "b88353270a990935",
+            "id": "4ba1150e72ac27bc",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -82,11 +92,11 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 254.50390243530273
+    "width": 241.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -95,6 +105,7 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
+        "dimension": 75.86538461538461,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -102,7 +113,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +130,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -142,7 +153,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md"
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
               }
             }
           },
@@ -155,6 +166,40 @@
             }
           },
           {
+            "id": "4c0cb0bfaa589cac",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "18d7aa0f9f9f669a",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {
+                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
+              }
+            }
+          },
+          {
+            "id": "b9628aa0f3619068",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      },
+      {
+        "id": "00371229898dddaf",
+        "type": "tabs",
+        "dimension": 24.13461538461538,
+        "children": [
+          {
             "id": "bfff48720db8c001",
             "type": "leaf",
             "state": {
@@ -165,101 +210,76 @@
                 "searchQuery": ""
               }
             }
-          },
-          {
-            "id": "4c0cb0bfaa589cac",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {}
-            }
-          },
-          {
-            "id": "7d23ed0bf34c6a40",
-            "type": "leaf",
-            "state": {
-              "type": "quiet-outline",
-              "state": {}
-            }
-          },
-          {
-            "id": "502798142850ac3a",
-            "type": "leaf",
-            "state": {
-              "type": "file-properties",
-              "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md"
-              }
-            }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 306.5
+    "width": 392.5
   },
   "left-ribbon": {
     "hiddenItems": {
+      "media-extended:Open media": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "templater-obsidian:Templater": false,
       "vscode-editor:新建代码文件": false,
+      "open-vscode:VSCode": false,
       "switcher:打开快速切换": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "open-vscode:VSCode": false,
-      "file-tree-alternative:File Tree Alternative Plugin": false,
-      "media-extended:Open media": false,
-      "templater-obsidian:Templater": false
+      "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "473c0625e13f2b1d",
+  "active": "cc3c5048ac02c60f",
   "lastOpenFiles": [
+    "附件/动画2 7.gif",
+    "附件/动画2 6.gif",
+    "附件/动画2 5.gif",
+    "附件/动画2 4.gif",
+    "附件/动画2 3.gif",
+    "附件/动画2 2.gif",
+    "附件/动画2 1.gif",
+    "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "附件/Pasted image 20240602210857.png",
     "附件/Pasted image 20240602192750.png",
     "附件/Pasted image 20240602191315.png",
     "附件/Pasted image 20240602190815.png",
-    "附件/Pasted image 20240602174713.png",
-    "附件/Pasted image 20240602171448.png",
-    "附件/Pasted image 20240602164218.png",
-    "附件/Kapture 2024-06-02 at 13.44.29.gif",
-    "附件/Jun-02-2024 13-27-46.gif",
-    "附件/Pasted image 20240602114537.png",
-    "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "日记/2024-05-27.md",
-    "日记",
-    "博客/Obsidian/Obsidian 达人成长之路：Projects 插件.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Db forlder.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/临时放置.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
-    "博客/Obsidian 达人成长之路：Modal Form 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 实战运用.md",
-    "博客/Obsidian 达人成长之路：Various Completes 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Templater Obsidian 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路 1.md",
-    "博客/Obsidian/Obsidian 达人成长之路.md",
     "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Db forlder.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Projects 插件.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
+    "日记/2024-05-27.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
+    "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
     "博客/Obsidian/Obsidian 达人成长之路：Obsidian 插件开发.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
-    "Spaces",
+    "博客/Obsidian/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Meta Bind 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Tasks 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian 插件开发.md",
+    "博客/Obsidian/打造极致体验笔记：QuickAdd 插件使用.md",
+    "博客/Obsidian/打造极致体验笔记：Obsidian Style Settings 插件使用.md",
     "博客/Go/抗遗忘系列",
     "博客/Go/插件使用/Go-pretty",
     "博客/Go/插件使用/Excelize",
     "博客/Go/插件使用",
     "博客/Go",
     "博客/Obsidian",
-    "README.md",
+    "日记",
     "博客",
-    "附件"
+    "附件",
+    "Spaces"
   ]
 }

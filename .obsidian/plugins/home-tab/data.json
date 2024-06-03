@@ -22,7 +22,20 @@
   "showShortcuts": true,
   "markdownOnly": false,
   "unresolvedLinks": false,
-  "recentFilesStore": [],
+  "recentFilesStore": [
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+      "timestamp": 1717399904713
+    },
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+      "timestamp": 1717399887686
+    },
+    {
+      "filepath": "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
+      "timestamp": 1717385564895
+    }
+  ],
   "bookmarkedFileStore": [],
   "searchDelay": 0,
   "replaceNewTabs": true,
