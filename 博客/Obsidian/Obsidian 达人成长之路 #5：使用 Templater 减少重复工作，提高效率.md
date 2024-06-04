@@ -360,7 +360,71 @@ modification date: <% tp.file.last_modified_date("dddd Do MMMM YYYY HH:mm:ss") %
 
 ![[动画2 18.gif]]
 
+#### tp.file.path()
 
+`tp.file.path(relative: boolean = false)` 函数用于获取文件基于当前磁盘的绝对路径，如果 `relative` 设置为 `true` 则返回基于当前仓库的相对路径。
+
+![[动画2 19.gif]]
+
+从图中可以看出系统路径和我们当前在仓库中的路径分隔符不致，我们这里仅示例不去额外处理。
+
+#### tp.file.rename()
+
+`tp.file.rename(new_title: string)` 函数用于重命名文件。
+
+![[动画2 20.gif]]
+
+#### tp.file.selection()
+
+`tp.file.selection()` 函数用于检索活动文件的文本选择。
+
+![[动画2 21.gif]]
+
+>[!Tip] 我们不能跨文件去操作，因为选中另外一个文件时上一个文件的选区就失去焦点了。
+
+#### tp.file.tags
+
+`tp.file.tags` 属性用于获取当前文件的所有标签。
+
+![[动画2 22.gif]]
+
+#### tp.file.title
+
+`tp.file.title` 属性用于获取页面标题。
+
+### 获取 YAML 中的属性
+
+`tp.frontmatter` 模块用于获取 YAML 中定义的属性。
+
+语法为：`tp.frontmatter.<frontmatter_variable_name>`。
+
+````
+---
+alias: myfile
+note type: seedling
+categories:
+  - book
+  - movie
+---
+
+file content
+````
+
+可通过下面的模板来获取内容：
+
+````
+File's metadata alias: <% tp.frontmatter.alias %>
+Note's type: <% tp.frontmatter["note type"] %>
+<% tp.frontmatter.categories.map(prop => `  - "${prop}"`).join("\n") %>
+````
+
+结果：
+
+![[动画2 24.gif]]
+
+### 日期和时间操作
+
+`fn.date` 模块包含了时期和时间的相关操作。
 
 可结合的插件：
 
