@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "8b1e4dbe376d246b",
+        "id": "8b88967d1a46fa0b",
         "type": "tabs",
         "children": [
           {
-            "id": "f23a21e4d57a328b",
+            "id": "253ac818e85019c4",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -18,17 +18,8 @@
                 "source": false
               }
             }
-          },
-          {
-            "id": "1118d1816a5a2bd4",
-            "type": "leaf",
-            "state": {
-              "type": "swar8080/AVAILABLE_PLUGIN_UPDATES",
-              "state": {}
-            }
           }
         ],
-        "currentTab": 1,
         "stacked": true
       }
     ],
@@ -92,11 +83,11 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 241.5
+    "width": 200
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -192,7 +183,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 7
       },
       {
         "id": "00371229898dddaf",
@@ -233,22 +224,22 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "cc3c5048ac02c60f",
+  "active": "253ac818e85019c4",
   "lastOpenFiles": [
-    "附件/动画2 7.gif",
-    "附件/动画2 6.gif",
-    "附件/动画2 5.gif",
-    "附件/动画2 4.gif",
-    "附件/动画2 3.gif",
-    "附件/动画2 2.gif",
-    "附件/动画2 1.gif",
-    "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+    "附件/动画2 18.gif",
+    "附件/动画2 17.gif",
+    "附件/动画2 16.gif",
+    "附件/Pasted image 20240604181700.png",
+    "附件/动画2 15.gif",
+    "附件/动画2 14.gif",
+    "附件/动画2 13.gif",
+    "附件/动画2 12.gif",
+    "附件/动画2 11.gif",
+    "附件/动画2 10.gif",
+    "附件/动画2 9.gif",
     "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
     "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-    "附件/Pasted image 20240602210857.png",
-    "附件/Pasted image 20240602192750.png",
-    "附件/Pasted image 20240602191315.png",
-    "附件/Pasted image 20240602190815.png",
     "博客/Obsidian/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
     "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/临时放置.md",
