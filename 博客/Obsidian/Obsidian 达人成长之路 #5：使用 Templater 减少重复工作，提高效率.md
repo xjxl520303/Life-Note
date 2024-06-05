@@ -108,6 +108,8 @@ created_time: <% tp.date.now("HH:mm") %>
 
 可以看到总共有 4 个命令，并且每个任务都配备了操作快捷键。为了方便大家理解，我会给出每一个命令的操作流程过程。
 
+>[!Tip] 如果你是 MacOS 系统，可能用不了 <kbd>Alt</kbd> 键来触发这些命令，建议先根据：[禁用自动弹出特殊字符 (ilikemac.com)](https://ilikemac.com/posts/disable-special-characters/) 文章来修改，然后再在 Obsidian 中将相关快捷键先删除再添加进来，就可以正常工作了。
+
 ### 命令：插入模板
 
 这个命令和点击 Ribbon 中的 Templater 图标功能是一样的，同时直达 Obsidian 中【插入命令】选择【插入模板】后的面板。
@@ -188,7 +190,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 ##### 示例 1：基于文本创建文档
 
 ````
-<%* await tp.file.create_new("MyFileContent", "MyFilename") %>
+<%* await tp.file.create_new("MyFileContent", "MyFilename") %> 
 ````
 
 结果：
@@ -200,7 +202,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 这里需要使用 `tp.file.find_tfile()` 方法来获取我们事先创建好的模板。
 
 ````
-<%* await tp.file.create_new(tp.file.find_tfile("日记2"), "MyFilename") %>
+<%* await tp.file.create_new(tp.file.find_tfile("日记2"), "MyFilename") %> 
 ````
 
 结果：
@@ -210,7 +212,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 ##### 示例 3：创建文档后立即打开
 
 ````
-<%* await tp.file.create_new("MyFileContent", "MyFilename", true) %>
+<%* await tp.file.create_new("MyFileContent", "MyFilename", true) %> 
 ````
 
 结果：
@@ -230,7 +232,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 示例：
 
 ````
-<%* await tp.file.create_new("MyFileContent", "MyFilename", true, "博客") %>
+<%* await tp.file.create_new("MyFileContent", "MyFilename", true, "博客") %> 
 ````
 
 结果：
@@ -249,7 +251,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 
 ````
 // File cursor
-<% tp.file.cursor() %>
+<% tp.file.cursor() %> 
 // File multi-cursor
 <% tp.file.cursor(1) %>Content<% tp.file.cursor(1) %>
 ````
@@ -321,16 +323,16 @@ modification date: <% tp.file.last_modified_date("dddd Do MMMM YYYY HH:mm:ss") %
 
 # <% tp.file.title %>
 
-<% tp.web.daily_quote() %>
+<% tp.web.daily_quote() %> 
 ```
 ````
 
 接下来引入模板：
 
 ````
-<% tp.file.include(tp.file.find_tfile("Welcome")) %>
-<% tp.file.include("[[Templater 好牛#Introduction]]") %>
-<% tp.file.include("[[Templater 好牛#^0448f4]]") %>
+<% tp.file.include(tp.file.find_tfile("Welcome")) %> 
+<% tp.file.include("[[Templater 好牛#Introduction]]") %>  
+<% tp.file.include("[[Templater 好牛#^0448f4]]") %>  
 ````
 
 结果：
@@ -352,8 +354,8 @@ modification date: <% tp.file.last_modified_date("dddd Do MMMM YYYY HH:mm:ss") %
 下面我们使用下面的模板来将当前文件移动到根目录，同时也将根目录的 `Welcome.md` 文件移动当前目录中。
 
 ````
-<% tp.file.move("foo") %>
-<% tp.file.move(tp.file.folder(true) + "/Welcome", tp.file.find_tfile("Welcome")) %>
+<% tp.file.move("foo") %> 
+<% tp.file.move(tp.file.folder(true) + "/Welcome", tp.file.find_tfile("Welcome")) %> 
 ````
 
 结果：
@@ -415,7 +417,7 @@ file content
 ````
 File's metadata alias: <% tp.frontmatter.alias %>
 Note's type: <% tp.frontmatter["note type"] %>
-<% tp.frontmatter.categories.map(prop => `  - "${prop}"`).join("\n") %>
+<% tp.frontmatter.categories.map(prop => `  - "${prop}"`).join("\n") %> 
 ````
 
 结果：
@@ -424,7 +426,159 @@ Note's type: <% tp.frontmatter["note type"] %>
 
 ### 日期和时间操作
 
-`fn.date` 模块包含了时期和时间的相关操作。
+`fn.date` 模块包含了时期和时间的相关操作。我们可以直接使用 Moment.js 实例 `moment` 来操作日期和时间，如：
+
+````
+<% moment().format("YYYY-MM-DD") %> %% 2024-06-05 %%
+<% moment().startOf("month").format("YYYY-MM-DD") %> %% 2024-06-01 %%
+<% moment().endOf("month").format("YYYY-MM-DD") %> %% 2024-06-30 %%
+````
+
+也可以使用 Templater 提供的封装函数：
+
+#### tp.date.now()
+
+`tp.date.now(format: string = "YYYY-MM-DD", offset?: number | string, reference?: string, reference_format?: string)` 函数用于获取当前时间。
+
+参数解释：
+
+- `format` 日期格式化字符串，默认为 `YYYY-MM-DD`。
+- `offset` 日期偏移。传数字则以天为单位进行运算，也可以传 ISO 8601 格式的持续时间（Duration）。
+- `reference` 日期来源，例如从日记文档标题中获取。
+- `reference_format` 来源日期引用的格式。
+
+##### 获取现在日期和时间
+
+我们首先使用 `tp.date.now()` 来获取当前时间，并按默认格式输出，然后再指定格式字符格式化当前日期和时间。
+
+````
+<% tp.date.now() %> %% 2024-06-05 %%
+<% tp.date.now("Do MMMM YYYY") %> %% 5日 六月 2024 %%
+````
+
+##### 基于当前的相对时间
+
+通过传入第 2 个参数并使用数字进，我们可以基于当前日期进行计算，获取昨天、前天、明天、后天、一周前/后，一个月前/后以及前后 N 天的日期。
+
+````
+<% tp.date.now("YYYY-MM-DD", -7) %> %% 2024-05-29 %%
+<% tp.date.now("YYYY-MM-DD", 7) %> %% 2024-06-12 %%
+````
+
+我们也可以传入 ISO 8601 格式的持续时间，如：`P1W` 表示一周，上面的示例可以改成：
+
+````
+<% tp.date.now("YYYY-MM-DD", "P-1W") %> %% 2024-05-29 %%
+<% tp.date.now("YYYY-MM-DD", "P1W") %> %% 2024-06-12 %%
+<% tp.date.now("YYYY-MM-DD HH:mm") %> %% 2024-06-05 13:24 %%
+<% tp.date.now("YYYY-MM-DD HH:mm", "PT2H30M") %> %% 2024-06-05 15:54 %%
+````
+
+关于这个 ISO 8601 形式的持续时间我有在系列文章中的第 2 篇中有关 Luxon 小节有提及。我们只需要记住下面的格式即可：
+
+1. `P[n]Y[n]M[n]DT[n]H[n]M[n]S`
+2. `P[n]W`
+3. `P<date>T<time>`
+
+基中 `[n]` 为要被替换的具体日期或时间值，例如 `P2Y` 表示 `02年`，`P1Y-2M` 表示 `1年负2个月`，也就是 `10个月`。
+
+##### 从字符串中提取日期和时间
+
+官方文档中举例是从 `tp.file.title` 中以 `YYYY-MM-DD` 的格式去获取日记日期，其实我们是可以从任何字符串中按指定匹配的格式提取出日期和时间。
+
+````
+<% tp.date.now("小棉袄出生日期：YYYY-MM-DD", 0, "这里面包含日期 2023-08-20 小灼灼出生", "YYYY-MM-DD") %> %% 小棉袄出生日期：2023-08-20 %%
+<% tp.date.now("小棉袄出生日期：YYYY-MM-DD", 0, "这里面包含日期 20/8/2023 小灼灼出生", "DD/MM/YYYY") %> %% 小棉袄出生日期：2023-08-20 %%
+<% tp.date.now("小棉袄出生日期：YYYY-MM-DD", 0, "这里面包含日期 1692489600000 小灼灼出生", "x") %> %% 小棉袄出生日期：2023-08-20 %%
+````
+
+#### tp.date.tomorrow()
+
+`tp.date.tomorrow(format: string = "YYYY-MM-DD")` 函数用于获取明天的日期和时间值。
+
+#### tp.date.weekday()
+
+`tp.date.weekday(format: string = "YYYY-MM-DD", weekday: number, reference?: string, reference_format?: string)` 函数用于获取当前日期所在周的指定星期数，`0` 表示周一，`-7` 表示上周一。
+
+````
+周一：<% tp.date.weekday("YYYY-MM-DD", 0) %> %% 2024-06-03 %%
+周二：<% tp.date.weekday("YYYY-MM-DD", 1) %> %% 2024-06-04 %%
+周三：<% tp.date.weekday("YYYY-MM-DD", 2) %> %% 2024-06-05 %%
+周四：<% tp.date.weekday("YYYY-MM-DD", 3) %> %% 2024-06-06 %%
+周五：<% tp.date.weekday("YYYY-MM-DD", 4) %> %% 2024-06-07 %%
+周六：<% tp.date.weekday("YYYY-MM-DD", 5) %> %% 2024-06-08 %%
+周日：<% tp.date.weekday("YYYY-MM-DD", 6) %> %% 2024-06-09 %%
+上周一：<% tp.date.weekday("YYYY-MM-DD", -7) %> %% 2024-05-27 %%
+````
+
+#### tp.date.yesterday()
+
+`tp.date.yesterday(format: string = "YYYY-MM-DD")` 函数用于获取昨天的日期和时间值。
+
+### 配置相关
+
+`tp.config` 模块用于暴露 Templater 的运行时配置。
+
+#### tp.config.active_file?
+
+`tp.config.active_file` 是指我们当前应用模板所在的文件。这个值可以为 `null`，这种情况我们接下来会进行分析讲解。
+
+我们可以在当前文件中使用下面的模板语句在控制台中输出 `TFile` 信息，相较用 `<%* console.log(tp.file.find_tfile("startup")) %>` 要少输入不少字符。
+
+````
+<%* console.log(tp.config.active_file) %> 
+<%* console.log(tp.file.find_tfile("startup")) %> 
+````
+
+![[动画2 26.gif]]
+
+下面我们再来看一下，同样的文件作为模板应用于创建时的控制台输出的两种情况。
+
+**1. 创建文件时有正在编辑的文档**
+
+这个种情况 `tp.config.active_file` 的值为当前处于编辑状态的文件。
+
+![[动画2 27.gif]]
+
+**2. 创建文件时为空白主页**
+
+这种情况下 `tp.config.active_file` 的值为 `null`。
+
+![[动画2 28.gif]]
+
+#### tp.config.run_mod
+
+`tp.config.run_mod` 属性用于表示运行的模式，我们已知的有：基于模板创建新文件、重写当前编辑文件和在当前文件追加内容。
+
+翻阅插件的源码，会发现基定义了 6 种模式：
+
+```ts
+export enum RunMode {
+    CreateNewFromTemplate,
+    AppendActiveFile,
+    OverwriteFile,
+    OverwriteActiveFile,
+    DynamicProcessor,
+    StartupTemplate,
+}
+```
+
+
+
+
+
+因为这个文件来自 Templater 配置中指定的文件。我们需要从【选项】->【Templater】->【Startup templates】中指定一个模板执行前的初始执行模板。这个模板文件不会输出任何内容，只是做一些譬如监听 Obsidian 事件的 Hooks 函数。
+
+现在我们新建一个模板文件，并输入一个不产生输出的模板语句：
+
+````
+<%* console.log("Templater") %>
+````
+
+接下来我们看一下，新建文件应用模板时会不会在控制台输出 "Templater"：
+
+
+可以看到当我们选择模板后，控制抬就输出了我们指定的内容。
 
 可结合的插件：
 
@@ -435,3 +589,6 @@ Note's type: <% tp.frontmatter["note type"] %>
 
 - [Templates - Obsidian Help](https://help.obsidian.md/Plugins/Templates)
 - [Introduction - Templater (silentvoid13.github.io)](https://silentvoid13.github.io/Templater/introduction.html)
+- [home - shabeblog (shbgm.ca)](https://shbgm.ca/blog/home)
+- [lguenth/obsidian-templates: A collection of templates for Obsidian (github.com)](https://github.com/lguenth/obsidian-templates)
+- [Templater snippets (zachyoung.dev)](https://zachyoung.dev/posts/templater-snippets)
