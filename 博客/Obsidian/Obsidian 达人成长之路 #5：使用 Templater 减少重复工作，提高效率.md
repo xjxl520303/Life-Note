@@ -566,29 +566,201 @@ export enum RunMode {
 
 
 
+## 插件配置选项
 
-因为这个文件来自 Templater 配置中指定的文件。我们需要从【选项】->【Templater】->【Startup templates】中指定一个模板执行前的初始执行模板。这个模板文件不会输出任何内容，只是做一些譬如监听 Obsidian 事件的 Hooks 函数。
+这一节我们来细说一下 Templater 插件的一些配置项，读者可根据自己的实际使用场景灵活配置。
 
-现在我们新建一个模板文件，并输入一个不产生输出的模板语句：
+### 通用设置
+
+通用设置中的大多数设置都是选项开关，没有什么特别要说明的。
+
+设置界面如下：
+
+![[Pasted image 20240606174242.png]]
+
+### 模板快捷键
+
+这个功能就是为我们定义的模板添加一个全局的快捷键，使用进需要注意的是在应用时，需要有一个当前正在编辑的文档才可以应用。
+
+下面是我为本地一个模板添加了一个快捷键 <kbd>Alt + 1</kbd>，相关的配置界面如下：
+
+![[Pasted image 20240606175357.png]]
+
+结果：
+
+![[动画2 32.gif]]
+
+### 目录模板
+
+我们通常会指定一个放置全局模板的目录，在选择模板创建文档时，模板源都是来自这个模板目录。如果用户创建了大量的模板，比如上百个，这种情况下，通过下拉框选择的效率明显会低很多，而且很多时候有些模板只适用于特定的知识分类目录，所以官方提供了目录模板来应对这种场景。
+
+描述挺完美的，但是实际上这个目录模板只是对我们指定的目录在使使用模板时如果有指定专门的模板才会起作用，而并没有把其它模板过滤掉，顺序也未发生变化。
+
+下面我们先来看一下设置界面：
+
+![[Pasted image 20240606114648.png]]
+
+上面的截图中我们已经添加了一个 `博客/Obsidian` 目录对应的模板，这个模板我放置在了统一的模板目录中。
+
+>[!Tip] 模板文件必须放置在指定的统一模板目录中。
+
+下面是模板的内容，我们在其中添加了一段脚本用于自动生成特定的文档名：
 
 ````
-<%* console.log("Templater") %>
+---
+tags:
+  - 博客
+  - Obsidian
+---
+
+<%*
+const isDefaultTitle = tp.file.title.startsWith("Untitled") || tp.file.title.startsWith("未命名")
+let title
+const titlePrefix = "Obsidian 达人成长之路："
+const titleSuffix = " 插件使用"
+
+if (isDefaultTitle) {
+title = await tp.system.prompt("Title")
+if (isDefaultTitle) {
+	title = await tp.system.prompt("Title")
+    if (title.trim() !== "") {
+        await tp.file.rename(`${titlePrefix}${title}${titleSuffix}`)
+    } else {
+        title = tp.file.title
+    }
+} else {
+	title = tp.file.title
+}
+%>
+
+# <% title %>
+
+<% tp.file.cursor() %>
+
+## 参考
+
+- 
 ````
 
-接下来我们看一下，新建文件应用模板时会不会在控制台输出 "Templater"：
+然后我们在博客目录中来创建一篇关于 QuickAdd 的文章，看看效果如何：
+
+![[动画2 29.gif]]
+
+可以看到在日记目录中未触发目录模板功能，然后我们在博客目录中成功触发了。
+
+>[!Tip] 在创建文件时，如果当前工作区无打开文件我们需要在目标目标中使用右键来创建，否者无法触发。
+
+现在我们进一步拓展，因为目录模板并没有被限制在目标目录中，就像上面我们在日记目录中虽然在创建时没有自动触发选择模板的功能，但我们可以手动再去应用一次模板。
+
+现在我们要做的是将基于目录模板创建的非目标目录中的文件在应用模板后自动将其移动到目标目录中去，下面是改进后的实现：
+
+````
+---
+tags:
+  - 博客
+  - Obsidian
+---
+
+<%*
+const isDefaultTitle = tp.file.title.startsWith("Untitled") || tp.file.title.startsWith("未命名")
+let title
+const titlePrefix = "Obsidian 达人成长之路："
+const titleSuffix = " 插件使用"
+
+if (isDefaultTitle) {
+	title = await tp.system.prompt("Title")
+    if (title.trim() !== "") {
+        await tp.file.rename(`${titlePrefix}${title}${titleSuffix}`)
+    } else {
+        title = tp.file.title
+    }
+} else {
+	title = tp.file.title
+}
+
+const currentTemplateFolder = "博客/Obsidian"
+const currentFileFolder = tp.config.active_file.parent.path
+
+if (!currentFileFolder.startsWith(currentTemplateFolder)) {
+	if (isDefaultTitle) {
+		await tp.file.move(`${currentTemplateFolder}/${titlePrefix}${title}${titleSuffix}`);
+	}
+}
+%>
+
+# <% title %>
+
+<% tp.file.cursor() %>
+
+## 参考
+
+- 
+````
+
+结果：
+
+![[动画2 30.gif]]
+
+我这里模板对应用的目录是用变量 `currentTemplateFolder` 表示，是写死的，因为我们获取不应用于文档的模板信息。
+
+### 启动模板
+
+启动模板顾名思义就是在 Templater 插件启动地时候执行的模板。这个模板不会有任何渲染输出，它是我们在 Templater 启动时执行一些操作，如添加 Hooks 来响应处理 Obsidian 事件。
+
+设置界面如下：
+
+![[Pasted image 20240606171517.png]]
+
+这里我在 `About.md` 中放置了一行脚本在控制台输出一段文本 `console.log("我是模板开始执行啦。。")`。
+
+![[动画2 31.gif]]
+
+### 用户脚本
 
 
-可以看到当我们选择模板后，控制抬就输出了我们指定的内容。
 
-可结合的插件：
+### 使用系统命令函数
 
-- Day Planner
-- Kanban
+
+## 实际应用
+
+下面为大家带来一些实际应用方面的例子，虽然在前面的章节中也穿插了部分案例，这里更多的是展示一些技巧和常用的模式，方便读者应用到自己的笔记系统中。
+
+### 执行模板前先清空文档内容
+
+如果我们在一个已有内容的文档来执行一个模板，通常情况下会将新的内容追加到当前内容的后面。有时候我们想替换整个文档内容，包括 YAML 区域中的属性。
+
+下面是一个 Go 的博客模板，用来替换 Obsidian 的模板内容。
+
+````
+---
+tags:
+  - 博客
+  - go
+  - net
+---
+<%* await app.vault.modify(tp.file.find_tfile(tp.file.path(true)), "") _%>
+
+go 文章内容
+````
+
+执行过程：
+
+![[动画2 33.gif]]
+
+可以看到文章内容和 YAML 区域内容都成功替换掉了，如果你想改变文件名也是可以的。
+
+### 创建文件时动态添加属性
+
+
 
 ## 参考
 
 - [Templates - Obsidian Help](https://help.obsidian.md/Plugins/Templates)
 - [Introduction - Templater (silentvoid13.github.io)](https://silentvoid13.github.io/Templater/introduction.html)
 - [home - shabeblog (shbgm.ca)](https://shbgm.ca/blog/home)
+- https://zachyoung.dev/posts/folder-templates-with-quick-switcher
 - [lguenth/obsidian-templates: A collection of templates for Obsidian (github.com)](https://github.com/lguenth/obsidian-templates)
 - [Templater snippets (zachyoung.dev)](https://zachyoung.dev/posts/templater-snippets)
+- [Templater - How to add information to YAML frontmatter - Help - Obsidian Forum](https://forum.obsidian.md/t/templater-how-to-add-information-to-yaml-frontmatter/38009/2)
+- [Obsidian Snippets (github.com)](https://gist.github.com/Mearman/ba5b1bcf746b4e04d12865dc09402016)
