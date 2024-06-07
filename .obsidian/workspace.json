@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "8b88967d1a46fa0b",
+        "id": "29983b3759f1491d",
         "type": "tabs",
         "children": [
           {
-            "id": "253ac818e85019c4",
+            "id": "2806beb27dbfd7be",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md",
                 "mode": "source",
                 "source": false
               }
@@ -82,12 +82,11 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 424.5
+    "width": 386.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -104,7 +103,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -121,7 +120,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -144,7 +143,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
+                "file": "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md"
               }
             }
           },
@@ -170,7 +169,7 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
+                "file": "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md"
               }
             }
           },
@@ -183,7 +182,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 7
       },
       {
         "id": "00371229898dddaf",
@@ -224,53 +223,52 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "253ac818e85019c4",
+  "active": "2806beb27dbfd7be",
   "lastOpenFiles": [
-    "附件/动画2 33.gif",
-    "附件/动画2 32.gif",
-    "附件/Pasted image 20240606175357.png",
-    "附件/Pasted image 20240606174242.png",
-    "附件/动画2 31.gif",
-    "附件/Pasted image 20240606171517.png",
-    "附件/动画2 30.gif",
-    "附件/动画2 29.gif",
-    "附件/Pasted image 20240606114648.png",
-    "附件/动画2 28.gif",
-    "附件/动画2 27.gif",
-    "博客/Obsidian/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-    "博客/Obsidian/Obsidian 达人成长之路：QuickAdd 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
+    "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md",
+    "附件/动画2 41.gif",
+    "模板/Code block Tpl.md",
+    "模板",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "附件/动画2 40.gif",
+    "附件/动画2 39.gif",
+    "附件/动画2 38.gif",
+    "附件/动画2 37.gif",
+    "附件/Pasted image 20240607181743.png",
+    "附件/Pasted image 20240607174736.png",
+    "附件/24.png",
+    "博客/Obsidian/达人成长之路/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Obsidian/小插件推荐",
+    "博客/Obsidian/达人成长之路",
+    "附件/动画2 36.gif",
+    "附件/动画2 35.gif",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/临时放置.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Db forlder.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Projects 插件.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Db forlder.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Projects 插件.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
     "日记/2024-05-27.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "博客/Obsidian/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
     "博客/Obsidian/Obsidian 达人成长之路 #4：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Modal Form 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Various Completes 插件使用.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Obsidian 插件开发.md",
-    "博客/Obsidian/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Modal Form 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Various Completes 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Obsidian 插件开发.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Dataview 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Meta Bind 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian Tasks 插件使用.md",
     "博客/Obsidian/打造极致体验笔记：Obsidian 插件开发.md",
-    "博客/Obsidian/打造极致体验笔记：QuickAdd 插件使用.md",
-    "博客/Obsidian/打造极致体验笔记：Obsidian Style Settings 插件使用.md",
     "博客/Go/抗遗忘系列",
     "博客/Go/插件使用/Go-pretty",
     "博客/Go/插件使用/Excelize",
     "博客/Go/插件使用",
     "博客/Go",
     "博客/Obsidian",
-    "日记",
-    "博客",
-    "附件",
-    "Spaces"
+    "日记"
   ]
 }

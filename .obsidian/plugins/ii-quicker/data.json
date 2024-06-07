@@ -1,0 +1,26 @@
+{
+  "quickInsert": true,
+  "showColorPicker": true,
+  "showImgLinkDialog": false,
+  "showMediaDialog": false,
+  "showImgLinkTipText": false,
+  "commonColors": "#e6194B\n#3cb44b\n#ffe119\n#4363d8\n#f58231\n#911eb4\n#42d4f4\n#f032e6\n#bfef45\n#fabed4\n#469990\n#dcbeff\n#9A6324\n#fffac8\n#800000\n#aaffc3\n#808000\n#ffd8b1\n#000075\n#a9a9a9\n#ffffff\n#000000",
+  "date": "YYYY-MM-DD ddd",
+  "time": "YYYY-MM-DD HH:mm:ss",
+  "onlyStandardCode": false,
+  "allowCodeList": [
+    "Time",
+    "Date"
+  ],
+  "subMenus": [
+    "H4",
+    "Date",
+    "Time",
+    "H5",
+    "H6",
+    "Image",
+    "Callout"
+  ],
+  "showCommandMenu": true,
+  "customCodes": "快捷键标签::<kbd>{selection}</kbd>::插入快捷键标签<kbd>\n知乎弹评::(from\\:\\: 弹评)::知乎读书中的评注\n提示::>[!Tip] {selection}::关键处提示\n警告::>[!Warning] {selection}::操作有危险"
+}

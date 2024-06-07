@@ -726,6 +726,10 @@ if (!currentFileFolder.startsWith(currentTemplateFolder)) {
 
 下面为大家带来一些实际应用方面的例子，虽然在前面的章节中也穿插了部分案例，这里更多的是展示一些技巧和常用的模式，方便读者应用到自己的笔记系统中。
 
+### 为文档添加创建和修改时间
+
+可能有人会觉得很奇怪，每一个文件不是默认自带了创建时间和上次修改时间，我们自己何必再多此一举额外添加两个属性？这是因为如果你的文档只是在单机操作的情况下系统提供的时间是没有什么问题的，但是如果涉及到多个设备同步，或者使用 Git 来管理，你就会突然发现这个时间会改变，文件并不是你最早创建的日期
+
 ### 执行模板前先清空文档内容
 
 如果我们在一个已有内容的文档来执行一个模板，通常情况下会将新的内容追加到当前内容的后面。有时候我们想替换整个文档内容，包括 YAML 区域中的属性。
@@ -752,6 +756,280 @@ go 文章内容
 
 ### 创建文件时动态添加属性
 
+我们在前面介绍目录模板时使用的例子中，标签默认添加了 `#博客` 和 `#Obsidian`，其实我在写文章的时候还会把目录插件的名称也作为标签。我们无法在 YAML 区域使用 `<% - title %>`，因为我是在后面定义的，所以我们要寻求别的方法来实现。
+
+下面这个实现来自网上，使用用户脚本来实现。
+
+在 `Scripts` 目录中分别新建 `formatted_frontmatter.js` 和 `mutate_frontmatter.js`，并复制下面的脚本内容：
+
+````
+%% formatted_frontmatter.js %%
+```js
+module.exports = async (tp, raw) => {
+	const { position, ...frontmatter } =
+		tp.frontmatter && Object.keys(tp.frontmatter).length > 0
+			? tp.frontmatter
+			: tp;
+
+	let output = "";
+	const yaml = await import("https://unpkg.com/js-yaml?module");
+	try {
+		output += yaml.dump(frontmatter, {
+			// quotingType: '"',
+			// forceQuotes: true,
+		});
+		if (raw) {
+			return output;
+		} else {
+			return ["---", output, "---"].join("\n");
+		}
+	} catch (e) {
+		console.log(e);
+	}
+};
+```
+
+%% mutate_frontmatter.js %%
+```js
+module.exports = (tp, attributes = {}) => {
+	if (typeof attributes !== "object") {
+		throw new Error("attributes must be an object");
+	}
+	let { position, ...frontmatter } =
+		tp.frontmatter && typeof tp.frontmatter === "object" ? tp.frontmatter : {};
+	for (let key in attributes) {
+		if (Array.isArray(frontmatter[key]) || Array.isArray(attributes[key])) {
+			if (Array.isArray(frontmatter[key]) && Array.isArray(attributes[key])) {
+				frontmatter[key] = frontmatter[key].concat(attributes[key]);
+			} else if (
+				!Array.isArray(frontmatter[key]) &&
+				Array.isArray(attributes[key])
+			) {
+				frontmatter[key] = attributes[key].concat([frontmatter[key]]);
+			} else if (
+				Array.isArray(frontmatter[key]) &&
+				!Array.isArray(attributes[key])
+			) {
+				frontmatter[key] = frontmatter[key].concat([attributes[key]]);
+			} else {
+				frontmatter[key] = { ...frontmatter[key], ...attributes[key] };
+			}
+			frontmatter[key] = Array.from(new Set(frontmatter[key].filter(val => val)));
+		} else if (
+			typeof frontmatter[key] === "object" &&
+			typeof attributes[key] === "object"
+		) {
+			frontmatter[key] = { ...frontmatter[key], ...attributes[key] };
+		} else {
+			frontmatter[key] = attributes[key];
+		}
+	}
+	// remove duplicates from array values
+	frontmatter = Object.fromEntries(
+		Object.entries(frontmatter).map(([key, value]) => {
+			if (Array.isArray(value)) {
+				return [key, Array.from(new Set(value))];
+			}
+			return [key, value];
+		})
+	);
+
+
+	return tp.user.formatted_frontmatter(frontmatter);
+};
+```
+````
+
+参考：[Templater - How to add information to YAML frontmatter - Help - Obsidian Forum](https://forum.obsidian.md/t/templater-how-to-add-information-to-yaml-frontmatter/38009/2)
+
+现在我们需要对原来博客中的 Obsidian 模板内容进行调整：
+
+````
+<%*
+const isDefaultTitle = tp.file.title.startsWith("Untitled") || tp.file.title.startsWith("未命名")
+const defaultTags = ["博客", "Obsidian"]
+let title
+let titleInTags
+const titlePrefix = "Obsidian 达人成长之路："
+const titleSuffix = " 插件使用"
+
+if (isDefaultTitle) {
+	title = await tp.system.prompt("Title")
+    if (title.trim() !== "") {
+        titleInTags = title.split(" ").join("")
+        await tp.file.rename(`${titlePrefix}${title}${titleSuffix}`)
+    } else {
+        title = tp.file.title
+    }
+} else {
+	title = tp.file.title
+}
+
+let template = "模板"
+const currentTemplateFolder = "博客/Obsidian"
+const currentFileFolder = tp.config.active_file.parent.path
+
+if (!currentFileFolder.startsWith(currentTemplateFolder)) {
+	if (isDefaultTitle) {
+		await tp.file.move(`${currentTemplateFolder}/${titlePrefix}${title}${titleSuffix}`)
+	}
+}
+-%>
+
+<%- tp.user.mutate_frontmatter(tp, { tags: [...defaultTags, titleInTags] }) -%>
+
+# <% title %>
+
+<% tp.file.cursor() %>
+
+## 参考
+
+- 
+````
+
+>[!Tip] 调整后我们使用 `<%- -%>` 来代替 `<% %>` 用于确保 YAML 区域前后无空白行，如果前面有多余的空行，会导致解析不正确，变成二分隔线包裹标签。
+
+结果：
+
+![[动画2 34.gif]]
+
+可以看到 YAML 中的属性正确合并，更多的操作可自行查阅原文。
+
+>[!Warning] 虽然看着效果不错，但是相信读着看到一大坨代码就被劝退了。因为这个参考文章是几年前的，现在我们可以使用 Obsidian 官方的 API 直接搞定，请接着阅读...
+
+`FileManager.processFrontMatter()` 函数官方描述为：以原子方式读取、修改和保存笔记的卷首内容。frontmatter 作为 JS 对象传入，应直接进行变异以达到预期的结果。
+
+我们可以借助这个函数在模板中动态添加属性到 YAML 中，最终改进版如下：
+
+````
+<%*
+const isDefaultTitle = tp.file.title.startsWith("Untitled") || tp.file.title.startsWith("未命名")
+const defaultTags = ["博客", "Obsidian"]
+let title
+let titleInTags
+const titlePrefix = "Obsidian 达人成长之路："
+const titleSuffix = " 插件使用"
+
+if (isDefaultTitle) {
+	title = await tp.system.prompt("Title")
+    if (title.trim() !== "") {
+        titleInTags = title.split(" ").join("")
+        const name = `${titlePrefix}${title}${titleSuffix}`
+        await tp.file.rename(name)
+        const file = tp.file.find_tfile(name)
+        setTimeout(async() => {
+            await app.fileManager.processFrontMatter(file, fm => {
+                fm.tags = [...defaultTags, titleInTags]
+            })
+        }, 200)
+    } else {
+        title = tp.file.title
+    }
+} else {
+	title = tp.file.title
+}
+
+let template = "模板"
+const currentTemplateFolder = "博客/Obsidian"
+const currentFileFolder = tp.config.active_file.parent.path
+const newFileName = `${currentTemplateFolder}/${titlePrefix}${title}${titleSuffix}`
+
+if (!currentFileFolder.startsWith(currentTemplateFolder)) {
+	if (isDefaultTitle) {
+		await tp.file.move(newFileName);
+	}
+}
+-%>
+
+# <% title %>
+
+<% tp.file.cursor() %>
+
+## 参考
+
+- 
+````
+
+我们在脚本中添加了一个 `setTimeout()` 函数等待 200 毫秒，在文件重命令结束后再设置属性。
+
+### 链接操作
+
+双链是 Obsidian 的特色，熟练应用链接将会使得笔记井然有序，减少冗余，更高效地管理笔记。在 Templater 中使用链接很简单，只需要将原来链接名称使用模板插值即可：
+
+````
+<%*
+const link = "obsidian 达人成长笔记模板"
+-%>
+[[<% link %>]]
+````
+
+> [!Tip] 我们这里所讲解的应用场景是使用 <kbd>Alt + R</kbd> 在当前文档执行模板。
+
+然而这并不是万能的，正如我在系列文章第一篇介绍 Dataview 时介绍 `link()` 函数的总结：
+
+> **`link()` 函数会从最外层寻找链接的文档，然后才是同级目录下的文档。**
+
+我们很多时候只是想链接同目录下的文件，而非根目录下的同名文件。这个时候我们需要借助 Obsidian 的 API 来达到目的。使用 `app.fileManager.generateMarkdownLink()` 函数来创建链接，需要传入一个 TFile，然后传入一个路径到第二个参数。
+
+这里假定要链接的文档为 `博客/Obsidian/未命名.md`，同时我们在全局目录下也存在一个 `Obsidian/未命名.md`，这个时候，我们不能在获取 TFile 时传入 `Obsidian/未命名` 到 `tp.file.find_tfile()` 函数中，即使我们传递给 `generateMarkdownLink()` 函数的第二个参数 `tp.file.path(true)` 的值为 `博客/Obsidian`，结果也会链接到根目录下的 `Obsidian/未命名` 文件。
+
+解决办法就是我们将当前文件的路径用 `tp.file.folder(true)` 和文件名结合，脚本如下：
+
+````
+<%*
+const file = tp.file.find_tfile(`${tp.file.folder(true)}\/未命名`)
+const link = app.fileManager.generateMarkdownLink(file, tp.file.folder(true))
+-%>
+<% link %>
+````
+
+解决了链接路径问题，现在我们来关注链接的类型。我们知道引用链接时可以指向链接的文件、文档标题、文档段落以及为链接添加显示名，下面我们来看看具体如何操作。
+
+这里同样是用 `generateMarkdownLink()` 函数，现在我们来看一下这个函数的完整签名：
+
+```ts
+generateMarkdownLink(file: TFile, sourcePath: string, subpath?: string, alias?: string): string
+```
+
+其中，`file` 指向要链接的文件，`sourcePath` 链接存放的路径，`subpath` 为文档中的标题或者块内容，`alias` 就是链接的显示名称。
+
+````
+<%*
+const file = tp.file.find_tfile("obsidian 达人成长笔记模板")
+const link = app.fileManager.generateMarkdownLink(
+	file,
+	tp.file.folder(true),
+	"#参考",
+	"这里是放置参考的文章"
+)
+-%>
+<% link %>
+````
+
+结果：
+
+![[动画2 35.gif]]
+
+### 回到上一个文件
+
+当我们在正在编辑文档时使用 <kbd>Alt + C</kbd> 基于模板创建新的文件时，创建成功后如果我们像要回到上一个编辑的文件，我们可以用鼠标点击标题栏左侧的【返回】按钮，也可以使用快捷键 <kbd>Ctrl + Alt + ←</kbd> 来实现，当然我们这里要讲的是直接在模板中放置一个返回按钮，实现原理就是使用 Obsidian 的 API 来获取最近一次打开的文件，然后作为链接显示在文档中。
+
+````
+<%*
+const parentFile = tp.file.find_tfile(app.workspace.getLastOpenFiles()[3]);
+const parentLink = app.fileManager.generateMarkdownLink(parentFile, tp.file.folder(true), null, '返回');
+-%>
+
+<% parentLink %>
+
+<% tp.file.cursor() %>
+````
+
+结果：
+
+![[动画2 36.gif]]
+
+> [!Tip] 注意到这里我们取的是 `getLastOpenFiles()` 函数返回数组的第 3 个值，第 1 个为当前生成的新文件，第 2 个为我们使用的模板文件，第 3 个才是上一次正在编辑的文件。
 
 
 ## 参考
