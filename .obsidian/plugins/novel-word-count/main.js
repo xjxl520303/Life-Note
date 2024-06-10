@@ -1454,7 +1454,7 @@ var NovelWordCountPlugin = class extends import_obsidian5.Plugin {
     });
   }
   async updateDisplayedCounts(file = null) {
-    var _a;
+    var _a, _b;
     const debugEnd = this.debugHelper.debugStart(
       `updateDisplayedCounts [${file == null ? "ALL" : file.path}]`
     );
@@ -1470,7 +1470,18 @@ var NovelWordCountPlugin = class extends import_obsidian5.Plugin {
       return;
     }
     this.setContainerClass(fileExplorerLeaf);
-    const fileItems = fileExplorerLeaf.view.fileItems;
+    const fileExplorerView = fileExplorerLeaf.view;
+    const fileItems = fileExplorerView.fileItems;
+    if ((_a = fileExplorerView == null ? void 0 : fileExplorerView.headerDom) == null ? void 0 : _a.navButtonsEl) {
+      const counts = this.fileHelper.getCachedDataForPath(
+        this.savedData.cachedCounts,
+        "/"
+      );
+      fileExplorerView.headerDom.navButtonsEl.setAttribute(
+        "data-novel-word-count-plugin",
+        this.nodeLabelHelper.getNodeLabel(counts)
+      );
+    }
     if (file) {
       const relevantItems = Object.keys(fileItems).filter(
         (path) => file.path.includes(path)
@@ -1487,7 +1498,7 @@ var NovelWordCountPlugin = class extends import_obsidian5.Plugin {
       );
     }
     for (const path in fileItems) {
-      if (file && !file.path.includes(path)) {
+      if (file && (!file.path.includes(path) || file.path === "/")) {
         continue;
       }
       const counts = this.fileHelper.getCachedDataForPath(
@@ -1495,7 +1506,7 @@ var NovelWordCountPlugin = class extends import_obsidian5.Plugin {
         path
       );
       const item = fileItems[path];
-      ((_a = item.titleEl) != null ? _a : item.selfEl).setAttribute(
+      ((_b = item.titleEl) != null ? _b : item.selfEl).setAttribute(
         "data-novel-word-count-plugin",
         this.nodeLabelHelper.getNodeLabel(counts)
       );
@@ -1524,6 +1535,7 @@ var NovelWordCountPlugin = class extends import_obsidian5.Plugin {
   }
   setContainerClass(leaf) {
     const container = leaf.view.containerEl;
+    container.toggleClass(`novel-word-count--active`, true);
     const notePrefix = `novel-word-count--note-`;
     const folderPrefix = `novel-word-count--folder-`;
     const alignmentClasses = ALIGNMENT_TYPES.map((at) => notePrefix + at).concat(ALIGNMENT_TYPES.map((at) => folderPrefix + at));
