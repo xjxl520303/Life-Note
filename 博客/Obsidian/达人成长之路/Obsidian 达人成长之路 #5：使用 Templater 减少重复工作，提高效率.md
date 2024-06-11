@@ -120,14 +120,14 @@ created_time: <% tp.date.now("HH:mm") %>
 
 这个功能很实用，让我们可以自定义模板在被插入后光标所在的位置，也可以放置多个光标埋点，按一定的顺序使用快捷键来依次跳转到定位处。
 
-在使用这个功能时我们需要将 Templater 的【Automatic jump to cursor】 保持为打开状态。然后在模板中使用 `<% tp.file.cursor() %>` 来插入光标，要实现通过快捷键在多个光标位置跳转我们需要创建多个光标，顺序只需要将 `tp.file.cursor()` 函数中传入 `1, 2, 3, ...` 就可以了。
+在使用这个功能时我们需要将 Templater 的【Automatic jump to cursor】 保持为打开状态。然后在模板中使用 `` 来插入光标，要实现通过快捷键在多个光标位置跳转我们需要创建多个光标，顺序只需要将 `tp.file.cursor()` 函数中传入 `1, 2, 3, ...` 就可以了。
 
 >[!Tip] 默认光标跳转快捷键为 <kbd>Alt + Tab</kbd>，这个在 Windows 系统中和系统快捷键冲突了，我们只能将其修改成别的，我这里是 <kbd>Alt + ;</kbd>。
 
 我们新建一个模板来测试光标跳转：
 
 ````
-这个功能很实用，让我们<% tp.file.cursor() %>可以自定义模板在被插入后光标所在的位置，也可以<% tp.file.cursor(2) %>放置多个光标埋点，按一定的顺序使用快捷键来依次跳转到<% tp.file.cursor(3) %>定位处。
+这个功能很实用，让我们可以自定义模板在被插入后光标所在的位置，也可以<% tp.file.cursor(2) %>放置多个光标埋点，按一定的顺序使用快捷键来依次跳转到<% tp.file.cursor(3) %>定位处。
 ````
 
 现在我们见证奇迹：
@@ -251,7 +251,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 
 ````
 // File cursor
-<% tp.file.cursor() %> 
+<% tp.file.cursor() %>
 // File multi-cursor
 <% tp.file.cursor(1) %>Content<% tp.file.cursor(1) %>
 ````
@@ -726,9 +726,27 @@ if (!currentFileFolder.startsWith(currentTemplateFolder)) {
 
 下面为大家带来一些实际应用方面的例子，虽然在前面的章节中也穿插了部分案例，这里更多的是展示一些技巧和常用的模式，方便读者应用到自己的笔记系统中。
 
-### 为文档添加创建和修改时间
+### 为文档添加创建时间
 
-可能有人会觉得很奇怪，每一个文件不是默认自带了创建时间和上次修改时间，我们自己何必再多此一举额外添加两个属性？这是因为如果你的文档只是在单机操作的情况下系统提供的时间是没有什么问题的，但是如果涉及到多个设备同步，或者使用 Git 来管理，你就会突然发现这个时间会改变，文件并不是你最早创建的日期
+可能有人会觉得很奇怪，每一个文件不是默认自带了创建时间和上次修改时间，我们自己何必再多此一举额外添加两个属性？这是因为如果你的文档只是在单机操作的情况下系统提供的时间是没有什么问题的，但是如果涉及到多个设备同步，或者使用 Git 来管理，你就会突然发现这个时间会改变，文件并不是你最早创建的日期。
+
+既然我们使用 Templater，就可以为创建的文件默认添加一个 `created_at` 的自定义 YAML 属性来自动生成文档的创建时间。
+
+````
+<%*
+const ctime = tp.file.last_modified_date()
+const file = tp.config.target_file
+setTimeout(async () => {
+	await app.fileManager.processFrontMatter(file, fm => {
+		fm.created_at = ctime
+	})
+}, 200)
+-%>
+````
+
+结果：
+
+![[动画2 47.gif]]
 
 ### 执行模板前先清空文档内容
 
@@ -1010,6 +1028,84 @@ const link = app.fileManager.generateMarkdownLink(
 
 ![[动画2 35.gif]]
 
+### 标签操作
+
+在前面的基础知识介绍中我们学习到了使用 `tp.file.tags` 来获取当前页面中的所有标签。这里需要注意一点的是，标签可以定义在属性 `tags` 下，也可以在文档正文中定义，通过 `tp.file.tags` 所获取到的标签并不会去重，也就是说你在 YAML 和文档正文中同时定义一个同名的标签是不区分的。
+
+在 Obsidian 提供的 API 中，我们可以使用 `app.vault.getMarkdownFiles()` 函数来获取仓库中的所有 Markdown 文档，然后通过 `app.metadataCache.getFileCache()` 函数来获取 TFile 的内容，基结果为一个 `CachedMetadata` 对象，属性 `frontmatter.tags` 和 `tags` 分别为上一段我们介绍的二种不同位置的标签，同时我们需要注意一点的是：**如果页面中没有标签，这两个属性名将不存在于结果对象中**。
+
+因为标签存在于两个位置，因此我们可以使用 `tp.obsidian.getAllTags()` 方法将 `CachedMetadata` 对象传递到函数中来获取标签值。
+
+>[!Tip] `tp.obsidin` 对象包含了所有 Obsidian 公开的 API，可以参考 [obsidian-api/obsidian.d.ts at master · obsidianmd/obsidian-api (github.com)](https://github.com/obsidianmd/obsidian-api/blob/master/obsidian.d.ts)。
+
+现在我们来实现一个功能，根据提供的标签名，然后找到所有包含标签的文档，并将其作为链接插入到指定的位置：
+
+````
+<%-*
+const tag = "#Obsidian";
+
+const filteredFiles = app.vault.getMarkdownFiles().filter(file => {
+	const fileCache = app.metadataCache.getFileCache(file)
+	let tags = []
+	if ((fileCache.frontmatter && fileCache.frontmatter.tags) || fileCache.tags) {
+		tags = tp.obsidian.getAllTags(fileCache)
+	}
+	tags = [...new Set(tags)] // 去重
+  	return tags.includes(tag);
+});
+const selectedFile = (await tp.system.suggester((file) => file.basename, filteredFiles)).basename;
+-%>
+
+[[<% selectedFile %>]]
+````
+
+结果：
+
+![[动画2 44.gif]]
+
+上面的示例我们是在已知标签的情况下进行筛选，基实我们可以进一步提供一个仓库所有的标签列表来选选择，然后再进行文件查找。
+
+使用 `app.metadataCache.getTags()` 方法可以获取仓库中的所有标签，标签名包含 `#` 号，可以使用 `map()` 函数遍历并使用 `replace('#', '')` 函数进行替换来去除。
+
+将上面的示例 `const tag = '#Obsidian'` 替换成 `const tag = await tp.system.suggester(item => item, Object.keys(app.metadataCache.getTags()))`。
+
+结果：
+
+![[动画2 45.gif]]
+
+下面我们再一次进行修改，现在我们想通过标签来查询所有包含标签的最近一次修改的文档，看看怎么来实现。
+
+要想获取最近文档的修改时间，可以通过 TFile 对象的 `stat.mtime` 属性来得到，然后就是对包含标签的所有文档进行 `mtime` 的对比，这里需要用到数组的 `reduce()` 方法来递归。
+
+````
+<%-*
+const tag = await tp.system.suggester(item => item, Object.keys(app.metadataCache.getTags()))
+
+let latestTFileWithTag = app.vault.getMarkdownFiles().reduce((curLatestTFileWithTag, file) => {
+	const fileCache = app.metadataCache.getFileCache(file)
+	let tags = []
+	if ((fileCache.frontmatter && fileCache.frontmatter.tags) || fileCache.tags) {
+		tags = tp.obsidian.getAllTags(fileCache)
+	}
+	tags = [...new Set(tags)] // 去重
+	if (tags.includes(tag) && (!curLatestTFileWithTag || curLatestTFileWithTag.stat.mtime < file.stat.mtime)) {
+		curLatestTFileWithTag = file
+	}
+	return curLatestTFileWithTag
+}, null);
+
+const latestFileWithTag = latestTFileWithTag.basename;
+-%>
+
+[[<% latestFileWithTag %>]]
+````
+
+结果：
+
+![[动画2 46.gif]]
+
+>[!Tip] 上面这个示例，我们可以举一反三应用到前面说的【为文档添加创建】的应用案例中，来获取最近一次创建的文档。
+
 ### 回到上一个文件
 
 当我们在正在编辑文档时使用 <kbd>Alt + C</kbd> 基于模板创建新的文件时，创建成功后如果我们像要回到上一个编辑的文件，我们可以用鼠标点击标题栏左侧的【返回】按钮，也可以使用快捷键 <kbd>Ctrl + Alt + ←</kbd> 来实现，当然我们这里要讲的是直接在模板中放置一个返回按钮，实现原理就是使用 Obsidian 的 API 来获取最近一次打开的文件，然后作为链接显示在文档中。
@@ -1031,10 +1127,157 @@ const parentLink = app.fileManager.generateMarkdownLink(parentFile, tp.file.fold
 
 > [!Tip] 注意到这里我们取的是 `getLastOpenFiles()` 函数返回数组的第 3 个值，第 1 个为当前生成的新文件，第 2 个为我们使用的模板文件，第 3 个才是上一次正在编辑的文件。
 
+### 无限提示，直到没有值
+
+有时，您想提示同一事物的多个，但不确定需要提示多少个。您可以使用 `while` 循环多次提示，并在未提供值时停止提示。
+
+````
+<%*
+let isAddingTasks = true;
+while (isAddingTasks) {
+	const task = await tp.system.prompt("Enter a task");
+	if (task) {
+-%>
+- [ ] <% task %>
+<%*
+	} else {
+		isAddingTasks = false;
+  	}
+}
+-%>
+````
+
+结果：
+
+![[动画2 42.gif]]
+
+### 为 tp.system.suggester() 提供创建支持
+
+通常情况下在使用 `tp.system.suggester()` 函数时，是提供已有的选项供选择，但是如果我们想要在没有符合期望选项的情况下创建一个值，怎么做呢？这个时候可以另辟蹊径，使用一个特殊的选择项 `--CREATE CUSTOM OPTION--` 来作为触发标识选项，当选择它时再调用 `tp.system.prompt()` 函数来提供自定义选项的输入。
+
+````
+<%*
+const customOption = "--CREATE CUSTOM OPTION--"
+const items = ["item 1", "item 2", customOption];
+let selectedItem = await tp.system.suggester(item => item, items);
+if (selectedItem === customOption) {
+	selectedItem = await tp.system.prompt("Type custom option");
+}
+-%>
+<% selectedItem %>
+````
+
+结果：
+
+![[动画2 43.gif]]
+
+### 使用 tp.system.suggester() 列举文件和目录
+
+这个案例中我们来看一下如何将 `app.vault.getMarkdownFiles()` 获取的文档作为 `tp.system.suggester()` 的数据源，然后再使用 `app.fileManager.generateMarkdownLink()` 函数生成链接。
+
+````
+<%*
+let selectedLink
+const files = app.vault.getMarkdownFiles()
+const selectedFile = await tp.system.suggester(file => file.basename, files)
+if (selectedFile) {
+	selectedLink = app.fileManager.generateMarkdownLink(selectedFile, tp.file.folder(true))
+}
+-%>
+
+<% selectedLink %>
+````
+
+![[动画2 48.gif]]
+
+如果想要根据目录名来过滤文件，可以使用 `filter(file => file.path.startsWith('folderName'))` 来过滤，但是约束条件是必须为根目录下的文件文件夹。如果是二级或者更深地目录，我们需要将路径按 `/` 拆分成数组，并使用 `splittedArr.includes('folderName')` 来判断，这里就不举例了。
+
+>[!Tip] 当然我们也可以根据路径是否包含 `.md` 后缀来判断是目录还是文件。
+
+如何判断路径是否包含目录名很容易实现，现在我们来看一下如何获取所有的目录。要获取所有的文档和目录，需要使用到 `app.vault.getAllLoadedFiles()` 函数，该函数返回一个 `TAbstractFile[]` 数组，然后使用 ` file instanceof TFolder ` 来判断是否为目录对象。
+
+下面我们来实现一个将当前文件移动到选定的目录中的功能。
+
+````
+<%*
+let selectedLink
+const folders = app.vault.getAllLoadedFiles().filter(file => file instanceof TFolder)
+const selectedFolder = await tp.system.suggester(folder => folder.path, folders)
+if (selectedFolder) {
+	await tp.file.move(`${selectedFolder}/${tp.file.title}`)
+}
+-%>
+````
+
+结果：
+
+![[动画2 49.gif]]
+
+进一步，如果我们预先提供了目录名，我这里为 `博客/Obsidian`，现在根据这个目录名来提供文件建议列表，这里的处理稍微有点不同。首先，要使用函数 `app.vault.getAbstractFileByPath()` 来返回给定目录下的 `TAbstractFile[]` 数组，然后按照上面类似地方式来判断目录中是否有子目录，如果有则进一步进行处理。
+
+如果未选择目录中的文件，我们还可以进一步提供一个提示框来让用户输入新的文件名来兜底。
+
+````
+<%*
+const blogFolder = '博客/Obsidian'
+const blogTFolder = app.vault.getAbstractFileByPath(blogFolder)
+const blogs = blogTFolder.children.filter(folder => folder instanceof tp.obsidian.TFolder)
+
+let selectedBlog
+
+if (blogs.length > 0) {
+	selectedBlog = (await tp.system.suggester(blog => blog.name, blogs))?.name
+}
+
+// 如果没有选择文章，则创建一个新的文章
+if (!selectedBlog) {
+	selectedBlog = await tp.system.prompt("创建新的文章")
+}
+
+// 将文章移动到选定的目录
+await tp.file.move(`${blogFolder}/${selectedBlog}/${tp.file.title}`)
+-%>
+````
+
+结果
+
+![[动画2 50.gif]]
+
+### 为文档中的空链接创建文件
+
+下面这个示例我们来实现对当前文档中的链接进行判断，如果链接引用的文件不存在于仓库中，我们就根据链接的名称来创建文件。
+
+````
+<%*
+const file = tp.config.target_file
+const links = app.metadataCache.getFileCache(file)?.links || []
+
+if (links.length > 0) {
+	links.forEach(async link => {
+		const tfile = await tp.file.find_tfile(link.link)
+		if (!tfile) {
+			await tp.file.create_new(
+				`文件自动创建自：${tp.file.folder(true)}/${file.name}`,
+				link.link.split('/').pop(),
+				false,
+				link.link.split('/').slice(0, -1).join('/')
+			)
+		}
+	})
+}
+-%>
+````
+
+结果：
+
+![[动画2 51.gif]]
+
+可以看到，调用 `tp.file.create_new()` 会自动创建不存在的目录。
 
 ## 参考
 
 - [Templates - Obsidian Help](https://help.obsidian.md/Plugins/Templates)
+- [Vault - Developer Documentation (obsidian.md)](https://docs.obsidian.md/Reference/TypeScript+API/Vault)
 - [Introduction - Templater (silentvoid13.github.io)](https://silentvoid13.github.io/Templater/introduction.html)
 - [home - shabeblog (shbgm.ca)](https://shbgm.ca/blog/home)
 - https://zachyoung.dev/posts/folder-templates-with-quick-switcher
