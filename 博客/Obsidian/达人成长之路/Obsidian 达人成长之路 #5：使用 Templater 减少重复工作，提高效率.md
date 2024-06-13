@@ -515,6 +515,14 @@ Note's type: <% tp.frontmatter["note type"] %>
 
 `tp.date.yesterday(format: string = "YYYY-MM-DD")` 函数用于获取昨天的日期和时间值。
 
+### 系统相关
+
+`tp.system` 模块主要提供了获取剪贴板内容、提示框（Prompt）和建议框（Suggester）的功能。
+
+#### tp.system.clipboard()
+
+
+
 ### 配置相关
 
 `tp.config` 模块用于暴露 Templater 的运行时配置。
@@ -546,9 +554,9 @@ Note's type: <% tp.frontmatter["note type"] %>
 
 ![[动画2 28.gif]]
 
-#### tp.config.run_mod
+#### tp.config.run_mode
 
-`tp.config.run_mod` 属性用于表示运行的模式，我们已知的有：基于模板创建新文件、重写当前编辑文件和在当前文件追加内容。
+`tp.config.run_mode`  属性用于表示运行的模式，我们已知的有：基于模板创建新文件、重写当前编辑文件和在当前文件追加内容。
 
 翻阅插件的源码，会发现基定义了 6 种模式：
 
@@ -563,8 +571,75 @@ export enum RunMode {
 }
 ```
 
+这个配置有什么用呢？
 
+下面我们来实现一个在创建文件时自动添加创建时间，在更新文件时自动添加更新时间的功能。
 
+````
+%% 模板/创建和更新时间模板.md %%
+
+<%* if (tp.config.run_mode === 0) { %>
+<%- "---" %>
+created_at: <% <% tp.file.last_modified_date('YYYY-MM-DD HH:mm:ss') %> %>
+<% "---" %>
+<%* } %>
+
+<%-*
+const ctime = <% tp.file.last_modified_date('YYYY-MM-DD HH:mm:ss') %>
+const mod = tp.config.run_mode
+const file = tp.config.target_file
+const fm = app.metadataCache.getFileCache(file)?.frontmatter
+
+await app.fileManager.processFrontMatter(file, fm => {
+	if (!fm) {
+		fm.created_at = ctime
+	} else {
+		if (mod === 1) {
+			if (!fm.created_at) {
+				fm.created_at = ctime
+			} else {
+				fm.updated_at = ctime
+			}
+		}
+	}
+})
+_%>
+````
+
+结果：
+
+![[动画2 57.gif]]
+
+#### tp.config.target_file
+
+表示将在其中插入模板的目标文件的 TFile 对象。
+
+#### tp.config.template_file
+
+表示模板文件的 TFile 对象。
+
+### 钩子（Hooks）函数
+
+目前为止 Templater 只提供了一个钩子函数 `tp.hooks.on_all_templates_executed(callback_function: () => any)` 用于在正在执行的模板任务完成后执行回调函数。
+
+使用钩子函数我们可以给后面介绍【目录模板】功能时创建博客模板的脚本后面添加下面的代码来实现在文档创建结束后添加一个 `created_at` 属性。
+
+````
+<%*
+tp.hooks.on_all_templates_executed(async () => {
+	const file = tp.file.find_tfile(tp.file.path(true));
+	await app.fileManager.processFrontMatter(file, (frontmatter) => {
+		frontmatter["created_at"] = tp.file.last_modified_date('YYYY-MM-DD HH:mm:ss')
+	})
+})
+%>
+````
+
+目前为止，有没有发现这个钩子函数只能作用于一个文件或者模板中，必须执行模板才会触发。下面我们来介绍一个小技巧，实现一个监听所有模板执行的回调函数，例如在控制台输出一个字符串。
+
+要实现这个功能，我们需要在一个模板中放入钩子相关代码，比如我这里创建的模板为 `模板/全局.md`，我们在其它模板 `模板/Code block.md` 中插入 ` <% tp.file.include("[[全局.md]]") %> ` 就可以了。
+
+具体运行过程我这里就留给读着自己去动手体验一下了...
 
 ## 插件配置选项
 
@@ -755,6 +830,8 @@ setTimeout(async () => {
 created_at: <% tp.file.last_modified_date() %>
 <% "---" %>
 ````
+
+进一步我们还可以手动添加更改时间，请参考前面介绍 `tp.config.run_mode` 的相关内容。
 
 ### 执行模板前先清空文档内容
 

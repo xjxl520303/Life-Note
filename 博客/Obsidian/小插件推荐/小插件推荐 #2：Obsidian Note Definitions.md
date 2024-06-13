@@ -4,6 +4,7 @@ tags:
   - Blog
   - Obsidian
   - NoteDefinitions
+updated_at: 2024-06-13 15:56
 ---
 本篇文章向大家推荐一款新上架的小插件：[dominiclet/obsidian-note-definitions](https://github.com/dominiclet/obsidian-note-definitions)，目前版本：0.9.1。
 
@@ -12,6 +13,7 @@ tags:
 其实还有另外一款类似的插件 [vschroeter/obsidian-glossary](https://github.com/vschroeter/obsidian-glossary)，它是其于文件来定义术语。两者相比较，我们要介绍地这个插件它可以在单个文件中定义多个术语，所以极力推荐使用。
 
 这个看似简单的功能，我们能玩出什么花样呢？其有哪此应用场景，相信读者看完本文后会发现本地 Obsidian 插件库又多了一员小将。
+
 
 ## 如何使用
 
@@ -85,7 +87,6 @@ const aliasReg = /(?<=\*)(.+?)(?=\*)/g
 const aliases = lines[selectedHeading[1] + 2]
 let result
 if (aliasReg.test(aliases)) {
-    console.log(aliases.match(aliasReg)[0])
     const ok = tp.system.prompt('使用别名？', aliases.match(aliasReg)[0])
     if (ok) {
         result = aliases.match(aliasReg)[0]
