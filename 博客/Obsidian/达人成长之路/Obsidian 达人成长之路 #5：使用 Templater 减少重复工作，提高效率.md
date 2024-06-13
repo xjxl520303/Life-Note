@@ -748,6 +748,14 @@ setTimeout(async () => {
 
 ![[动画2 47.gif]]
 
+此外，我们还可以使用这种比较简单的方式来实现，需要注意的是第一个模板语句 `\<\%-` 中 `-` 至关重要，如果不把空白行去除， YAML 属性将不会生效。
+
+````
+<%- "---" %>
+created_at: <% tp.file.last_modified_date() %>
+<% "---" %>
+````
+
 ### 执行模板前先清空文档内容
 
 如果我们在一个已有内容的文档来执行一个模板，通常情况下会将新的内容追加到当前内容的后面。有时候我们想替换整个文档内容，包括 YAML 区域中的属性。
@@ -969,6 +977,99 @@ if (!currentFileFolder.startsWith(currentTemplateFolder)) {
 ````
 
 我们在脚本中添加了一个 `setTimeout()` 函数等待 200 毫秒，在文件重命令结束后再设置属性。
+
+### 读取其它文档的属性
+
+这个例子我们将在一个文档中读取别的文档的 YAML 属性，这里主要是使用 `app.metadataCache.getFileCache()` 来获取另外一个文档的内容，再通过其返回的 `CachedMetadata` 类型数据的 `frontmatter` 字段来获取属性值。
+
+现有一个文档 `foo.md` 其 YAML 中包含属性 `count: 1`，现在我们在另外一个文档 `bar.md` 中对其 `count` 属性进行读取。
+
+````
+%% bar.md %%
+
+<%*
+const file = tp.file.find_tfile("foo.md")
+const cache = app.metadataCache.getFileCache(file)
+
+let count = 0
+if (cache?.frontmatter?.count) {
+	count = Number(cache.frontmatter.count) + 1
+}
+-%>
+
+数量：<%- count %>
+````
+
+结果：
+
+![[动画2 23.gif]]
+
+这里如果我们想要把修改写回 `foo.md` 文档的属性 `count` 中，可以在 `if` 语句后追加 `await app.fileManager.processFrontMatter(file, fm => fm.count = count)` 来实现。
+
+### 文档追加内容
+
+接上面示例，我们现在来给 `foo.md` 文档追加内容，看看如何实现。
+
+我们使用 `app.vault.process(file, fn, options)` 方法来同步执行自动读取、修改和保存文档内容。下面是一个简单的实现：
+
+````
+<%*
+const file = tp.file.find_tfile("foo.md")
+await app.vault.process(file, (text) => {
+	return text + "\n追加内容"
+})
+-%>
+````
+
+结果：
+
+![[动画2 25.gif]]
+
+此外，我们还可以使用 `app.vault.read()` 和 `app.vault.modify()` 来实现，这两个方法都是异步方式来操作。
+
+````
+<%*
+const file = tp.file.find_tfile("foo.md")
+const content = await app.vault.read(file)
+const newContent = content + "\n追加内容"
+await app.vault.modify(file, newContent)
+-%>
+````
+
+进一步，我们还可以在特定的行数来插入内容，只需要将文档内容按 `\n` 分割，然后在指定行号插入内容即可。
+
+````
+<%*
+const file = tp.file.find_tfile("foo.md")
+await app.vault.process(file, (text) => {
+	const lines = text.split("\n")
+	lines.splice(2, 0, "追加内容")
+	return lines.join("\n")
+})
+-%>
+````
+
+结果：
+
+![[动画2 52.gif]]
+
+使用  `app.vault.read()` 和 `app.vault.modify()` 类似就不赘述了。
+
+### 调用命令
+
+在 Obsidian 中有很多操作是通过命令来触发的，同时很多插件也提供了附带的命令，我们可以在控制台中（<kbd>Ctrl+Shift+I</kbd>）输入 `app.commands.commands` 来查看所有的命令列表。
+
+下面这个示例，我们通过执行命令 `日记：打开/创建今天的日记`，来创建今日的笔记。注意我们是使用命令 ID 来引用命令的。
+
+````
+<%*
+app.commands.executeCommandById("daily-notes");
+%>
+````
+
+结果：
+
+![[动画2 53.gif]]
 
 ### 链接操作
 
@@ -1274,6 +1375,62 @@ if (links.length > 0) {
 
 可以看到，调用 `tp.file.create_new()` 会自动创建不存在的目录。
 
+### 插入 Callout 区块
+
+借助 `tp.system.suggester()` 我们可以实现 Obsidian 的默认 Callout 列表。选中需要添加 Callout 的文本，然后触发快捷键 <kbd>Alt+E</kbd>，弹出 Callout 类型列表，选择指定的类型即可快速添加。
+
+````
+<%*
+const calloutList = {
+	'ℹ️ Info': '提示信息',
+	'✏️ Note': '笔记',
+	'🔥 Tip': '提示',
+	'📒 Summary': '总结',
+	'☑️ Todo': '待办事项',
+	'⚠️ Warning': '警告',
+	'❔ Question': '疑问',
+	'✔ Success': '成功',
+	'❌ Failure': '失败',
+	'⚡ Danger': '危险',
+	'🐞 Bug': '错误',
+	'📋 Example': '示例',
+	'✍️ Quote': '引用',
+}
+
+const key = await tp.system.suggester(item => item, Object.keys(calloutList))
+const value = calloutList[key]
+const callout = `>[!${key.split(' ')[1]}] ${value}\n>${tp.file.selection() || ' ...'}`
+%>
+
+<% callout %>
+````
+
+结果：
+
+![[动画2 9.gif]]
+
+下面是来自网上的一个比较全面的 Callout 插入脚本，包含了 Obsidian 支持的所有名称并按颜色进行分组。
+
+````
+A<%*
+// Choose a callout from a suggester
+// Grouped by color
+
+const types = ["🟦", "Note", "Abstract", "Summary", "TLDR", "Info", "Todo", "Tip", "Hint", "Important", "🟩", "Success", "Check", "Done", "Question", "Help", "FAQ", "🟨", "Warning", "Caution", "Attention", "🟧", "Failure", "Fail", "Missing", "🟥", "Danger", "Error", "Bug", "🟪", "Example", "⬛️", "Quote", "Cite"];
+
+const callouts = ["Blue", "> [!note]", "> [!abstract]", "> [!summary]", "> [!tldr]", "> [!info]", "> [!todo]", "> [!tip]", "> [!hint]", "> [!important]", "Green", "> [!success]", "> [!check]", "> [!done]", "> [!question]", "> [!help]", "> [!faq]", "Yellow", "> [!warning]", "> [!caution]", "> [!attention]", "Orange", "> [!failure]", "> [!fail]", "> [!missing]", "Red", "> [!danger]", "> [!error]", "> [!bug]", "Pink", "> [!example]", "Black", "> [!quote]", "> [!cite]"];
+
+let suggest = await tp.system.suggester(types, callouts);
+if (suggest == "null" || /Blue|Green|Yellow|Orange|Red|Pink|Black/.test(suggest)) {return ""};
+return suggest;
+%>
+````
+
+## 总结
+
+最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长或者加入读者交流微信群一起探讨 Obsidian 的使用技巧和资源分享。
+
+更多内容，请关注我的专栏：[Obsidian 达人成长之路 - 知乎 (zhihu.com)](https://www.zhihu.com/column/c_1776563728286670848)
 ## 参考
 
 - [Templates - Obsidian Help](https://help.obsidian.md/Plugins/Templates)
@@ -1285,3 +1442,5 @@ if (links.length > 0) {
 - [Templater snippets (zachyoung.dev)](https://zachyoung.dev/posts/templater-snippets)
 - [Templater - How to add information to YAML frontmatter - Help - Obsidian Forum](https://forum.obsidian.md/t/templater-how-to-add-information-to-yaml-frontmatter/38009/2)
 - [Obsidian Snippets (github.com)](https://gist.github.com/Mearman/ba5b1bcf746b4e04d12865dc09402016)
+- [Callouts - Obsidian Help](https://help.obsidian.md/Editing+and+formatting/Callouts)
+- [Obs127｜用Templater Hotkeys簡化Obsidian自動化腳本，詳解4個腳本範例 – 簡睿隨筆 (jdev.tw)](https://jdev.tw/blog/8114)

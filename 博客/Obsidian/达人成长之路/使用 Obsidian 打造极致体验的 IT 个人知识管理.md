@@ -167,5 +167,5 @@ Obsidian 的适用范围很广，各行各业的受众所需要的插件也不�
 这个目录结构旨在为读者提供一个从入门到精通Obsidian的完整指南，涵盖了Obsidian的各个方面，包括基础操作、进阶使用、高级应用以及附录等内容。通过清晰的目录结构，读者可以轻松地找到所需的信息，并系统地学习Obsidian的使用技巧和方法。
 ## 参考文章
 
-- [Obsidian 插件之 Outliner - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/360528418)
+- [找笔记方便、写作又给力的知识库，我是这么搭建出来的 - 少数派 (sspai.com)](https://sspai.com/post/77144)
 

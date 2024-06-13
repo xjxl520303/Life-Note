@@ -1529,8 +1529,9 @@ SORT hash(dateformat(file.ctime, "YYYY-MM-DD"), file.name)
 
 文章难免会出现一些文字在描述上不合理，不专业的地方以及错误字，往广大读者指正和提供更好的建议。
 
-最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长。
+最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长或者加入读者交流微信群一起探讨 Obsidian 的使用技巧和资源分享。
 
+更多内容，请关注我的专栏：[Obsidian 达人成长之路 - 知乎 (zhihu.com)](https://www.zhihu.com/column/c_1776563728286670848)
 ## 参考
 
 - [Dataview (blacksmithgu.github.io)](https://blacksmithgu.github.io/obsidian-dataview/)
