@@ -24,6 +24,10 @@
   "unresolvedLinks": false,
   "recentFilesStore": [
     {
+      "filepath": "README.md",
+      "timestamp": 1718365636862
+    },
+    {
       "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
       "timestamp": 1718351196316
     },
@@ -38,10 +42,6 @@
     {
       "filepath": "模板/插入插件名称.md",
       "timestamp": 1718275674277
-    },
-    {
-      "filepath": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-      "timestamp": 1718275657229
     }
   ],
   "bookmarkedFileStore": [],

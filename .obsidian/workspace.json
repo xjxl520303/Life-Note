@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "3edbdabb65b04b4d",
+        "id": "861a261a5de84bf6",
         "type": "tabs",
         "children": [
           {
-            "id": "43986da31471de77",
+            "id": "3ca7f8814f821f9a",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "home-tab-view",
+              "state": {}
             }
           }
         ],
@@ -86,7 +82,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 361.5
+    "width": 273.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -103,7 +99,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -120,7 +115,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -142,9 +136,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
-              }
+              "state": {}
             }
           },
           {
@@ -184,9 +176,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
-              }
+              "state": {}
             }
           },
           {
@@ -223,8 +213,10 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "cc3c5048ac02c60f",
+  "active": "3ca7f8814f821f9a",
   "lastOpenFiles": [
+    "README.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "附件/动画2 63.gif",
     "附件/Pasted image 20240614190528.png",
     "附件/Pasted image 20240614190330.png",
@@ -232,7 +224,6 @@
     "附件/动画2 62.gif",
     "附件/动画2 61.gif",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "附件/动画2 60.gif",
     "附件/动画2 59.gif",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
@@ -251,8 +242,6 @@
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Db forlder.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
     "模板/创建和更新时间模板.md",
-    "附件/动画2 56.gif",
-    "README.md",
     "术语",
     "日记/2024-05-27.md",
     "模板/Code block Tpl.md",
