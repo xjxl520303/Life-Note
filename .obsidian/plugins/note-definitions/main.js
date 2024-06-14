@@ -81,7 +81,8 @@ var PTreeTraverser = class {
 var import_obsidian = require("obsidian");
 var DEFAULT_DEF_FOLDER = "definitions";
 var DEFAULT_SETTINGS = {
-  enableInReadingView: true
+  enableInReadingView: true,
+  popoverEvent: "hover" /* Hover */
 };
 var SettingsTab = class extends import_obsidian.PluginSettingTab {
   constructor(app, plugin) {
@@ -102,13 +103,28 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
     new import_obsidian.Setting(containerEl).setName("Definitions folder").setDesc("Files within this folder will be parsed to register definitions (specify relative to root of vault)").addText((component) => {
       component.setValue(this.settings.defFolder);
       component.setPlaceholder(DEFAULT_DEF_FOLDER);
-      component.onChange((value) => {
+      component.onChange(async (value) => {
         this.settings.defFolder = value;
-        this.plugin.saveSettings();
+        await this.plugin.saveSettings();
+        this.plugin.refreshDefinitions();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Definition popover display event").setDesc("Choose the trigger event for displaying the definition popover").addDropdown((component) => {
+      component.addOption("hover" /* Hover */, "Hover");
+      component.addOption("click" /* Click */, "Click");
+      component.setValue(this.settings.popoverEvent);
+      component.onChange(async (value) => {
+        if (value === "hover" /* Hover */ || value === "click" /* Click */) {
+          this.settings.popoverEvent = value;
+        }
+        await this.plugin.saveSettings();
       });
     });
   }
 };
+function getSettings() {
+  return window.NoteDefinition.settings;
+}
 
 // src/util/editor.ts
 function getWordUnderCursor(editor) {
@@ -516,14 +532,18 @@ function injectGlobals(settings) {
         return;
       const defPopover = getDefinitionPopover();
       let isOpen = false;
-      const openPopover = setTimeout(() => {
-        defPopover.openAtCoords(def, el.getBoundingClientRect());
-      }, 200);
-      el.onmouseleave = () => {
-        if (!isOpen) {
-          clearTimeout(openPopover);
-        }
-      };
+      if (el.onmouseenter) {
+        const openPopover = setTimeout(() => {
+          defPopover.openAtCoords(def, el.getBoundingClientRect());
+        }, 200);
+        el.onmouseleave = () => {
+          if (!isOpen) {
+            clearTimeout(openPopover);
+          }
+        };
+        return;
+      }
+      defPopover.openAtCoords(def, el.getBoundingClientRect());
     },
     settings
   };
@@ -537,7 +557,7 @@ var import_view = require("@codemirror/view");
 var LineScanner = class {
   constructor() {
     this.cnLangRegex = /\p{Script=Han}/u;
-    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜]/;
+    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟—‘’‛“”„‟…‧﹏﹑﹔·]/;
   }
   scanLine(line, offset) {
     let traversers = [];
@@ -596,10 +616,11 @@ var DefinitionMarker = class {
   constructor(view) {
     this.cnLangRegex = /\p{Script=Han}/u;
     this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n ]/;
+    this.triggerFunc = "event.stopPropagation();window.NoteDefinition.triggerDefPreview(this);";
     this.decorations = this.buildDecorations(view);
   }
   update(update) {
-    if (update.docChanged || update.viewportChanged) {
+    if (update.docChanged || update.viewportChanged || update.focusChanged) {
       const start = performance.now();
       this.decorations = this.buildDecorations(update.view);
       const end = performance.now();
@@ -617,12 +638,18 @@ var DefinitionMarker = class {
       phraseInfos.push(...this.scanText(text, from));
     }
     phraseInfos.forEach((wordPos) => {
+      let attributes = {
+        def: wordPos.phrase
+      };
+      const settings = getSettings();
+      if (settings.popoverEvent === "click" /* Click */) {
+        attributes.onclick = this.triggerFunc;
+      } else {
+        attributes.onmouseenter = this.triggerFunc;
+      }
       builder.add(wordPos.from, wordPos.to, import_view.Decoration.mark({
         class: "def-decoration",
-        attributes: {
-          onmouseenter: `window.NoteDefinition.triggerDefPreview(this)`,
-          def: wordPos.phrase
-        }
+        attributes
       }));
     });
     return builder.finish();
@@ -768,13 +795,8 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
     this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
       if (!leaf)
         return;
-      const currFile = this.app.workspace.getActiveFile();
-      if (currFile && this.defManager.isDefFile(currFile)) {
-        this.setActiveEditorExtensions([]);
-      } else {
-        this.setActiveEditorExtensions(definitionMarker);
-      }
-      this.defManager.loadDefinitions();
+      this.refreshDefinitions();
+      this.registerEditorExts();
     }));
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor) => {
       const curWord = getWordUnderCursor(editor);
@@ -792,6 +814,17 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
         this.app.workspace.openLinkText(def.linkText, "");
       });
     });
+  }
+  refreshDefinitions() {
+    this.defManager.loadDefinitions();
+  }
+  registerEditorExts() {
+    const currFile = this.app.workspace.getActiveFile();
+    if (currFile && this.defManager.isDefFile(currFile)) {
+      this.setActiveEditorExtensions([]);
+    } else {
+      this.setActiveEditorExtensions(definitionMarker);
+    }
   }
   setActiveEditorExtensions(...ext) {
     this.activeEditorExtensions.length = 0;

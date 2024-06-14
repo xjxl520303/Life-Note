@@ -519,9 +519,57 @@ Note's type: <% tp.frontmatter["note type"] %>
 
 `tp.system` 模块主要提供了获取剪贴板内容、提示框（Prompt）和建议框（Suggester）的功能。
 
+>[!Note] 下面在介绍 `tp.system.prompt()` 和 `tp.system.suggester()` 方法时就不截图了，因为文章中例子随处可见其用法。
+
 #### tp.system.clipboard()
 
+这个方法很好理解，就是把最近一次剪贴板的内容，插入到 `<% tp.system.clipboard() %>` 所在位置，当然我们也可以在脚本中操作剪贴板内容。但是这个函数似乎少了点功能，我们知道在 Obsidian 中粘贴分为【粘贴】和【以纯文本形式粘贴】，这个函数实现了第二种粘贴方式。
 
+下面我们来演示一下效果：
+
+![[动画2 58.gif]]
+
+#### tp.system.prompt()
+
+`tp.system.prompt(prompt_text?: string, default_value?: string, throw_on_cancel: boolean = false, multiline?: boolean = false)` 方法调用后弹出一个提示模态框用于接收用户的输入。
+
+参数如下：
+
+- `prompt_text` 提示文字
+- `default_value` 默认值
+- `throw_on_cancel` 为 `true` 抛出异常，而不是返回 `null` 值
+- `multiline` 默认为 `Input` 输入框，为 `true` 时则为 `Textarea` 输入框
+
+示例：
+
+````
+<% tp.system.prompt("请输入内容") %>
+<% tp.system.prompt("请输入内容", "默认值") %>
+<% tp.system.prompt("请输入内容", "默认值", true) %>
+<% tp.system.prompt("请输入内容", "默认值", true, true) %>
+````
+
+#### tp.system.suggester()
+
+`tp.system.suggester(text_items: string[] | ((item: T) => string), items: T[], throw_on_cancel: boolean = false, placeholder: string = "", limit?: number = undefined)` 方法调用后弹出一个建议框用于用户选择。
+
+参数如下：
+
+- `text_items` 选项的文本内容，可以是字符串数组也可以是回调函数，回调函数接收一个参数 `item`，返回对应的文本内容。
+- `items` 选项的数据内容
+- `throw_on_cancel` 为 `true` 抛出异常，而不是返回 `null` 值
+- `placeholder` 输入框的占位符
+- `limit` 限制显示的选项数量
+
+示例：
+
+````
+<% tp.system.suggester(["选项1", "选项2", "选项3"], ["数据1", "数据2", "数据3"]) %>
+<% tp.system.suggester((item) => `选项${item}`, ["数据1", "数据2", "数据3"]) %>
+<% tp.system.suggester((item) => `选项${item}`, ["数据1", "数据2", "数据3"], true) %>
+<% tp.system.suggester((item) => `选项${item}`, ["数据1", "数据2", "数据3"], true, "请选择") %>
+<% tp.system.suggester((item) => `选项${item}`, ["数据1", "数据2", "数据3"], true, "请选择", 2) %>
+````
 
 ### 配置相关
 
@@ -618,6 +666,36 @@ _%>
 
 表示模板文件的 TFile 对象。
 
+### 调用 Obsidian API
+
+`tp.obsidian` 模块暴露出了 Obsidian API [声明文件](https://github.com/obsidianmd/obsidian-api/blob/master/obsidian.d.ts)中的所有属性和方法。使用 Templater 时难免不使用到全局的 `app` 属性以及 `tp.obsidian.xx` 相关函数。
+
+这里我们直接给出官方提供的示例：
+
+````
+// Get all folders
+<%
+app.vault.getAllLoadedFiles()
+  .filter(x => x instanceof tp.obsidian.TFolder)
+  .map(x => x.name)
+%>
+
+// Normalize path
+<% tp.obsidian.normalizePath("Path/to/file.md") %>
+
+// Html to markdown
+<% tp.obsidian.htmlToMarkdown("\<h1>Heading\</h1>\<p>Paragraph\</p>") %>
+
+// HTTP request
+<%*
+const response = await tp.obsidian.requestUrl("https://jsonplaceholder.typicode.com/todos/1");
+tR += response.json.title;
+%>
+
+````
+
+具本如何使用，请查看后面应用实例中的相关脚本。因为这个主题涉及太多的知识点和内容我们在这里就不细述了，在需要的时候自行在 Obsidian API 声明文件中根据关键词查找对应 API。
+
 ### 钩子（Hooks）函数
 
 目前为止 Templater 只提供了一个钩子函数 `tp.hooks.on_all_templates_executed(callback_function: () => any)` 用于在正在执行的模板任务完成后执行回调函数。
@@ -640,6 +718,153 @@ tp.hooks.on_all_templates_executed(async () => {
 要实现这个功能，我们需要在一个模板中放入钩子相关代码，比如我这里创建的模板为 `模板/全局.md`，我们在其它模板 `模板/Code block.md` 中插入 ` <% tp.file.include("[[全局.md]]") %> ` 就可以了。
 
 具体运行过程我这里就留给读着自己去动手体验一下了...
+
+### Web 模块
+
+`tp.web` 模块的主要作用是获取随机的引文（一些名言警句）和图片。
+
+使用这个模块我们可以在每日笔记中随机插入一条优美的句子，还可以随机生成一张封面图。
+
+#### tp.web.daily_quote
+
+`tp.web.daily_quote()` 用于获取一个随机的引文，并将其作为一个 Callout 显示在页面中。这些数据来自于开源的 [lukePeavey/quotable: Random Quotes API (github.com)](https://github.com/lukePeavey/quotable)。
+
+示例：`<% tp.web.daily_quote() %>`
+
+结果：
+
+![[动画2 59.gif]]
+
+当然，我们也可以选择自己去请求 Quote API 获取自己喜欢的句子。下面我们直接获取 10 条数据一次性全部生成 Callout 显示。
+
+````
+<%*
+const { json: { results } } = await tp.obsidian.requestUrl("https://api.quotable.io/quotes?limit=10")
+_%>
+
+<%* for (let quote of results) { %>
+>[!quote] <% quote.content %>
+><% quote.author %>
+<%* } %>
+````
+
+结果：
+
+![[动画2 60.gif]]
+
+#### tp.web.random_picture
+
+`tp.web.random_picture(size?: string, query?: string, include_size?: boolean)` 用于获取 [Unsplash](https://unsplash.com/) 上的图片资源。
+
+参数：
+
+- `size` 图片尺寸，格式为 `长x宽`，如：`200x200`。
+- `query` 查询关键词，多个关键词以逗号分隔。
+- `include_size` 用于在图像链接 Markdown 中包含指定大小的可选参数。默认值为 `false`。
+
+>[!Tip] Unsplash 是一个完全免费的、无版权的高清图片资源网站。
+
+下面我们来借助插件 [noatpad/obsidian-banners](https://github.com/noatpad/obsidian-banners) 来实现给笔记添加一个封面图效果。我这里将封面图的大小设置为 `730x310` 然后写了一段插入脚本（只适合创建新文件）：
+
+````
+<%*
+const bannerLink = await tp.web.randompicture("730x310", "banner")
+const banner = bannerLink.slice(bannerLink.indexOf('(') + 1, bannerLink.length - 1)
+%>
+
+<%- '---' %>
+banner: <% banner %>
+<% '---' %>
+````
+
+结果：
+
+![[动画2 61.gif]]
+
+>![Tip] 这个 Banners 插件在作者本地似乎有点问题，这里仅作演示。
+
+
+## 命令
+
+这里的命令（Command）实际上是指定 Templater 的模板语法语句 `<% expression %>` 和 `<%* expression %>`。
+
+这一节内容我们来介绍一下在 Templater 中如何执行 JavaScript 条件控制语句和遍历语句，以及如何处理模板语句执行后留下的空白，还有一个很实用的动态命令语法。
+
+#### 动态命令
+
+动态命令用于在预览模式下执行模板语句，其语法为 `<%+ expression %>` 这个功能虽然官方文档上说有一些问题，后面不会进一下维护，推荐使用 Dataview 插件来代替，因为这个功能在执行一次后，下次再打开显示的是上次的执行结果，它不会像 Dataview 那样实时执行，需要再一次切换模式后才能显示最新的。
+
+下面我们以官方的示例：`Last modified date: <%+ tp.file.last_modified_date() %>` 来看看实际效果：
+
+![[动画2 62.gif]]
+
+#### 控制语句与遍历
+
+在 Templater 中我们可以使用 JavaScript 的任何语法，只需要将相关的语句放置在 `<%* expression %>` 中就可以了，下面我们列举一些常见的例子：
+
+````
+<%* const pluginName = "Templater" %>
+
+<%* console.log("hello Templater") %>
+
+<%* if (pluginName === "Templater") { %>
+Templater is awesome!
+<%* } else { %>
+Templater is not awesome.
+<%* } %>
+
+<%* const arr = [1, 2, 3, 4, 5] %>
+
+<%* for (let i = 0; i < arr.length; i++) { %>
+<% arr[i] %>
+<%* } %>
+
+<%* const obj = { name: "Templater", version: "2.3.3" } %>
+
+<%* for (let key in obj) { %>
+<% key %> : <% obj[key] %>
+<%* } %>
+````
+
+#### 空格/空白行控制
+
+默认情况下模板语句执行时会留下空白行，或者我们想在插入模板位置清除前后的空白行，特别是生成 YAML 区域的内容时，第一个 `---` 前面只要有空白行就会导致属性解析失败。
+
+Templater 提供了两种去除空白的方式，一种是 `<%- -%>` 或 `<%-* -%>` 来去除命令前后的空白，另一种是使用 `<%_ _%>` 或 `<%_* *%>` 来去除命令前后所有的空白。
+
+下面我们来对比一下：
+
+````
+<%* if (tp.file.title == "MyFile" ) { %>
+This is my file!
+<%* } else { %>
+This isn't my file!
+<%* } %>
+Some content ...
+
+---
+
+<%* if (tp.file.title == "MyFile" ) { -%>
+This is my file!
+<%* } else { -%>
+This isn't my file!
+<%* } -%>
+Some content ...
+````
+
+结果：
+
+````
+
+This isn't my file!
+
+Some content ...
+
+---
+
+This isn't my file!
+Some content ...
+````
 
 ## 插件配置选项
 
@@ -792,10 +1017,49 @@ if (!currentFileFolder.startsWith(currentTemplateFolder)) {
 
 ### 用户脚本
 
+用户脚本功能让我们可以使用单独的 JavaScript 文件来写模板，脚本需要遵循 CommonJS 模块规范。
 
+>[!Note] 关于 JavaScript 相关的知识，请读者自己去备课。
+
+````
+%% greet.js %%
+
+```js
+function greet(msg) {
+return `Hello, ${msg}.`
+}
+
+module.exports = greet
+```
+````
+
+这个脚本文件位于 `Scripts/greet.js` ，下面是插件的配置：
+
+![[Pasted image 20240614184749.png]]
+
+然后我们在文档中就可以直接使用：`<% tp.user.greet("World") %>`。
+
+>[!Tip] 强烈推荐在编辑脚本时使用 [NomarCub/obsidian-open-vscode](https://github.com/NomarCub/obsidian-open-vscode) 或者 [sunxvming/obsidian-vscode-editor](https://github.com/sunxvming/obsidian-vscode-editor) 插件来编辑代码，因为 Templater 的模板语法在 Obsidian 代码块中会显示不全。
+
+>[!Tip] 如果读者的 Obsidian 目录中看不到 JavaScript 文件，请将【选项】->【文件与链接】中的【检测所有类型的文件】开启。
 
 ### 使用系统命令函数
 
+系统命令其实就是将在终端执行的结果显示在 Obsidian 文档中，比如下面的获取本地 Node.js 的版本号：
+
+![[Pasted image 20240614190330.png]]
+
+要在 Templater 添加这样一个命令，只需要在配置中作如下设置：
+
+![[Pasted image 20240614190528.png]]
+
+> [!Tip] 关于终端的使用需要读者去自行学习，不同的操作系统也不一样。在终端中能执行的命令，基本在这里也可以执行，只不过我们这里需要获取一个结果。
+
+所有的用户自定命令都挂载在 `tp.user` 对象下面，如果要给命令传递参数可以使用 `{arg1: value1, ...}` 的方式。
+
+下面是我定义的命令的执行过程：
+
+![[动画2 63.gif]]
 
 ## 实际应用
 
@@ -1489,7 +1753,7 @@ const callout = `>[!${key.split(' ')[1]}] ${value}\n>${tp.file.selection() || ' 
 下面是来自网上的一个比较全面的 Callout 插入脚本，包含了 Obsidian 支持的所有名称并按颜色进行分组。
 
 ````
-A<%*
+<%*
 // Choose a callout from a suggester
 // Grouped by color
 
@@ -1505,14 +1769,22 @@ return suggest;
 
 ## 总结
 
+Templater 插件官方文档的内容比较多，作者为创作此文全力输出，力求早日和读者见面，同时又要保证知识的完整性和专业性，所以文章内容和截图较多，因此错误再所难免。如果读者在阅读过程中有任何问题欢迎留言或者加入读者群，聆听读者的心声才能更好地服务作者，写出实用的文章为 Obsidian 社区贡献已力。
+
 最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长或者加入读者交流微信群一起探讨 Obsidian 的使用技巧和资源分享。
 
 更多内容，请关注我的专栏：[Obsidian 达人成长之路 - 知乎 (zhihu.com)](https://www.zhihu.com/column/c_1776563728286670848)
+
+>[!Tip] 😍彩蛋
+> 读者要要了解 Obsidian 哪个插件的使用教程，欢迎评论区留言，说不定哪天就有惊喜~
+
 ## 参考
 
 - [Templates - Obsidian Help](https://help.obsidian.md/Plugins/Templates)
 - [Vault - Developer Documentation (obsidian.md)](https://docs.obsidian.md/Reference/TypeScript+API/Vault)
 - [Introduction - Templater (silentvoid13.github.io)](https://silentvoid13.github.io/Templater/introduction.html)
+- https://api.quotable.io
+- [unsplash/unsplash-js: 🤖 Official JavaScript wrapper for the Unsplash API (github.com)](https://github.com/unsplash/unsplash-js)
 - [home - shabeblog (shbgm.ca)](https://shbgm.ca/blog/home)
 - https://zachyoung.dev/posts/folder-templates-with-quick-switcher
 - [lguenth/obsidian-templates: A collection of templates for Obsidian (github.com)](https://github.com/lguenth/obsidian-templates)
@@ -1521,3 +1793,4 @@ return suggest;
 - [Obsidian Snippets (github.com)](https://gist.github.com/Mearman/ba5b1bcf746b4e04d12865dc09402016)
 - [Callouts - Obsidian Help](https://help.obsidian.md/Editing+and+formatting/Callouts)
 - [Obs127｜用Templater Hotkeys簡化Obsidian自動化腳本，詳解4個腳本範例 – 簡睿隨筆 (jdev.tw)](https://jdev.tw/blog/8114)
+- [博客文章封面的变迁，我是如何制作博客封面的 | 张洪Heo (zhheo.com)](https://blog.zhheo.com/p/463d306b.html)

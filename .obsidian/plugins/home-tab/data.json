@@ -25,7 +25,15 @@
   "recentFilesStore": [
     {
       "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-      "timestamp": 1718275699933
+      "timestamp": 1718351196316
+    },
+    {
+      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
+      "timestamp": 1718350559601
+    },
+    {
+      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
+      "timestamp": 1718336196803
     },
     {
       "filepath": "模板/插入插件名称.md",
@@ -34,14 +42,6 @@
     {
       "filepath": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
       "timestamp": 1718275657229
-    },
-    {
-      "filepath": "术语/Obsidian 插件.md",
-      "timestamp": 1718275590892
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
-      "timestamp": 1718271213204
     }
   ],
   "bookmarkedFileStore": [],
