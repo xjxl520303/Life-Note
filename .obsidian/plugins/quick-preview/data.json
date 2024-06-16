@@ -1,0 +1,10 @@
+{
+  "modifier": "Alt",
+  "lazyHide": true,
+  "position": "Auto",
+  "customPositionX": 0,
+  "customPositionY": 0,
+  "stickToMouse": true,
+  "log": false,
+  "disableCloseSuggest": false
+}

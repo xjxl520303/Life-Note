@@ -1,0 +1,20 @@
+/* @settings
+
+name: Quick Preview
+id: quick-preview
+settings:
+    -
+        id: quick-preview-font-size
+        title: Font size (%)
+        type: variable-number-slider
+        min: 10
+        max: 200
+        step: 1
+        default: 100
+        format: "%"
+*/
+
+.popover.hover-popover.quick-preview {
+    --layer-popover: calc(max(var(--layer-modal), var(--layer-notice)) + 1);
+    --popover-font-size: var(--quick-preview-font-size);
+}

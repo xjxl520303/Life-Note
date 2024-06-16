@@ -42,3 +42,23 @@ The main feature of this plugin is to quickly insert common Markdown code and HT
 *Note Definitions*
 
 A personal dictionary that can be easily looked-up from within your notes.
+
+---
+
+# Obsidian-Quick-Preview
+
+*Quick Preview*
+
+An Obsidian plugin to quickly preview a suggestion before selecting it in link suggestions & quick switcher.
+
+---
+
+# Obsidian-Ledger
+
+*Ledger*
+
+Plain text accounting in Obsidian.md
+
+Personal finance tracking and planning, from the comfort of Obsidian! All of your data is stored in plain text, and interoperable with any tool which supports the [Ledger CLI](https://www.ledger-cli.org/). Stop giving away your personal financial information to online sites that sell your data. Store it safely in your Obsidian Vault instead.
+
+

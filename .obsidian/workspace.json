@@ -4,19 +4,18 @@
     "type": "split",
     "children": [
       {
-        "id": "861a261a5de84bf6",
+        "id": "539ea4d94abd3eaf",
         "type": "tabs",
         "children": [
           {
-            "id": "3ca7f8814f821f9a",
+            "id": "5551a313ea5e8896",
             "type": "leaf",
             "state": {
               "type": "home-tab-view",
               "state": {}
             }
           }
-        ],
-        "stacked": true
+        ]
       }
     ],
     "direction": "vertical"
@@ -45,7 +44,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:Hledger",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -63,7 +62,7 @@
             }
           },
           {
-            "id": "814db614ff17be4f",
+            "id": "e384bdf72a9ebed6",
             "type": "leaf",
             "state": {
               "type": "file-tree-view",
@@ -71,7 +70,7 @@
             }
           },
           {
-            "id": "b21b1b39bd566fb3",
+            "id": "cbc82877ea9e187e",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -82,7 +81,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 273.5
+    "width": 438.50390243530273
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -91,7 +90,6 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
-        "dimension": 75.1984126984127,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -148,38 +146,6 @@
             }
           },
           {
-            "id": "4c0cb0bfaa589cac",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {}
-            }
-          },
-          {
-            "id": "b9628aa0f3619068",
-            "type": "leaf",
-            "state": {
-              "type": "quiet-outline",
-              "state": {}
-            }
-          }
-        ],
-        "currentTab": 4
-      },
-      {
-        "id": "168fb7c04db3051b",
-        "type": "tabs",
-        "dimension": 24.801587301587304,
-        "children": [
-          {
-            "id": "18d7aa0f9f9f669a",
-            "type": "leaf",
-            "state": {
-              "type": "file-properties",
-              "state": {}
-            }
-          },
-          {
             "id": "bfff48720db8c001",
             "type": "leaf",
             "state": {
@@ -190,75 +156,103 @@
                 "searchQuery": ""
               }
             }
+          },
+          {
+            "id": "4c0cb0bfaa589cac",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "7d23ed0bf34c6a40",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
+          },
+          {
+            "id": "502798142850ac3a",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {}
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 392.5
+    "width": 306.5
   },
   "left-ribbon": {
     "hiddenItems": {
-      "media-extended:Open media": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "templater-obsidian:Templater": false,
       "vscode-editor:新建代码文件": false,
-      "open-vscode:VSCode": false,
       "switcher:打开快速切换": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "file-tree-alternative:File Tree Alternative Plugin": false
+      "open-vscode:VSCode": false,
+      "file-tree-alternative:File Tree Alternative Plugin": false,
+      "media-extended:Open media": false,
+      "templater-obsidian:Templater": false,
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "darlal-switcher-plus:Open Symbols for the active editor": false
     }
   },
-  "active": "3ca7f8814f821f9a",
+  "active": "5551a313ea5e8896",
   "lastOpenFiles": [
-    "README.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Ledger 记账.md",
+    "模板/插入插件名称.md",
+    "术语/Obsidian 插件.md",
+    "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Quick Switcher++.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
+    "博客/运动与健康/震惊！高低肩竟成现代都市人新“病”？揭秘原因与改善方法！.md",
+    "模板/Code block Tpl.md",
+    "模板/创建和更新时间模板.md",
     "附件/动画2 63.gif",
-    "附件/Pasted image 20240614190528.png",
-    "附件/Pasted image 20240614190330.png",
-    "附件/Pasted image 20240614184749.png",
     "附件/动画2 62.gif",
     "附件/动画2 61.gif",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
     "附件/动画2 60.gif",
     "附件/动画2 59.gif",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
     "附件/动画2 58.gif",
-    "模板/插入插件名称.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-    "术语/Obsidian 插件.md",
     "附件/动画2 57.gif",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
-    "博客/Obsidian/达人成长之路/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Db forlder.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
-    "模板/创建和更新时间模板.md",
+    "附件/动画2 56.gif",
+    "附件/动画2 55.gif",
+    "附件/动画2 54.gif",
     "术语",
-    "日记/2024-05-27.md",
-    "模板/Code block Tpl.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Obsidian Meta Bind 插件使用.md",
-    "博客/运动与健康/震惊！高低肩竟成现代都市人新“病”？揭秘原因与改善方法！.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Modal Form 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Metadata Menu 插件使用.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
+    "日记/2024-05-27.md",
     "博客/运动与健康",
+    "博客/Obsidian/小插件推荐/小插件推荐：Obsidian-II-Quicker.md",
     "模板",
-    "博客/Obsidian/小插件推荐",
-    "博客/Obsidian/达人成长之路",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+    "博客/Obsidian/达人成长之路/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/临时放置.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Projects 插件.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：QuickAdd 插件使用.md",
+    "博客/Obsidian/达人成长之路",
+    "博客/Obsidian/小插件推荐",
+    "日记",
+    "Spaces",
     "博客/Go/抗遗忘系列",
     "博客/Go/插件使用/Go-pretty",
-    "博客/Go/插件使用/Excelize",
-    "博客/Go/插件使用",
-    "博客/Go"
+    "博客/Go/插件使用/Excelize"
   ]
 }

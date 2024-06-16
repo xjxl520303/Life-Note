@@ -24,24 +24,24 @@
   "unresolvedLinks": false,
   "recentFilesStore": [
     {
-      "filepath": "README.md",
-      "timestamp": 1718365636862
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-      "timestamp": 1718351196316
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
-      "timestamp": 1718350559601
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
-      "timestamp": 1718336196803
+      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Ledger 记账.md",
+      "timestamp": 1718550187508
     },
     {
       "filepath": "模板/插入插件名称.md",
-      "timestamp": 1718275674277
+      "timestamp": 1718550185072
+    },
+    {
+      "filepath": "术语/Obsidian 插件.md",
+      "timestamp": 1718550112187
+    },
+    {
+      "filepath": "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
+      "timestamp": 1718549550415
+    },
+    {
+      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Quick Switcher++.md",
+      "timestamp": 1718548773638
     }
   ],
   "bookmarkedFileStore": [],
