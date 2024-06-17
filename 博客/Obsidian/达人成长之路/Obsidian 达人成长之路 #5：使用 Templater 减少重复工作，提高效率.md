@@ -11,9 +11,9 @@ platforms:
     last_update: 2024-06-14 20:20
   - name: 掘金
     url: https://juejin.cn/spost/7381347654767804425
-    date: 2024-06-17T19:53
-    last_update: 2024-06-17T19:53
-updated_at: 2024-06-17 19:53:27
+    date: 2024-06-17 19:53
+    last_update: 2024-06-17 19:53
+updated_at: 2024-06-17 20:12:21
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
@@ -952,7 +952,7 @@ if (isDefaultTitle) {
 
 # <% title %>
 
-<% tp.file.cursor() %>
+
 
 ## 参考
 
