@@ -56,6 +56,8 @@ totalEp
 tabButtons
 ticks
 tag
+tracking
+tool
 Blog
 Boolean
 Bookmarks
@@ -111,6 +113,7 @@ others
 onepot
 orange
 opacity
+online
 PKMer
 PT
 Path
@@ -124,6 +127,8 @@ Project
 Pain
 PNG
 Partial
+Plain
+Personal
 Obsidian
 Open
 OverwriteFile
@@ -218,6 +223,7 @@ Chart
 Calendar
 Control
 COUNT
+Clock
 kbd
 key
 keys
@@ -297,6 +303,8 @@ finished
 friends
 friend
 friendObject
+finance
+financial
 location
 link
 language
@@ -345,6 +353,7 @@ Appointments
 Also
 As
 Add
+All
 Insert
 Introduction
 It
@@ -503,6 +512,7 @@ custom
 collapsed
 context
 control
+comfort
 in
 include
 is
@@ -538,6 +548,9 @@ isActive
 io
 intensity
 ipsum
+interoperable
+information
+instead
 active
 await
 app
@@ -585,6 +598,8 @@ allSeries
 alphabetical
 alphabeticalReverse
 amet
+accounting
+away
 jump
 join
 json
@@ -663,6 +678,11 @@ seriesName
 scales
 steps
 sit
+stored
+supports
+sites
+sell
+safely
 boolean
 be
 book
@@ -742,6 +762,7 @@ getDatatypeOfColumn
 gi
 getEmojiScore
 getDayEl
+giving
 date
 default
 daily
@@ -915,6 +936,7 @@ while
 word
 watchedEp
 window
+which
 powerful
 path
 prop
@@ -954,6 +976,8 @@ priorities
 preventDefault
 project
 pain
+planning
+plain
 using
 undefined
 updated
@@ -989,6 +1013,8 @@ Set
 Sums
 Search
 Sequence
+Stop
+Store
 xx
 xl
 xiaolu

@@ -24,24 +24,24 @@
   "unresolvedLinks": false,
   "recentFilesStore": [
     {
-      "filepath": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-      "timestamp": 1718622783818
-    },
-    {
-      "filepath": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
-      "timestamp": 1718622782636
-    },
-    {
       "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-      "timestamp": 1718622652357
+      "timestamp": 1718624073253
     },
     {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-      "timestamp": 1718622640127
+      "filepath": "术语/Obsidian 插件.md",
+      "timestamp": 1718623162384
+    },
+    {
+      "filepath": "日记/2024-05-27.md",
+      "timestamp": 1718623138812
     },
     {
       "filepath": "模板/插入插件名称.md",
-      "timestamp": 1718622627143
+      "timestamp": 1718623130570
+    },
+    {
+      "filepath": "模板/Code block Tpl.md",
+      "timestamp": 1718623125414
     }
   ],
   "bookmarkedFileStore": [],

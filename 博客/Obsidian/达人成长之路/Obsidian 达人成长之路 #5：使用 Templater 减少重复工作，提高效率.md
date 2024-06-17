@@ -10,10 +10,10 @@ platforms:
     date: 2024-06-14 20:20
     last_update: 2024-06-14 20:20
   - name: 掘金
-    url: 
-    date: 
-    last_update: 
-updated_at: 2024-06-17 19:12:27
+    url: https://juejin.cn/spost/7381347654767804425
+    date: 2024-06-17T19:53
+    last_update: 2024-06-17T19:53
+updated_at: 2024-06-17 19:53:27
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |

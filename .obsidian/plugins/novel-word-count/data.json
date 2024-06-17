@@ -3795,8 +3795,8 @@
       "embedCount": 63,
       "aliases": null,
       "createdDate": 1714964772107,
-      "modifiedDate": 1718622762451,
-      "sizeInBytes": 67862
+      "modifiedDate": 1718625215448,
+      "sizeInBytes": 67937
     },
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md": {
       "isCountable": true,
@@ -3978,24 +3978,6 @@
       "modifiedDate": 1718596324780,
       "sizeInBytes": 244
     },
-    "术语/日记/2024-05-27.md": {
-      "isCountable": true,
-      "isDirectory": false,
-      "noteCount": 1,
-      "wordCount": 409,
-      "wordCountTowardGoal": 0,
-      "wordGoal": null,
-      "pageCount": 1.3633333333333333,
-      "characterCount": 3920,
-      "nonWhitespaceCharacterCount": 2699,
-      "readingTimeInMinutes": 1.1957735849056603,
-      "linkCount": 0,
-      "embedCount": 0,
-      "aliases": null,
-      "createdDate": 1716803949634,
-      "modifiedDate": 1716804713756,
-      "sizeInBytes": 4330
-    },
     "模板/创建 Obsidian 博客文章.md": {
       "isCountable": true,
       "isDirectory": false,
@@ -4013,6 +3995,24 @@
       "createdDate": 1718622512890,
       "modifiedDate": 1718622583483,
       "sizeInBytes": 2979
+    },
+    "日记/2024-05-27.md": {
+      "isCountable": true,
+      "isDirectory": false,
+      "noteCount": 1,
+      "wordCount": 409,
+      "wordCountTowardGoal": 0,
+      "wordGoal": null,
+      "pageCount": 1.3633333333333333,
+      "characterCount": 3920,
+      "nonWhitespaceCharacterCount": 2699,
+      "readingTimeInMinutes": 1.1957735849056603,
+      "linkCount": 0,
+      "embedCount": 0,
+      "aliases": null,
+      "createdDate": 1716803949634,
+      "modifiedDate": 1716804713756,
+      "sizeInBytes": 4330
     }
   }
 }
