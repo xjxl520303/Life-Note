@@ -34,7 +34,10 @@
   "vscode-editor",
   "open-vscode",
   "ii-quicker",
+  "note-definitions",
+  "remember-cursor-position",
   "obsidian-completr",
+  "obsidian-metatable",
   "quick-preview",
-  "darlal-switcher-plus"
+  "obsidian-meta-bind-plugin"
 ]

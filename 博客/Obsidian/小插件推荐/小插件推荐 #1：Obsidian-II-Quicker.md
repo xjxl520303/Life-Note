@@ -4,12 +4,30 @@ tags:
   - Obsidian
   - IIQuicker
 created_at: 2024-06-07 18:00:12
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/702247623
+    date: 2024-06-07 19:53
+    last_update: 2024-06-07 19:53
+  - name: 掘金
+    url: https://juejin.cn/post/7377355452890693641
+    date: 2024-06-07 19:58
+    last_update: 2024-06-07 19:58
+updated_at: 2024-06-17 18:49:38
 ---
+
+
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 今天向大家推荐一款新上架 Obsidian 插件市场的插件：[wish5115/obsidian-ii-quicker](https://github.com/wish5115/obsidian-ii-quicker)，目前版本：1.1.6。
 
 这个插件的主要功能是快速插入常见 Markdown 代及 HTML 代码，包括 Sup，Sub，Audio，Video，Iframe，左中右对齐，变量，脚注，Callout，锚点，HTML注释等。
 
-有人可能会想问，我们有强大的插件 [PKM-er/obsidian-editing-toolbar](https://github.com/PKM-er/obsidian-editing-toolbar)，还需要用这个插件不多此一举吗？你看下面这个装了 Editing Toolbar 的界面要什么 Markdown 功能都能可视操作。
+有人可能会想问
+，我们有强大的插件 [PKM-er/obsidian-editing-toolbar](https://github.com/PKM-er/obsidian-editing-toolbar)，还需要用这个插件不多此一举吗？你看下面这个装了 Editing Toolbar 的界面要什么 Markdown 功能都能可视操作。
 
 ![[24.png]]
 

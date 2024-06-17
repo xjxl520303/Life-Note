@@ -1,9 +1,26 @@
 ---
 tags:
-  - Blog
   - Obsidian
   - Dataview
+  - Blog
+created_at: 2024-05-11 00:00
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/699841771
+    date: 2024-06-12 18:24
+    last_update: 2024-06-12 18:24
+  - name: 掘金
+    url: https://juejin.cn/post/7372768355777839104
+    date: 2024-05-27 11:33
+    last_update: 2024-05-27 11:33
+updated_at: 2024-06-17 19:00:46
 ---
+
+| 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
+|:--------------------------- |:----------------------------------- |:------------------------------------------ |:------------------------------ |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 本文为【Obsidian 达人成长之路】系列第 2 篇，主要讲解 Dataview 插件的 JavaScript API 调用方式的详尽用法，努力让每一个读者有所收获并应用到自己的 Obsidian 知识管理库中。
 
 由于作者写作水平有限，在表达上正在努力提高自已的写作水平，以期望帮助更多的人了解 Obsidian 的主流插件来丰富自己的笔记功能，实现更多的想法。

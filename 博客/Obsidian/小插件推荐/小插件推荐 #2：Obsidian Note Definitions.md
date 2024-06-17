@@ -4,8 +4,23 @@ tags:
   - Blog
   - Obsidian
   - NoteDefinitions
-updated_at: 2024-06-13 15:56
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/703193841
+    date: 2024-06-13 15:40
+    last_update: 2024-06-13 15:40
+  - name: 掘金
+    url: https://juejin.cn/post/7379487557598003237
+    date: 2024-06-13 15:48
+    last_update: 2024-06-13 15:48
+updated_at: 2024-06-17 18:47:01
 ---
+
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 本篇文章向大家推荐一款新上架的小插件：[dominiclet/obsidian-note-definitions](https://github.com/dominiclet/obsidian-note-definitions)，目前版本：0.9.1。
 
 这个插件的主要作用就是为特定的文字，比如专业术语，英文单词简写等提供一个浮框来显示其定义或者解释文字。

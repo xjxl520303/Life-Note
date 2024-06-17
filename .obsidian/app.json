@@ -2,5 +2,5 @@
   "newFileLocation": "current",
   "attachmentFolderPath": "附件",
   "alwaysUpdateLinks": true,
-  "propertiesInDocument": "hidden"
+  "propertiesInDocument": "visible"
 }

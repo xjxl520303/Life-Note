@@ -1,9 +1,26 @@
 ---
 tags:
-  - Blog
-  - Dataview
   - Obsidian
+  - Dataview
+  - Blog
+created_at: 2024-05-11 00:00
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/700968386
+    date: 2024-06-12 18:23
+    last_update: 2024-06-12 18:23
+  - name: 掘金
+    url: https://juejin.cn/post/7374988830494228491
+    date: 2024-05-31 17:25
+    last_update: 2024-05-31 17:25
+updated_at: 2024-06-17 19:04:12
 ---
+
+| 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
+|:--------------------------- |:----------------------------------- |:------------------------------------------ |:------------------------------ |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 本文为 Obsidian 达人成长之路系列第三篇，主要梳理了 Dataview 示例库 **Dataview Example Valut** 中的一些案例，并加上个人的一些理解和分析，以方便读者能够触类旁通，应用到自己的笔记中。
 
 虽然文章按初级、中级和高级来进行了分类，但是对于不同的作者可能认知不一样，不一定合理，读者可根据标题选择感兴趣的章节阅读。

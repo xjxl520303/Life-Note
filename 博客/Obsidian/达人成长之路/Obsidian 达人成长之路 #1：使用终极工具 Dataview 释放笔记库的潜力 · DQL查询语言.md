@@ -3,7 +3,24 @@ tags:
   - Obsidian
   - Dataview
   - Blog
+created_at: 2024-04-20 00:00
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/699143387
+    date: 2024-06-12 18:24
+    last_update: 2024-06-12 18:24
+  - name: 掘金
+    url: https://juejin.cn/post/7366454784122093595
+    date: 2024-05-08 20:28
+    last_update: 2024-05-08 20:28
+updated_at: 2024-06-17 18:56:02
 ---
+
+| 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
+|:--------------------------- |:----------------------------------- |:------------------------------------------ |:------------------------------ |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 ️DataView 是 Obsidian 社区中的热门插件，它为用户提供了一个强大的实时索引和查询引擎。通过在文档中设置属性（或称为元数据），DataView 能够检索并处理这些数据。借助 DataView，用户可以轻松列出、筛选、排序和分组数据，这与使用数据库查询语言类似。
 
 在 Obsidian 中，我们使用“属性”来描述文档中由官方或第三方插件提供的描述变量，这些变量也被称为“元数据”。在 DataView 的语境下，虽然名称有所差异，但它们实际上指的是同一实体。为了保持一致性，后续文章中我们将统一使用“属性”来描述这些变量。

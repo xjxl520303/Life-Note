@@ -1,9 +1,26 @@
 ---
 tags:
   - Obsidian
-  - TextExpand
   - Blog
+  - TextExpand
+created_at: 2024-06-11 00:00
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/701245101
+    date: 2024-06-12 18:23
+    last_update: 2024-06-12 18:23
+  - name: 掘金
+    url: https://juejin.cn/post/7375871100523954227
+    date: 2024-06-03 12:22
+    last_update: 2024-06-03 12:22
+updated_at: 2024-06-17 19:07:53
 ---
+
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 这是一个很特别地插件，它和我前面 3 期文章中介绍的 Dataview 有着类似的功能：查询，但是却侧重点不一样，两者互不干涉。
 
 Dataview 查询的数据除了任务可以操作外，其余的结果均为只读，并且只有在执行 Dataview 查询时才会得到结果。而 Text Expand 它扩展了官方核心插件 Search 的搜索结果并允许用户使用模板格式化输出到当前页面中作为文档内容的一部分。

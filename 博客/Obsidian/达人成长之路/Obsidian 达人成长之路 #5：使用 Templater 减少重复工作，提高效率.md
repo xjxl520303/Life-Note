@@ -1,9 +1,26 @@
 ---
 tags:
+  - Obsidian
   - Blog
   - Templater
-  - obsidian
+created_at: 2024-06-04 00:00
+platforms:
+  - name: 知乎
+    url: https://zhuanlan.zhihu.com/p/703459656
+    date: 2024-06-14 20:20
+    last_update: 2024-06-14 20:20
+  - name: 掘金
+    url: 
+    date: 
+    last_update: 
+updated_at: 2024-06-17 19:12:27
 ---
+
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
+| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
+| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+
 知识管理社区 PKMer 将 Templater 称之为 Obsidian 四大金刚（Excalidraw/Dataview/Templater/QuickAdd）之一，可见其在 Obsidian 社区插件中的地位举足轻重。我们在系列文章前 3 篇介绍了 Dataview 插件的所有知识点，这篇文章我们来带领读者全面了解 Templater 的用法，掌握这个插件后将极大地减少重复工作量，提高笔记效率。
 
 Templater 就是一个应用于 Obsidian 中的模板语法插件，它使用户可以预制模板文件然后在其中插入各种变量和函数，然后在我们创建新文档时将模板应用到当前文档中。它支持执行 JavaScript 脚本代码来操作这些变量和函数，因此有很大的想象和发挥空间，根据不同的需求来创建不同的模板文件，把一切都安排妥妥贴贴，拿捏恰到好处。
@@ -251,7 +268,7 @@ tp.file.create_new(template: TFile | string, filename?: string, open_new: boolea
 
 ````
 // File cursor
-<% tp.file.cursor() %>
+
 // File multi-cursor
 <% tp.file.cursor(1) %>Content<% tp.file.cursor(1) %>
 ````

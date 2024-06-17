@@ -82,7 +82,13 @@ var import_obsidian = require("obsidian");
 var DEFAULT_DEF_FOLDER = "definitions";
 var DEFAULT_SETTINGS = {
   enableInReadingView: true,
-  popoverEvent: "hover" /* Hover */
+  popoverEvent: "hover" /* Hover */,
+  defFileParseConfig: {
+    divider: {
+      dash: true,
+      underscore: false
+    }
+  }
 };
 var SettingsTab = class extends import_obsidian.PluginSettingTab {
   constructor(app, plugin) {
@@ -120,26 +126,47 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
+    new import_obsidian.Setting(containerEl).setName("Definition file format settings").setDesc("Customise parsing rules for definition files").addExtraButton((component) => {
+      component.onClick(() => {
+        const modal = new import_obsidian.Modal(this.app);
+        modal.setTitle("Definition file format settings");
+        new import_obsidian.Setting(modal.contentEl).setName("Divider").setHeading();
+        new import_obsidian.Setting(modal.contentEl).setName("Dash").setDesc("Use triple dash (---) as divider").addToggle((component2) => {
+          component2.setValue(this.settings.defFileParseConfig.divider.dash);
+          component2.onChange(async (value) => {
+            if (!value && !this.settings.defFileParseConfig.divider.underscore) {
+              new import_obsidian.Notice("At least one divider must be chosen", 2e3);
+              component2.setValue(this.settings.defFileParseConfig.divider.dash);
+              return;
+            }
+            this.settings.defFileParseConfig.divider.dash = value;
+            await this.plugin.saveSettings();
+          });
+        });
+        new import_obsidian.Setting(modal.contentEl).setName("Underscore").setDesc("Use triple underscore (___) as divider").addToggle((component2) => {
+          component2.setValue(this.settings.defFileParseConfig.divider.underscore);
+          component2.onChange(async (value) => {
+            if (!value && !this.settings.defFileParseConfig.divider.dash) {
+              new import_obsidian.Notice("At least one divider must be chosen", 2e3);
+              component2.setValue(this.settings.defFileParseConfig.divider.underscore);
+              return;
+            }
+            this.settings.defFileParseConfig.divider.underscore = value;
+            await this.plugin.saveSettings();
+          });
+        });
+        modal.open();
+      });
+    });
   }
 };
 function getSettings() {
   return window.NoteDefinition.settings;
 }
 
-// src/util/editor.ts
-function getWordUnderCursor(editor) {
-  const curWordRange = editor.wordAt(editor.getCursor());
-  if (!curWordRange)
-    return;
-  let currWord = editor.getRange(curWordRange.from, curWordRange.to);
-  if (!currWord) {
-    return "";
-  }
-  return normaliseWord(currWord);
-}
-function normaliseWord(word) {
-  return word.trimStart().trimEnd().toLowerCase();
-}
+// src/editor/marker.ts
+var import_state = require("@codemirror/state");
+var import_view = require("@codemirror/view");
 
 // src/util/log.ts
 var levelMap = {
@@ -163,6 +190,180 @@ function logWarn(msg) {
 }
 function logError(msg) {
   logWithLevel(msg, 1 /* Error */);
+}
+
+// src/editor/common.ts
+var triggerFunc = "event.stopPropagation();window.NoteDefinition.triggerDefPreview(this);";
+var DEF_DECORATION_CLS = "def-decoration";
+function getDecorationAttrs(phrase) {
+  let attributes = {
+    def: phrase
+  };
+  const settings = getSettings();
+  if (settings.popoverEvent === "click" /* Click */) {
+    attributes.onclick = triggerFunc;
+  } else {
+    attributes.onmouseenter = triggerFunc;
+  }
+  return attributes;
+}
+
+// src/editor/definition-search.ts
+var LineScanner = class {
+  constructor() {
+    this.cnLangRegex = /\p{Script=Han}/u;
+    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟—‘’‛“”„‟…‧﹏﹑﹔·]/;
+  }
+  scanLine(line, offset) {
+    let traversers = [];
+    const defManager = getDefFileManager();
+    const phraseInfos = [];
+    for (let i = 0; i < line.length; i++) {
+      const c = line.charAt(i).toLowerCase();
+      if (this.isValidStart(line, i)) {
+        traversers.push(new PTreeTraverser(defManager.prefixTree));
+      }
+      traversers.forEach((traverser) => {
+        traverser.gotoNext(c);
+        if (traverser.isWordEnd() && this.isValidEnd(line, i)) {
+          const phrase = traverser.getWord();
+          phraseInfos.push({
+            phrase,
+            from: (offset != null ? offset : 0) + i - phrase.length + 1,
+            to: (offset != null ? offset : 0) + i + 1
+          });
+        }
+      });
+      traversers = traversers.filter((traverser) => {
+        return !!traverser.currPtr;
+      });
+    }
+    return phraseInfos;
+  }
+  isValidEnd(line, ptr) {
+    const c = line.charAt(ptr).toLowerCase();
+    if (this.isNonSpacedLanguage(c)) {
+      return true;
+    }
+    if (ptr === line.length - 1) {
+      return true;
+    }
+    return this.terminatingCharRegex.test(line.charAt(ptr + 1));
+  }
+  // Check if this character is a valid start of a word depending on the context
+  isValidStart(line, ptr) {
+    const c = line.charAt(ptr).toLowerCase();
+    if (c == " ") {
+      return false;
+    }
+    if (ptr === 0 || this.isNonSpacedLanguage(c)) {
+      return true;
+    }
+    return this.terminatingCharRegex.test(line.charAt(ptr - 1));
+  }
+  isNonSpacedLanguage(c) {
+    return this.cnLangRegex.test(c);
+  }
+};
+
+// src/editor/marker.ts
+var markedPhrases = [];
+function getMarkedPhrases() {
+  return markedPhrases;
+}
+var DefinitionMarker = class {
+  constructor(view) {
+    this.cnLangRegex = /\p{Script=Han}/u;
+    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n ]/;
+    this.decorations = this.buildDecorations(view);
+  }
+  update(update) {
+    if (update.docChanged || update.viewportChanged || update.focusChanged) {
+      const start = performance.now();
+      this.decorations = this.buildDecorations(update.view);
+      const end = performance.now();
+      logDebug(`Marked definitions in ${end - start}ms`);
+      return;
+    }
+  }
+  destroy() {
+  }
+  buildDecorations(view) {
+    const builder = new import_state.RangeSetBuilder();
+    const phraseInfos = [];
+    for (let { from, to } of view.visibleRanges) {
+      const text = view.state.sliceDoc(from, to);
+      phraseInfos.push(...this.scanText(text, from));
+    }
+    phraseInfos.forEach((wordPos) => {
+      const attributes = getDecorationAttrs(wordPos.phrase);
+      builder.add(wordPos.from, wordPos.to, import_view.Decoration.mark({
+        class: DEF_DECORATION_CLS,
+        attributes
+      }));
+    });
+    markedPhrases = phraseInfos;
+    return builder.finish();
+  }
+  // Scan text and return phrases and their positions that require decoration
+  scanText(text, offset) {
+    let phraseInfos = [];
+    const lines = text.split("\n");
+    let internalOffset = offset;
+    const lineScanner = new LineScanner();
+    lines.forEach((line) => {
+      phraseInfos.push(...lineScanner.scanLine(line, internalOffset));
+      internalOffset += line.length + 1;
+    });
+    phraseInfos.sort((a, b) => b.to - a.to);
+    phraseInfos.sort((a, b) => a.from - b.from);
+    return this.removeSubsetsAndIntersects(phraseInfos);
+  }
+  removeSubsetsAndIntersects(phraseInfos) {
+    let cursor = 0;
+    return phraseInfos.filter((phraseInfo) => {
+      if (phraseInfo.from >= cursor) {
+        cursor = phraseInfo.to;
+        return true;
+      }
+      return false;
+    });
+  }
+};
+var pluginSpec = {
+  decorations: (value) => value.decorations
+};
+var definitionMarker = import_view.ViewPlugin.fromClass(
+  DefinitionMarker,
+  pluginSpec
+);
+
+// src/util/editor.ts
+function getMarkedWordUnderCursor(editor) {
+  const currWord = getWordByOffset(editor.posToOffset(editor.getCursor()));
+  return normaliseWord(currWord);
+}
+function normaliseWord(word) {
+  return word.trimStart().trimEnd().toLowerCase();
+}
+function getWordByOffset(offset) {
+  const markedPhrases2 = getMarkedPhrases();
+  let start = 0;
+  let end = markedPhrases2.length - 1;
+  while (start <= end) {
+    let mid = Math.floor((start + end) / 2);
+    let currPhrase = markedPhrases2[mid];
+    if (offset >= currPhrase.from && offset <= currPhrase.to) {
+      return currPhrase.phrase;
+    }
+    if (offset < currPhrase.from) {
+      end = mid - 1;
+    }
+    if (offset > currPhrase.to) {
+      start = mid + 1;
+    }
+  }
+  return "";
 }
 
 // src/core/file-parser.ts
@@ -238,7 +439,11 @@ var FileParser = class {
     return !!this.defBuffer.word;
   }
   isEndOfBlock(line) {
-    return line.startsWith("---");
+    const parseSettings = this.getParseSettings();
+    if (parseSettings.divider.dash && line.startsWith("---")) {
+      return true;
+    }
+    return parseSettings.divider.underscore && line.startsWith("___");
   }
   isAliasDeclaration(line) {
     line = line.trimEnd();
@@ -264,6 +469,9 @@ var FileParser = class {
   startNewBlock() {
     this.inDefinition = false;
     this.defBuffer = {};
+  }
+  getParseSettings() {
+    return getSettings().defFileParseConfig;
   }
 };
 
@@ -398,8 +606,7 @@ var DefinitionPopover = class extends import_obsidian3.Component {
     }
     return cmEditor;
   }
-  // True if open towards right, otherwise left
-  shouldOpenToRight(horizontalOffset, containerStyle) {
+  shouldOpenToLeft(horizontalOffset, containerStyle) {
     return horizontalOffset > parseInt(containerStyle.width) / 2;
   }
   shouldOpenUpwards(verticalOffset, containerStyle) {
@@ -444,18 +651,21 @@ var DefinitionPopover = class extends import_obsidian3.Component {
     const workspaceStyle = getComputedStyle(this.app.workspace.containerEl);
     this.mountedPopover = this.createElement(def);
     const positionStyle = {
-      visibility: "visible",
-      maxWidth: "500px"
+      visibility: "visible"
     };
-    if (this.shouldOpenToRight(coords.left, workspaceStyle)) {
+    if (this.shouldOpenToLeft(coords.left, workspaceStyle)) {
       positionStyle.right = `${parseInt(workspaceStyle.width) - coords.left}px`;
+      positionStyle.maxWidth = "max(calc(100vw / 3))";
     } else {
       positionStyle.left = `${coords.left}px`;
+      positionStyle.maxWidth = "max(calc(100vw / 3))";
     }
     if (this.shouldOpenUpwards(coords.top, workspaceStyle)) {
       positionStyle.bottom = `${parseInt(workspaceStyle.height) - coords.top}px`;
+      positionStyle.maxHeight = `${coords.top}px`;
     } else {
       positionStyle.top = `${coords.bottom}px`;
+      positionStyle.maxHeight = `calc(100vh - ${coords.bottom}px)`;
     }
     this.mountedPopover.setCssStyles(positionStyle);
   }
@@ -549,144 +759,6 @@ function injectGlobals(settings) {
   };
 }
 
-// src/editor/marker.ts
-var import_state = require("@codemirror/state");
-var import_view = require("@codemirror/view");
-
-// src/editor/definition-search.ts
-var LineScanner = class {
-  constructor() {
-    this.cnLangRegex = /\p{Script=Han}/u;
-    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟—‘’‛“”„‟…‧﹏﹑﹔·]/;
-  }
-  scanLine(line, offset) {
-    let traversers = [];
-    const defManager = getDefFileManager();
-    const phraseInfos = [];
-    for (let i = 0; i < line.length; i++) {
-      const c = line.charAt(i).toLowerCase();
-      if (this.isValidStart(line, i)) {
-        traversers.push(new PTreeTraverser(defManager.prefixTree));
-      }
-      traversers.forEach((traverser) => {
-        traverser.gotoNext(c);
-        if (traverser.isWordEnd() && this.isValidEnd(line, i)) {
-          const phrase = traverser.getWord();
-          phraseInfos.push({
-            phrase,
-            from: (offset != null ? offset : 0) + i - phrase.length + 1,
-            to: (offset != null ? offset : 0) + i + 1
-          });
-        }
-      });
-      traversers = traversers.filter((traverser) => {
-        return !!traverser.currPtr;
-      });
-    }
-    return phraseInfos;
-  }
-  isValidEnd(line, ptr) {
-    const c = line.charAt(ptr).toLowerCase();
-    if (this.isNonSpacedLanguage(c)) {
-      return true;
-    }
-    if (ptr === line.length - 1) {
-      return true;
-    }
-    return this.terminatingCharRegex.test(line.charAt(ptr + 1));
-  }
-  // Check if this character is a valid start of a word depending on the context
-  isValidStart(line, ptr) {
-    const c = line.charAt(ptr).toLowerCase();
-    if (c == " ") {
-      return false;
-    }
-    if (ptr === 0 || this.isNonSpacedLanguage(c)) {
-      return true;
-    }
-    return this.terminatingCharRegex.test(line.charAt(ptr - 1));
-  }
-  isNonSpacedLanguage(c) {
-    return this.cnLangRegex.test(c);
-  }
-};
-
-// src/editor/marker.ts
-var DefinitionMarker = class {
-  constructor(view) {
-    this.cnLangRegex = /\p{Script=Han}/u;
-    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n ]/;
-    this.triggerFunc = "event.stopPropagation();window.NoteDefinition.triggerDefPreview(this);";
-    this.decorations = this.buildDecorations(view);
-  }
-  update(update) {
-    if (update.docChanged || update.viewportChanged || update.focusChanged) {
-      const start = performance.now();
-      this.decorations = this.buildDecorations(update.view);
-      const end = performance.now();
-      logDebug(`Marked definitions in ${end - start}ms`);
-      return;
-    }
-  }
-  destroy() {
-  }
-  buildDecorations(view) {
-    const builder = new import_state.RangeSetBuilder();
-    const phraseInfos = [];
-    for (let { from, to } of view.visibleRanges) {
-      const text = view.state.sliceDoc(from, to);
-      phraseInfos.push(...this.scanText(text, from));
-    }
-    phraseInfos.forEach((wordPos) => {
-      let attributes = {
-        def: wordPos.phrase
-      };
-      const settings = getSettings();
-      if (settings.popoverEvent === "click" /* Click */) {
-        attributes.onclick = this.triggerFunc;
-      } else {
-        attributes.onmouseenter = this.triggerFunc;
-      }
-      builder.add(wordPos.from, wordPos.to, import_view.Decoration.mark({
-        class: "def-decoration",
-        attributes
-      }));
-    });
-    return builder.finish();
-  }
-  // Scan text and return phrases and their positions that require decoration
-  scanText(text, offset) {
-    let phraseInfos = [];
-    const lines = text.split("\n");
-    let internalOffset = offset;
-    const lineScanner = new LineScanner();
-    lines.forEach((line) => {
-      phraseInfos.push(...lineScanner.scanLine(line, internalOffset));
-      internalOffset += line.length + 1;
-    });
-    phraseInfos.sort((a, b) => b.to - a.to);
-    phraseInfos.sort((a, b) => a.from - b.from);
-    return this.removeSubsetsAndIntersects(phraseInfos);
-  }
-  removeSubsetsAndIntersects(phraseInfos) {
-    let cursor = 0;
-    return phraseInfos.filter((phraseInfo) => {
-      if (phraseInfo.from > cursor) {
-        cursor = phraseInfo.to;
-        return true;
-      }
-      return false;
-    });
-  }
-};
-var pluginSpec = {
-  decorations: (value) => value.decorations
-};
-var definitionMarker = import_view.ViewPlugin.fromClass(
-  DefinitionMarker,
-  pluginSpec
-);
-
 // src/editor/md-postprocessor.ts
 var postProcessor = (element, context) => {
   const shouldRunPostProcessor = window.NoteDefinition.settings.enableInReadingView;
@@ -711,6 +783,7 @@ var rebuildHTML = (parent) => {
       if (phraseInfos.length === 0) {
         continue;
       }
+      phraseInfos.sort((a, b) => b.to - a.to);
       phraseInfos.sort((a, b) => a.from - b.from);
       let currCursor = 0;
       const newContainer = parent.createSpan();
@@ -720,12 +793,10 @@ var rebuildHTML = (parent) => {
           return;
         }
         newContainer.appendText(currText.slice(currCursor, phraseInfo.from));
+        const attributes = getDecorationAttrs(phraseInfo.phrase);
         const span = newContainer.createSpan({
-          cls: "def-decoration",
-          attr: {
-            def: phraseInfo.phrase,
-            onmouseenter: "window.NoteDefinition.triggerDefPreview(this)"
-          },
+          cls: DEF_DECORATION_CLS,
+          attr: attributes,
           text: currText.slice(phraseInfo.from, phraseInfo.to)
         });
         newContainer.appendChild(span);
@@ -768,7 +839,7 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       id: "preview-definition",
       name: "Preview definition",
       editorCallback: (editor) => {
-        const curWord = getWordUnderCursor(editor);
+        const curWord = getMarkedWordUnderCursor(editor);
         if (!curWord)
           return;
         const def = window.NoteDefinition.definitions.global.get(curWord);
@@ -781,7 +852,7 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       id: "goto-definition",
       name: "Go to definition",
       editorCallback: (editor) => {
-        const currWord = getWordUnderCursor(editor);
+        const currWord = getMarkedWordUnderCursor(editor);
         if (!currWord)
           return;
         const def = this.defManager.get(currWord);
@@ -799,7 +870,7 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       this.registerEditorExts();
     }));
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor) => {
-      const curWord = getWordUnderCursor(editor);
+      const curWord = getMarkedWordUnderCursor(editor);
       if (!curWord)
         return;
       const def = this.defManager.get(curWord);
