@@ -9,13 +9,17 @@ tags:
 
 A data index and query language over Markdown files, for [https://obsidian.md/](https://obsidian.md/)
 
+地址：[blacksmithgu/obsidian-dataview](https://github.com/blacksmithgu/obsidian-dataview)
+
 ---
 
 # Templater-Obsidian-Plugin
 
 *Templater*
 
-[Templater](https://github.com/SilentVoid13/Templater) is a template plugin for [Obsidian.md](https://obsidian.md/). It defines a templating language that lets you insert variables and functions results into your notes. It will also let you execute JavaScript code manipulating those variables and functions.
+A template plugin for obsidian
+
+地址：[SilentVoid13/Templater](https://github.com/SilentVoid13/Templater)
 
 ---
 
@@ -25,7 +29,17 @@ A data index and query language over Markdown files, for [https://obsidian.md/]
 
 A simple text expand plugin for Obsidian.md
 
-This plugin will search files using [Obsidian search functionality](https://publish.obsidian.md/help/Plugins/Search) and then paste the result. The output can be customized using [template feature](https://github.com/mrjackphil/obsidian-text-expand#template-engines).
+地址：[mrjackphil/obsidian-text-expand](https://github.com/mrjackphil/obsidian-text-expand)
+
+---
+
+# Obsidian-Query-Control
+
+*Query Control*
+
+An experimental Obsidian plugin that adds controls to embedded queries
+
+地址：[nothingislost/obsidian-query-control](https://github.com/nothingislost/obsidian-query-control)
 
 ---
 
@@ -35,6 +49,8 @@ This plugin will search files using [Obsidian search functionality](https://pub
 
 The main feature of this plugin is to quickly insert common Markdown code and HTML code, including Sup, Sub, Audio, Video, Iframe, Left-Center-Right Alignment, Variables, Footnotes, Callout, Anchor Points, HTML Commetextnts and so on.
 
+地址：[wish5115/obsidian-ii-quicker](https://github.com/wish5115/obsidian-ii-quicker)
+
 ---
 
 # Obsidian-Note-Definitions
@@ -42,6 +58,8 @@ The main feature of this plugin is to quickly insert common Markdown code and HT
 *Note Definitions*
 
 A personal dictionary that can be easily looked-up from within your notes.
+
+地址：[dominiclet/obsidian-note-definitions](https://github.com/dominiclet/obsidian-note-definitions)
 
 ---
 
@@ -51,6 +69,8 @@ A personal dictionary that can be easily looked-up from within your notes.
 
 An Obsidian plugin to quickly preview a suggestion before selecting it in link suggestions & quick switcher.
 
+地址：[RyotaUshio/obsidian-quick-preview](https://github.com/RyotaUshio/obsidian-quick-preview)
+
 ---
 
 # Obsidian-Ledger
@@ -59,6 +79,34 @@ An Obsidian plugin to quickly preview a suggestion before selecting it in link s
 
 Plain text accounting in Obsidian.md
 
-Personal finance tracking and planning, from the comfort of Obsidian! All of your data is stored in plain text, and interoperable with any tool which supports the [Ledger CLI](https://www.ledger-cli.org/). Stop giving away your personal financial information to online sites that sell your data. Store it safely in your Obsidian Vault instead.
+地址：[tgrosinger/ledger-obsidian](https://github.com/tgrosinger/ledger-obsidian)
 
+---
 
+# Obsidian-Mathlinks
+
+*MathLinks*
+
+An Obsidian.md plugin to render MathJax in your links.
+
+地址：[zhaoshenzhai/obsidian-mathlinks](https://github.com/zhaoshenzhai/obsidian-mathlinks)
+
+---
+
+# Obsidian-Typest
+
+*Typst*
+
+Renders typst code blocks in Obsidian into images using Typst through the power of WASM!
+
+地址：[fenjalien/obsidian-typst](https://github.com/fenjalien/obsidian-typst)
+
+---
+
+# Obsidian-Note-Gallery
+
+*Note Gallery*
+
+A masonry note gallery for obsidian.
+
+地址：[pashashocky/obsidian-note-gallery](https://github.com/pashashocky/obsidian-note-gallery)

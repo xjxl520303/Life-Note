@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "08d3b9c2db365a00",
+        "id": "c9330b2d0ffee810",
         "type": "tabs",
         "children": [
           {
-            "id": "793261ae0f969c2c",
+            "id": "64cd23e2851645de",
             "type": "leaf",
             "state": {
-              "type": "home-tab-view",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -81,7 +85,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 313.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -98,6 +102,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,6 +119,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -135,7 +141,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md"
+              }
             }
           },
           {
@@ -175,7 +183,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {}
+              "state": {
+                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md"
+              }
             }
           },
           {
@@ -222,30 +232,34 @@
       "obsidian-metatable:Metatable": false
     }
   },
-  "active": "793261ae0f969c2c",
+  "active": "64cd23e2851645de",
   "lastOpenFiles": [
-    "README.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
-    "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
-    "博客/Obsidian/小插件推荐/小插件推荐.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "术语/Obsidian 插件.md",
-    "日记/2024-05-27.md",
-    "模板/插入插件名称.md",
-    "模板/Code block Tpl.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-    "模板/创建 Obsidian 博客文章.md",
-    "模板/创建和更新时间模板.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言.md",
+    "博客/Obsidian/达人成长之路/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
+    "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
+    "模板/创建 Obsidian 博客文章.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+    "电子书/Typst.Tutorial.CN.v0.1.0.pdf",
+    "电子书",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Various Completes 插件使用.md",
+    "README.md",
+    "博客/Obsidian/小插件推荐/小插件推荐.md",
+    "日记/2024-05-27.md",
+    "模板/插入插件名称.md",
+    "模板/Code block Tpl.md",
+    "模板/创建和更新时间模板.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Quick Switcher++.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：QuickAdd 插件使用.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Various Completes 插件使用.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Ledger 记账.md",
     "附件/动画2 63.gif",
     "附件/Pasted image 20240614190528.png",
@@ -256,10 +270,8 @@
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
     "附件/动画2 60.gif",
     "附件/动画2 59.gif",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：使用 Dice Roller 随机抽取内容.md",
     "附件/动画2 58.gif",
     "附件/动画2 57.gif",
-    "博客/Obsidian/达人成长之路/使用 Obsidian 打造极致体验的 IT 个人知识管理.md",
     "术语",
     "博客/运动与健康",
     "模板",
@@ -267,8 +279,6 @@
     "博客/Obsidian/达人成长之路",
     "博客/Go/抗遗忘系列",
     "博客/Go/插件使用/Go-pretty",
-    "博客/Go/插件使用/Excelize",
-    "博客/Go/插件使用",
-    "博客/Go"
+    "博客/Go/插件使用/Excelize"
   ]
 }

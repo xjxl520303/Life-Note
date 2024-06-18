@@ -13,7 +13,9 @@ platforms:
     url: https://juejin.cn/post/7374988830494228491
     date: 2024-05-31 17:25
     last_update: 2024-05-31 17:25
-updated_at: 2024-06-17 19:04:12
+updated_at: 2024-06-18 16:20:04
+plugins:
+  - Obsidian-Dataview
 ---
 
 | 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |

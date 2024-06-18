@@ -13,11 +13,13 @@ platforms:
     url: https://juejin.cn/post/7366454784122093595
     date: 2024-05-08 20:28
     last_update: 2024-05-08 20:28
-updated_at: 2024-06-17 18:56:02
+updated_at: 2024-06-18 16:19:37
+plugins:
+  - Obsidian-Dataview
 ---
 
-| 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
-|:--------------------------- |:----------------------------------- |:------------------------------------------ |:------------------------------ |
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
 | `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
 | `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
 

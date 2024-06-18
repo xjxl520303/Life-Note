@@ -13,7 +13,9 @@ platforms:
     url: https://juejin.cn/spost/7381347654767804425
     date: 2024-06-17 19:53
     last_update: 2024-06-17 19:53
-updated_at: 2024-06-17 20:12:21
+updated_at: 2024-06-18 16:25:49
+plugins:
+  - Templater-Obsidian-Plugin
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
@@ -1007,7 +1009,7 @@ if (!currentFileFolder.startsWith(currentTemplateFolder)) {
 
 # <% title %>
 
-<% tp.file.cursor() %>
+
 
 ## 参考
 

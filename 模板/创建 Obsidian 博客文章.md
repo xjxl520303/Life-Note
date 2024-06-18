@@ -51,6 +51,7 @@ if (isDefaultTitle) {
 <%_ "---" %>
 tags: 博客, Obsidian, <% titleInTags %>
 created_at: <% tp.file.last_modified_date('YYYY-MM-DD HH:mm:ss') %>
+plugins: 
 platforms:
   - name: 知乎
     url: ''

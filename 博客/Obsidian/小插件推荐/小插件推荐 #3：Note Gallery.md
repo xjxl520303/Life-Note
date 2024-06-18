@@ -13,7 +13,9 @@ platforms:
     url: ""
     date: ""
     last_update: ""
-updated_at: 2024-06-17 18:50:27
+updated_at: 2024-06-18 16:16:11
+plugins:
+  - Obsidian-Note-Gallery
 ---
 
 | 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |

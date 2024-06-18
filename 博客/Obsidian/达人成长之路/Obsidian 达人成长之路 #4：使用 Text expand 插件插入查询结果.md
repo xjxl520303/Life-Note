@@ -13,7 +13,10 @@ platforms:
     url: https://juejin.cn/post/7375871100523954227
     date: 2024-06-03 12:22
     last_update: 2024-06-03 12:22
-updated_at: 2024-06-17 19:07:53
+updated_at: 2024-06-18 16:22:29
+plugins:
+  - Obsidian-Text-expand
+  - Obsidian-Query-Control
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |

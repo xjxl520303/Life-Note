@@ -13,7 +13,9 @@ platforms:
     url: ""
     date: ""
     last_update: ""
-updated_at: 2024-06-17 18:51:35
+updated_at: 2024-06-18 16:17:37
+plugins:
+  - Obsidian-Quick-Preview
 ---
 
 | 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
