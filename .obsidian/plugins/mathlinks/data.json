@@ -1,0 +1,8 @@
+{
+  "templates": [],
+  "excludedPaths": [],
+  "blockPrefix": "^",
+  "enableFileNameBlockLinks": true,
+  "enableInSourceMode": false,
+  "renderOutline": true
+}

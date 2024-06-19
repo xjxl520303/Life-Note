@@ -2,7 +2,6 @@
   "obsidian-pangu",
   "oz-clear-unused-images",
   "obsidian-code-tab",
-  "dataview",
   "easy-typing-obsidian",
   "obsidian-git",
   "home-tab",
@@ -39,5 +38,8 @@
   "obsidian-completr",
   "obsidian-metatable",
   "quick-preview",
-  "obsidian-meta-bind-plugin"
+  "obsidian-meta-bind-plugin",
+  "typst",
+  "mathlinks",
+  "recent-files-obsidian"
 ]

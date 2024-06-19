@@ -95,7 +95,7 @@ An Obsidian.md plugin to render MathJax in your links.
 
 # Obsidian-Typest
 
-*Typst*
+*Typst Renderer*
 
 Renders typst code blocks in Obsidian into images using Typst through the power of WASM!
 

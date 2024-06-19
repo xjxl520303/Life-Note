@@ -4,17 +4,35 @@
     "type": "split",
     "children": [
       {
-        "id": "c9330b2d0ffee810",
+        "id": "b7378a0a67ba11ae",
         "type": "tabs",
         "children": [
           {
-            "id": "64cd23e2851645de",
+            "id": "ffff944ef7f9714b",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
                 "mode": "source",
+                "source": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "d3b51b63046d5298",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9629b52f41c7ad63",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+                "mode": "preview",
                 "source": false
               }
             }
@@ -80,6 +98,14 @@
               "type": "mk-path-view",
               "state": {}
             }
+          },
+          {
+            "id": "286301f23b79a0f3",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {}
+            }
           }
         ]
       }
@@ -102,7 +128,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +145,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -142,7 +168,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md"
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
               }
             }
           },
@@ -184,7 +210,7 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md"
+                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
               }
             }
           },
@@ -208,12 +234,11 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 443.5
+    "width": 263.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -232,10 +257,37 @@
       "obsidian-metatable:Metatable": false
     }
   },
-  "active": "64cd23e2851645de",
+  "active": "ffff944ef7f9714b",
   "lastOpenFiles": [
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "附件/Pasted image 20240619215126.png",
+    "个人笔记/写作资料.md",
+    "个人笔记/Obsidian 常用快捷键.md",
+    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+    "电子书/W020190128580990138234.pdf",
+    "电子书/W020190128580990138234.pdf.crdownload",
+    "电子书/re_PunctuationMarks.pdf",
+    "电子书/re_PunctuationMarks.pdf.crdownload",
+    "电子书/pingcap-style-guide-zh.pdf",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+    "个人笔记/Typst/官方文档/Model/Figure.md",
+    "个人笔记/Typst/官方文档/官方教程.md",
+    "个人笔记/Typst/官方文档/官方参考 - 语法.md",
+    "附件/Pasted image 20240618202630.png",
+    "模板/插入 Typst 示例.md",
+    "模板/Code block Tpl.md",
+    "附件/Pasted image 20240618201459.png",
+    "个人笔记/Typst/官方文档/Model",
+    "README.md",
+    "个人笔记/Typst/官方文档",
+    "个人笔记/Typst/Typst Examples Book/知识点记录.md",
+    "个人笔记/Typst/Typst Examples Book",
+    "个人笔记/Typst/The Raindrop-Blue Book",
+    "个人笔记/Typst",
     "术语/Obsidian 插件.md",
+    "模板/插入插件名称.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
+    "日记/2024-05-27.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md",
@@ -245,40 +297,13 @@
     "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
     "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
     "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
-    "模板/创建 Obsidian 博客文章.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
-    "电子书/Typst.Tutorial.CN.v0.1.0.pdf",
-    "电子书",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Various Completes 插件使用.md",
-    "README.md",
-    "博客/Obsidian/小插件推荐/小插件推荐.md",
-    "日记/2024-05-27.md",
-    "模板/插入插件名称.md",
-    "模板/Code block Tpl.md",
-    "模板/创建和更新时间模板.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Quick Switcher++.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：QuickAdd 插件使用.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Style Settings 插件定制界面新风尚.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Tasks 插件助你实现高效任务规划与执行.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Ledger 记账.md",
     "附件/动画2 63.gif",
     "附件/Pasted image 20240614190528.png",
     "附件/Pasted image 20240614190330.png",
     "附件/Pasted image 20240614184749.png",
     "附件/动画2 62.gif",
     "附件/动画2 61.gif",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
     "附件/动画2 60.gif",
-    "附件/动画2 59.gif",
-    "附件/动画2 58.gif",
-    "附件/动画2 57.gif",
-    "术语",
-    "博客/运动与健康",
-    "模板",
-    "博客/Obsidian/小插件推荐",
-    "博客/Obsidian/达人成长之路",
-    "博客/Go/抗遗忘系列",
-    "博客/Go/插件使用/Go-pretty",
-    "博客/Go/插件使用/Excelize"
+    "附件/动画2 59.gif"
   ]
 }

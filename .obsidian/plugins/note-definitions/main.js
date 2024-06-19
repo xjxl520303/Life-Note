@@ -106,14 +106,17 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
         await this.plugin.saveSettings();
       });
     });
-    new import_obsidian.Setting(containerEl).setName("Definitions folder").setDesc("Files within this folder will be parsed to register definitions (specify relative to root of vault)").addText((component) => {
+    new import_obsidian.Setting(containerEl).setName("Definitions folder").setDesc("Files within this folder will be parsed to register definitions").addText((component) => {
       component.setValue(this.settings.defFolder);
       component.setPlaceholder(DEFAULT_DEF_FOLDER);
-      component.onChange(async (value) => {
-        this.settings.defFolder = value;
-        await this.plugin.saveSettings();
-        this.plugin.refreshDefinitions();
-      });
+      component.setDisabled(true);
+      (0, import_obsidian.setTooltip)(
+        component.inputEl,
+        "In the file explorer, right-click on the desired folder and click on 'Set definition folder' to change the definition folder",
+        {
+          delay: 100
+        }
+      );
     });
     new import_obsidian.Setting(containerEl).setName("Definition popover display event").setDesc("Choose the trigger event for displaying the definition popover").addDropdown((component) => {
       component.addOption("hover" /* Hover */, "Hover");
@@ -212,7 +215,7 @@ function getDecorationAttrs(phrase) {
 var LineScanner = class {
   constructor() {
     this.cnLangRegex = /\p{Script=Han}/u;
-    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟—‘’‛“”„‟…‧﹏﹑﹔·]/;
+    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n （）＊＋，－／：；＜＝＞＠［＼］＾＿｀｛｜｝～｟｠｢｣､　、〃〈〉《》「」『』【】〔〕〖〗〘〙〚〛〜〝〞〟—‘’‛“”„‟…‧﹏﹑﹔·。]/;
   }
   scanLine(line, offset) {
     let traversers = [];
@@ -273,8 +276,6 @@ function getMarkedPhrases() {
 }
 var DefinitionMarker = class {
   constructor(view) {
-    this.cnLangRegex = /\p{Script=Han}/u;
-    this.terminatingCharRegex = /[!@#$%^&*()\+={}[\]:;"'<>,.?\/|\\\r\n ]/;
     this.decorations = this.buildDecorations(view);
   }
   update(update) {
@@ -480,10 +481,12 @@ var defFileManager;
 var DefManager = class {
   constructor(app) {
     this.app = app;
-    this.globalDefs = /* @__PURE__ */ new Map();
-    this.globalDefFiles = [];
-    window.NoteDefinition.definitions.global = this.globalDefs;
+    this.globalDefs = new DefinitionRepo();
+    this.globalDefFiles = /* @__PURE__ */ new Map();
     this.prefixTree = new PTreeNode();
+    this.lastUpdate = Date.now();
+    window.NoteDefinition.definitions.global = this.globalDefs;
+    this.loadDefinitions();
   }
   isDefFile(file) {
     return file.path.startsWith(this.getGlobalDefFolder());
@@ -491,7 +494,7 @@ var DefManager = class {
   reset() {
     this.prefixTree = new PTreeNode();
     this.globalDefs.clear();
-    this.globalDefFiles = [];
+    this.globalDefFiles = /* @__PURE__ */ new Map();
   }
   loadDefinitions() {
     this.reset();
@@ -500,8 +503,27 @@ var DefManager = class {
   get(key) {
     return this.globalDefs.get(normaliseWord(key));
   }
-  has(key) {
-    return this.globalDefs.has(normaliseWord(key));
+  async loadUpdatedFiles() {
+    const definitions = [];
+    const dirtyFiles = [];
+    for (let file of this.globalDefFiles.values()) {
+      if (file.stat.mtime > this.lastUpdate) {
+        logDebug(`File ${file.path} was updated, reloading definitions...`);
+        dirtyFiles.push(file.path);
+        const defs = await this.parseFile(file);
+        definitions.push(...defs);
+      }
+    }
+    dirtyFiles.forEach((file) => {
+      this.globalDefs.clearForFile(file);
+    });
+    if (definitions.length > 0) {
+      definitions.forEach((def) => {
+        this.globalDefs.set(def);
+      });
+    }
+    this.buildPrefixTree();
+    this.lastUpdate = Date.now();
   }
   async loadGlobals() {
     const globalFolder = this.app.vault.getFolderByPath(this.getGlobalDefFolder());
@@ -511,10 +533,13 @@ var DefManager = class {
     }
     const definitions = await this.parseFolder(globalFolder);
     definitions.forEach((def) => {
-      this.globalDefs.set(def.key, def);
+      this.globalDefs.set(def);
     });
+    this.buildPrefixTree();
+  }
+  async buildPrefixTree() {
     const root = new PTreeNode();
-    this.globalDefs.forEach((_, key) => {
+    this.globalDefs.getAllKeys().forEach((key) => {
       root.add(key, 0);
     });
     this.prefixTree = root;
@@ -533,12 +558,49 @@ var DefManager = class {
     return definitions;
   }
   async parseFile(file) {
-    this.globalDefFiles.push(file);
+    this.globalDefFiles.set(file.path, file);
     let parser = new FileParser(this.app, file);
     return parser.parseFile();
   }
   getGlobalDefFolder() {
     return window.NoteDefinition.settings.defFolder || DEFAULT_DEF_FOLDER;
+  }
+};
+var DefinitionRepo = class {
+  constructor() {
+    this.fileDefMap = /* @__PURE__ */ new Map();
+  }
+  get(key) {
+    for (let [_, defMap] of this.fileDefMap) {
+      const def = defMap.get(key);
+      if (def) {
+        return def;
+      }
+    }
+  }
+  getAllKeys() {
+    const keys = [];
+    this.fileDefMap.forEach((defMap, _) => {
+      keys.push(...defMap.keys());
+    });
+    return keys;
+  }
+  set(def) {
+    let defMap = this.fileDefMap.get(def.file.path);
+    if (!defMap) {
+      defMap = /* @__PURE__ */ new Map();
+      this.fileDefMap.set(def.file.path, defMap);
+    }
+    defMap.set(def.key, def);
+  }
+  clearForFile(filePath) {
+    const defMap = this.fileDefMap.get(filePath);
+    if (defMap) {
+      defMap.clear();
+    }
+  }
+  clear() {
+    this.fileDefMap.clear();
   }
 };
 function initDefFileManager(app) {
@@ -731,7 +793,7 @@ function injectGlobals(settings) {
   window.NoteDefinition = {
     LOG_LEVEL: ((_a = window.NoteDefinition) == null ? void 0 : _a.LOG_LEVEL) || 1 /* Error */,
     definitions: {
-      global: /* @__PURE__ */ new Map()
+      global: new DefinitionRepo()
     },
     triggerDefPreview: (el) => {
       const word = el.getAttr("def");
@@ -813,6 +875,77 @@ var rebuildHTML = (parent) => {
   }
 };
 
+// src/ui/file-explorer.ts
+var fileExplorerDecoration;
+var MAX_RETRY = 3;
+var RETRY_INTERVAL = 1e3;
+var DIV_ID = "def-tag-id";
+var FileExplorerDecoration = class {
+  constructor(app) {
+    this.app = app;
+  }
+  // Take note: May not be re-entrant
+  async run() {
+    this.retryCount = 0;
+    while (this.retryCount < MAX_RETRY) {
+      try {
+        this.exec();
+      } catch (e) {
+        logError(e);
+        this.retryCount++;
+        await sleep(RETRY_INTERVAL);
+        continue;
+      }
+      return;
+    }
+  }
+  exec() {
+    const fileExplorer = this.app.workspace.getLeavesOfType("file-explorer")[0];
+    const fileExpView = fileExplorer.view;
+    const settings = getSettings();
+    Object.keys(fileExpView.fileItems).forEach((k) => {
+      const fileItem = fileExpView.fileItems[k];
+      const fileTags = fileItem.selfEl.getElementsByClassName("nav-file-tag");
+      for (let i = 0; i < fileTags.length; i++) {
+        const fileTag = fileTags[i];
+        if (fileTag.id === DIV_ID) {
+          fileTag.remove();
+        }
+      }
+      const defFolder = settings.defFolder || DEFAULT_DEF_FOLDER;
+      if (!fileExpView.fileItems[defFolder]) {
+        return;
+      }
+      if (k.startsWith(defFolder)) {
+        this.tagFile(fileExpView, k, "DEF");
+      }
+    });
+  }
+  tagFile(explorer, filePath, tagContent) {
+    const el = explorer.fileItems[filePath];
+    if (!el) {
+      logDebug(`No file item with filepath ${filePath} found`);
+      return;
+    }
+    const fileTags = el.selfEl.getElementsByClassName("nav-file-tag");
+    for (let i = 0; i < fileTags.length; i++) {
+      const fileTag = fileTags[i];
+      fileTag.remove();
+    }
+    el.selfEl.createDiv({
+      cls: "nav-file-tag",
+      text: tagContent,
+      attr: {
+        id: DIV_ID
+      }
+    });
+  }
+};
+function initFileExplorerDecoration(app) {
+  fileExplorerDecoration = new FileExplorerDecoration(app);
+  return fileExplorerDecoration;
+}
+
 // src/main.ts
 var NoteDefinition = class extends import_obsidian4.Plugin {
   constructor() {
@@ -825,14 +958,19 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
     logDebug("Load note definition plugin");
     initDefinitionPopover(this);
     this.defManager = initDefFileManager(this.app);
+    this.fileExplorerDeco = initFileExplorerDecoration(this.app);
+    this.registerEditorExtension(this.activeEditorExtensions);
+    this.updateEditorExts();
     this.registerCommands();
     this.registerEvents();
-    this.registerEditorExtension(this.activeEditorExtensions);
     this.addSettingTab(new SettingsTab(this.app, this));
     this.registerMarkdownPostProcessor(postProcessor);
+    this.fileExplorerDeco.run();
   }
   async saveSettings() {
     await this.saveData(window.NoteDefinition.settings);
+    this.fileExplorerDeco.run();
+    this.refreshDefinitions();
   }
   registerCommands() {
     this.addCommand({
@@ -866,8 +1004,8 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
     this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
       if (!leaf)
         return;
-      this.refreshDefinitions();
-      this.registerEditorExts();
+      this.reloadUpdatedDefinitions();
+      this.updateEditorExts();
     }));
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor) => {
       const curWord = getMarkedWordUnderCursor(editor);
@@ -877,6 +1015,17 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       if (!def)
         return;
       this.registerMenuItems(menu, def);
+    }));
+    this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => {
+      if (file instanceof import_obsidian4.TFolder) {
+        menu.addItem((item) => {
+          item.setTitle("Set definition folder").setIcon("book-a").onClick(() => {
+            const settings = getSettings();
+            settings.defFolder = file.path;
+            this.saveSettings();
+          });
+        });
+      }
     }));
   }
   registerMenuItems(menu, def) {
@@ -889,7 +1038,10 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
   refreshDefinitions() {
     this.defManager.loadDefinitions();
   }
-  registerEditorExts() {
+  reloadUpdatedDefinitions() {
+    this.defManager.loadUpdatedFiles();
+  }
+  updateEditorExts() {
     const currFile = this.app.workspace.getActiveFile();
     if (currFile && this.defManager.isDefFile(currFile)) {
       this.setActiveEditorExtensions([]);

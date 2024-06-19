@@ -13,14 +13,9 @@
     "Date"
   ],
   "subMenus": [
-    "H4",
     "Date",
-    "Time",
-    "H5",
-    "H6",
-    "Image",
-    "Callout"
+    "Time"
   ],
   "showCommandMenu": true,
-  "customCodes": "快捷键标签::<kbd>{selection}</kbd>::插入快捷键标签<kbd>\n知乎弹评::(from\\:\\: 弹评)::知乎读书中的评注\n提示::>[!Tip] {selection}::关键处提示\n警告::>[!Warning] {selection}::操作有危险"
+  "customCodes": "快捷键标签::<kbd>{selection}</kbd>::插入快捷键标签<kbd>\n中文长引号::「{selection}」::插入中文长引号\n知乎弹评::(from\\:\\: 弹评)::知乎读书中的评注\n提示::>[!Tip] {selection}::关键处提示\n警告::>[!Warning] {selection}::操作有危险"
 }

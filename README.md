@@ -62,7 +62,6 @@ console.log(tableMd)
 ### 电子表格相关：
 
 
-
 涉及插件：
 
 - [divamgupta/obsidian-spreadsheets (github.com)](https://github.com/divamgupta/obsidian-spreadsheets)

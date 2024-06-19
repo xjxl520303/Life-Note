@@ -3,5 +3,6 @@
   "cssTheme": "Border",
   "theme": "obsidian",
   "textFontFamily": "LXGW WenKai Mono",
-  "baseFontSize": 14
+  "baseFontSize": 14,
+  "monospaceFontFamily": "Microsoft YaHei"
 }

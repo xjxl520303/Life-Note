@@ -24,24 +24,20 @@
   "unresolvedLinks": false,
   "recentFilesStore": [
     {
+      "filepath": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+      "timestamp": 1718803137124
+    },
+    {
+      "filepath": "个人笔记/写作资料.md",
+      "timestamp": 1718803133528
+    },
+    {
+      "filepath": "个人笔记/Obsidian 常用快捷键.md",
+      "timestamp": 1718802957749
+    },
+    {
       "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
-      "timestamp": 1718699156858
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-      "timestamp": 1718699146018
-    },
-    {
-      "filepath": "术语/Obsidian 插件.md",
-      "timestamp": 1718699142669
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #4：使用 Text expand 插件插入查询结果.md",
-      "timestamp": 1718698927579
-    },
-    {
-      "filepath": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
-      "timestamp": 1718698796052
+      "timestamp": 1718782854061
     }
   ],
   "bookmarkedFileStore": [],
