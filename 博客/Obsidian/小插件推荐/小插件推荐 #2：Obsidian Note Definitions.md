@@ -13,7 +13,7 @@ platforms:
     url: https://juejin.cn/post/7379487557598003237
     date: 2024-06-13 15:48
     last_update: 2024-06-13 15:48
-updated_at: 2024-06-18 16:18:13
+updated_at: 2024-06-19 22:18:42
 plugins:
   - Obsidian-Note-Definitions
 ---
@@ -169,6 +169,12 @@ But science does provide us with the best available guide to the future, and it 
 最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长或者加入读者交流微信群一起探讨 Obsidian 的使用技巧和资源分享。
 
 更多内容，请关注我的专栏：[Obsidian 达人成长之路 - 知乎 (zhihu.com)](https://www.zhihu.com/column/c_1776563728286670848)
+
+## 2024-06-19 更新内容
+
+随着官方发布：0.12.1 后，文章早期发布时提到的在中文标点符号不显示术语的问题已经全部修复，相关 ISSUE 已关闭。
+
+文章中吐槽设置定义文件所在目录的问题，作者也进行了优化，现在在选项中已经不能直接输入内容了，而是在文件管理器中任意根目录下的目录【右键】会出现一个【Set definition folder】的命令，点击就可以将其设置为定义目录了。
 
 ## 参考
 

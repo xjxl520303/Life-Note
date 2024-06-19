@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
                 "mode": "source",
                 "source": true
               }
@@ -128,7 +128,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -145,7 +145,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+                "file": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -168,7 +168,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
+                "file": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md"
               }
             }
           },
@@ -210,7 +210,7 @@
             "state": {
               "type": "file-properties",
               "state": {
-                "file": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
+                "file": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md"
               }
             }
           },
@@ -257,12 +257,12 @@
       "obsidian-metatable:Metatable": false
     }
   },
-  "active": "ffff944ef7f9714b",
+  "active": "7ebe0c8784280ada",
   "lastOpenFiles": [
+    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
     "附件/Pasted image 20240619215126.png",
     "个人笔记/写作资料.md",
     "个人笔记/Obsidian 常用快捷键.md",
-    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
     "电子书/W020190128580990138234.pdf",
     "电子书/W020190128580990138234.pdf.crdownload",
     "电子书/re_PunctuationMarks.pdf",
@@ -303,7 +303,6 @@
     "附件/Pasted image 20240614184749.png",
     "附件/动画2 62.gif",
     "附件/动画2 61.gif",
-    "附件/动画2 60.gif",
-    "附件/动画2 59.gif"
+    "附件/动画2 60.gif"
   ]
 }
