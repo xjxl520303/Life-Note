@@ -2,6 +2,7 @@
   "obsidian-pangu",
   "oz-clear-unused-images",
   "obsidian-code-tab",
+  "dataview",
   "easy-typing-obsidian",
   "obsidian-git",
   "home-tab",
@@ -33,13 +34,13 @@
   "vscode-editor",
   "open-vscode",
   "ii-quicker",
+  "obsidian-completr",
+  "quick-preview",
+  "darlal-switcher-plus",
+  "obsidian-meta-bind-plugin",
+  "obsidian-metatable",
   "note-definitions",
   "remember-cursor-position",
-  "obsidian-completr",
-  "obsidian-metatable",
-  "quick-preview",
-  "obsidian-meta-bind-plugin",
   "typst",
-  "mathlinks",
-  "recent-files-obsidian"
+  "mathlinks"
 ]
