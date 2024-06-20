@@ -62,6 +62,7 @@ typest
 typst
 through
 titleInTags
+typ
 Blog
 Boolean
 Bookmarks
@@ -106,6 +107,7 @@ Typest
 TextTransporter
 Term
 Top
+Times
 obsidian
 open
 order
@@ -130,6 +132,9 @@ orange
 opacity
 online
 operator
+outset
+original
+outlined
 PKMer
 PT
 Path
@@ -232,6 +237,7 @@ Raw
 Reference
 Ratio
 Return
+Roman
 YAML
 YYYY
 Yearly
@@ -263,9 +269,11 @@ Character
 Comment
 Context
 Conditional
+Caption
 kbd
 key
 keys
+kind
 MacOS
 MyFileContent
 MyFilename
@@ -353,6 +361,7 @@ finance
 financial
 figure
 flow
+fit
 location
 link
 language
@@ -509,6 +518,7 @@ newGroupedValues
 nameOfTotalRow
 nothingislost
 newFileName
+numbering
 cursor
 content
 create
@@ -587,6 +597,8 @@ caption
 call
 columns
 class
+clip
+changed
 in
 include
 is
@@ -625,6 +637,7 @@ ipsum
 interoperable
 information
 instead
+inset
 active
 await
 app
@@ -679,6 +692,8 @@ adds
 attachment
 access
 amp
+above
+alt
 jump
 join
 json
@@ -768,6 +783,12 @@ set
 shorthand
 spreading
 sublists
+stroke
+spacing
+show
+svg
+suplement
+seperator
 boolean
 be
 book
@@ -814,6 +835,10 @@ byCreatedTime
 byCreatedTimeReverse
 blocks
 binding
+breakable
+below
+body
+blue
 vault
 variables
 variable
@@ -851,6 +876,7 @@ getEmojiScore
 getDayEl
 giving
 gallery
+gap
 date
 default
 daily
@@ -894,6 +920,8 @@ dir
 defaultTags
 directory
 down
+diagram
+decode
 HH
 Html
 Heading
@@ -919,6 +947,7 @@ Field
 Floating
 Function
 For
+FF
 exists
 execute
 endOf
@@ -1089,6 +1118,7 @@ plugins
 png
 print
 point
+placement
 using
 undefined
 updated
@@ -1104,6 +1134,7 @@ unresolvedLinks
 usages
 uniqueValues
 ul
+unicode
 Note
 Normalize
 NoteDefinitions
@@ -1115,6 +1146,7 @@ Name
 Numbered
 None
 Named
+New
 StartupTemplate
 Some
 Sup
@@ -1161,6 +1193,8 @@ hr
 health
 hideTitle
 hideResults
+height
+hex
 quote
 query
 quickly

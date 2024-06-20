@@ -17,7 +17,7 @@ platforms:
 plugins:
   - Obsidian-typst
   - Obsidian-MathLinks
-updated_at: 2024-06-18 18:06:35
+updated_at: 2024-06-20 15:09:50
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
@@ -72,3 +72,4 @@ Typst 的排版功能非常的强大，与 Obsidian 结合使用无疑是双赢�
 - [werifu/HUST-typst-template: 华科毕业论文（本科）的 typst 模板 (github.com)](https://github.com/werifu/HUST-typst-template)
 - [howardlau1999/sysu-thesis-typst: 中山大学学位论文 Typst 模板 (github.com)](https://github.com/howardlau1999/sysu-thesis-typst)
 - [pku-typst/pkuthss-typst: Typst template for dissertations in Peking University (PKU). (github.com)](https://github.com/pku-typst/pkuthss-typst)
+- [Re-render on theme change · Issue #33 · fenjalien/obsidian-typst (github.com)](https://github.com/fenjalien/obsidian-typst/issues/33)

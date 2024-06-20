@@ -8,18 +8,18 @@ platforms:
   - name: 知乎
     url: https://zhuanlan.zhihu.com/p/699841771
     date: 2024-06-12 18:24
-    last_update: 2024-06-12 18:24
+    last_update: 2024-06-20T15:06
   - name: 掘金
     url: https://juejin.cn/post/7372768355777839104
     date: 2024-05-27 11:33
-    last_update: 2024-05-27 11:33
-updated_at: 2024-06-18 16:19:50
+    last_update: 2024-06-20T15:01
+updated_at: 2024-06-20 15:00:33
 plugins:
   - Obsidian-Dataview
 ---
 
-| 平台                        | 发布时间                            | 更新时间                                   | 文章地址                       |
-|:--------------------------- |:----------------------------------- |:------------------------------------------ |:------------------------------ |
+| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
+| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
 | `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
 | `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
 
@@ -405,6 +405,10 @@ export interface DataArray<T> {
     to(key: string): DataArray<any>;
     expand(key: string): DataArray<any>;
     forEach(f: ArrayFunc<T, void>): void;
+    sum(): number;
+    avg(): number;
+    min(): number;
+    max(): number;
     array(): T[];
     [Symbol.iterator](): Iterator<T>;
     [index: number]: any;
@@ -444,6 +448,23 @@ for (p of dvObjArr) {
 dvObjArr.forEach(p => console.log(p.name)) // jenemy, xiaolu, lulu
 ```
 ````
+
+### 数字运算
+
+提供了对于数字的几个常见运算，如求和、求平均值、最大值和最小值。这个和 DQL 查询语言中的功能一致。
+
+>[!tip] 本节内容为 Dataview@0.5.67 新增内容
+
+````
+```dataviewjs
+const arr = dv.array([2, 3, 1, 8, 4, 6, 5, 7, 9])
+console.log(arr.sum()) // 15
+console.log(arr.min()) // 1
+console.log(arr.max()) // 9
+console.log(arr.avg()) // 5
+```
+````
+
 
 ### 数据遍历
 
@@ -2065,6 +2086,14 @@ console.log(dur.fromMillis(1715245618057).rescale().toObject()) // {years: 59, m
 最后，动动你发财的小手，关注，点赞一键三连，你的鼓励是我坚持下去的动力。有任何问题欢迎加作者微信（`jenemy_xl`）沟通交流一起成长或者加入读者交流微信群一起探讨 Obsidian 的使用技巧和资源分享。
 
 更多内容，请关注我的专栏：[Obsidian 达人成长之路 - 知乎 (zhihu.com)](https://www.zhihu.com/column/c_1776563728286670848)
+
+## 更新内容
+
+这里是文章从发布后，Dataview 版本升级所新增内容汇总。相关的更新已同步到文章中相关章节中。
+
+### 0.5.67 更新
+
+- 在 DataArray 中添加 `sum()`, `avg()`, `min()` 和 `max()` 方法。
 
 ## 参考
 

@@ -1,15 +1,21 @@
 {
-  "format": "image",
+  "format": "svg",
   "noFill": true,
   "fill": "#ffffff",
   "pixel_per_pt": 5,
   "search_system": false,
-  "override_math": false,
-  "font_families": [],
+  "override_math": true,
+  "font_families": [
+    "lxgw wenkai mono",
+    "times new roman",
+    "songti sc",
+    "songti tc",
+    "simsun"
+  ],
   "preamable": {
-    "shared": "#set page(width: WIDTH, height: HEIGHT)",
+    "shared": "#set page(width: WIDTH, height: HEIGHT)\n#let foreground = if THEME == \"dark\" { white } else { rgb(27,28,34)}\n#set text(fill: foreground, size: SIZE, font: (\"LXGW WenKai Mono\", \"Times New Roman\", \"Songti SC\", \"Songti TC\", \"SimSun\"))",
     "math": "#set page(margin: 0pt)\n#set align(horizon)",
-    "code": "#set text(fill: white, size: SIZE)\n#set page(margin: (y: 1em, x: 0pt))"
+    "code": "#set page(margin: (y: 1em, x: 0pt))"
   },
   "plugin_version": "0.10.0",
   "autoDownloadPackages": true
