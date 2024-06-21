@@ -70,5 +70,13 @@
       ],
       "key": ";"
     }
+  ],
+  "templater-obsidian:模板/插入特殊符号.md": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "S"
+    }
   ]
 }

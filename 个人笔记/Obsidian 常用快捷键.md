@@ -1,10 +1,12 @@
 ---
 created_at: 2024-06-19 20:53:04
-updated_at: 2024-06-19 21:13:06
+updated_at: 2024-06-21 16:00:09
 ---
 ## 自定义快捷键
 
 - <kbd>Ctrl + \</kbd> 切换实时阅读/源码模式
+- <kbd>Alt + S</kbd> Templater: 插入特殊符号
+- <kdb>Alt + D</kbd> II: 插入时间
 - <kbd>Alt + ←</kbd> Outliner: Outdent the list and sublists
 - <kbd>Alt + →</kbd> Outliner: Indent the list and sublists
 - <kbd>Alt + ;</kbd> Templater: Jump to next cursor location

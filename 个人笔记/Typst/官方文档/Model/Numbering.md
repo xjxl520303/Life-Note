@@ -1,7 +1,7 @@
 ---
 created_at: 2024-06-20 18:58:51
 url: https://typst.app/docs/reference/model/numbering/
-updated_at: 2024-06-20 20:02:32
+updated_at: 2024-06-21 17:50:41
 ---
  #numbering
 
@@ -13,7 +13,9 @@ updated_at: 2024-06-20 20:02:32
 
 ## 示例
 
-```typst
+````typst
+#code(
+```typ
 #numbering("1.1)", 1, 2, 3, 4, 5, 6, 7)\
 #numbering("一月", 1, 2, 3)\
 
@@ -40,6 +42,8 @@ updated_at: 2024-06-20 20:02:32
 #formatNumber("가", 1,2,3,4,5,6,7) \
 #formatNumber("ㄱ", 1,2,3,4,5,6,7) \
 ```
+)
+````
 
 ## 参数
 

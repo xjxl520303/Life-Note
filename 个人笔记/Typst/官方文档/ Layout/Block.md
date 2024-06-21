@@ -45,7 +45,9 @@ More text.
 
 ### width
 
-```typst
+````typst
+#code(
+```typ
 #set align(center)
 #block(
     width: 60%,
@@ -54,6 +56,8 @@ More text.
     lorem(10)
 )
 ```
+)
+````
 
 ### height
 

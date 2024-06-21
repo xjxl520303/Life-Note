@@ -17,7 +17,7 @@ platforms:
 plugins:
   - Obsidian-typst
   - Obsidian-MathLinks
-updated_at: 2024-06-20 15:09:50
+updated_at: 2024-06-21 20:20:00
 ---
 
 | 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
@@ -60,6 +60,8 @@ Typst 的排版功能非常的强大，与 Obsidian 结合使用无疑是双赢�
 - [fenjalien/obsidian-typst: Renders typst code blocks in Obsidian into images using Typst through the power of WASM! (github.com)](https://github.com/fenjalien/obsidian-typst)
 - [zhaoshenzhai/obsidian-mathlinks: An Obsidian.md plugin to render MathJax in your links. (github.com)](https://github.com/zhaoshenzhai/obsidian-mathlinks)
 - [typst/typst: A new markup-based typesetting system that is powerful and easy to learn. (github.com)](https://github.com/typst/typst)
+- [brynne8/typst-undergradmath-zh: A Typst port of undergradmath (in Chinese) (github.com)](https://github.com/brynne8/typst-undergradmath-zh)
+- [johanvx/typst-undergradmath: A Typst port of undergradmath (github.com)](https://github.com/johanvx/typst-undergradmath)
 - [概览 – Typst 中文文档 (typst-doc-cn.github.io)](https://typst-doc-cn.github.io/docs/)
 - [如何看待 typst? - 知乎 (zhihu.com)](https://www.zhihu.com/question/591143170/answer/3304601296)
 - [（大学）数学试卷模板 （Typst） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/688745925)

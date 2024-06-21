@@ -13,7 +13,7 @@ platforms:
     url: https://juejin.cn/post/7379487557598003237
     date: 2024-06-13 15:48
     last_update: 2024-06-13 15:48
-updated_at: 2024-06-19 22:18:42
+updated_at: 2024-06-21 14:56:00
 plugins:
   - Obsidian-Note-Definitions
 ---
@@ -175,6 +175,14 @@ But science does provide us with the best available guide to the future, and it 
 随着官方发布：0.12.1 后，文章早期发布时提到的在中文标点符号不显示术语的问题已经全部修复，相关 ISSUE 已关闭。
 
 文章中吐槽设置定义文件所在目录的问题，作者也进行了优化，现在在选项中已经不能直接输入内容了，而是在文件管理器中任意根目录下的目录【右键】会出现一个【Set definition folder】的命令，点击就可以将其设置为定义目录了。
+
+## 2024-06-21 更新内容
+
+官方发布版本：0.13.0。
+
+早期版本官方只提供了一个上下文菜单【Go to definition】来跳转到定义文件，现在随着新版本迭代新增加了一个【Edit definition】的上下文菜单，直接打开一个模态框来编辑定义内容：
+
+![[1718952593879.png]]
 
 ## 参考
 

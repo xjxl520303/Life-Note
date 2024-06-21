@@ -1,6 +1,6 @@
 ---
 created_at: 2024-06-18 20:02:36
-updated_at: 2024-06-18 20:26:36
+updated_at: 2024-06-21 17:49:54
 url: https://typst.app/docs/reference/model/figure
 ---
 #figure
@@ -55,17 +55,23 @@ tab: 结果
 
 通过修改 `caption` 函数来实现自定义 Caption。
 
-```typst
+````typst
+#code(
+```typ
 #show figure.caption: emph
 #figure(
-	rect[Hello],
-	caption: [I am emphasized!]
+rect[Hello],
+caption: [I am emphasized!]
 )
 ```
+)
+````
 
 也可以给中文加上着重号：
 
-```typst
+````typst
+#code(
+```typ
 #show figure.caption: content => {
     show regex("\p{sc=Han}"): it => box(place(text("·", size: 1.3em), dx: 0.2em, dy: 0.02em)) + it
     content.body
@@ -75,10 +81,14 @@ tab: 结果
     caption: [我是中文描述文字]
 )
 ```
+)
+````
 
 使用 `where` 选择器来设置特定类型的 figure。
 
-```typst
+````typst
+#code(
+```typ
 #show figure.where(
     kind: table
 ): set figure.caption(position: top)
@@ -88,6 +98,8 @@ tab: 结果
     caption: [I'm up here],
 )
 ```
+)
+````
 
 ## 参数
 
@@ -109,7 +121,9 @@ tab: 结果
 
 图的类型，默认类型有 `image`, `table`，其它需要自行定义：
 
-```typst
+`````````typst
+#code(
+``````typ
 #show figure.where(
     kind: "code",
 ): emph
@@ -126,7 +140,9 @@ tab: 结果
     ],
     supplement: [代码]
 )
-```
+``````
+)
+`````````
 
 ### suplement
 
@@ -140,13 +156,17 @@ tab: 结果
 
 正文和标题之间的垂直间隙。默认为 `0.65em`。
 
-```typst
+````typst
+#code(
+```typ
 #figure(
     rect[内容],
     gap: 3em,
     caption: [我是描述文字]
 )
 ```
+)
+````
 
 ### outlined
 
@@ -166,7 +186,9 @@ tab: 结果
 
 将出现在数字和正文之间的分隔符。根据不同的语言和区域会有所不同。
 
-```typst
+````typst
+#code(
+```typ
 #set text(lang: "zh")
 #set figure.caption(separator: [: ])
 
@@ -175,12 +197,16 @@ tab: 结果
   caption: [A rectangle],
 )
 ```
+)
+````
 
 ### body
 
 标题的正文。可以与种类、补充、计数器、编号和位置一起使用，以完全自定义标题。
 
-```typst
+````typst
+#code(
+```typ
 #set text(lang: "zh")
 #show figure.caption: it => [
   #underline(it.body) |
@@ -193,3 +219,5 @@ tab: 结果
   caption: [A rectangle],
 )
 ```
+)
+````

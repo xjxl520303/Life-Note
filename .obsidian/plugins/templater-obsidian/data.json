@@ -22,7 +22,7 @@
   "syntax_highlighting": true,
   "syntax_highlighting_mobile": false,
   "enabled_templates_hotkeys": [
-    ""
+    "模板/插入特殊符号.md"
   ],
   "startup_templates": [
     ""

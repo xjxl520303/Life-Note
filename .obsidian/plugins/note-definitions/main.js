@@ -27,7 +27,7 @@ __export(main_exports, {
   default: () => NoteDefinition
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian4 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // src/core/def-file-manager.ts
 var import_obsidian2 = require("obsidian");
@@ -377,10 +377,14 @@ var FileParser = class {
     this.inDefinition = false;
     this.definitions = [];
   }
-  async parseFile() {
-    const fileContent = await this.vault.cachedRead(this.file);
+  async parseFile(fileContent) {
+    if (!fileContent) {
+      fileContent = await this.vault.cachedRead(this.file);
+    }
     const lines = fileContent.split("\n");
+    this.currLine = -1;
     for (const line of lines) {
+      this.currLine++;
       if (this.isEndOfBlock(line)) {
         if (this.bufferValid()) {
           this.commitDefBuffer();
@@ -396,6 +400,10 @@ var FileParser = class {
         continue;
       }
       if (this.isWordDeclaration(line)) {
+        let from = this.currLine;
+        this.defBuffer.filePosition = {
+          from
+        };
         this.defBuffer.word = this.extractWordDeclaration(line);
         continue;
       }
@@ -406,31 +414,40 @@ var FileParser = class {
       this.inDefinition = true;
       this.defBuffer.definition = line + "\n";
     }
+    this.currLine++;
     if (this.bufferValid()) {
       this.commitDefBuffer();
     }
     return this.definitions;
   }
   commitDefBuffer() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
     this.definitions.push({
       key: (_b = (_a = this.defBuffer.word) == null ? void 0 : _a.toLowerCase()) != null ? _b : "",
       word: (_c = this.defBuffer.word) != null ? _c : "",
       aliases: (_d = this.defBuffer.aliases) != null ? _d : [],
       definition: (_e = this.defBuffer.definition) != null ? _e : "",
       file: this.file,
-      linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`
+      linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
+      position: {
+        from: (_g = (_f = this.defBuffer.filePosition) == null ? void 0 : _f.from) != null ? _g : 0,
+        to: this.currLine - 1
+      }
     });
     if (this.defBuffer.aliases && this.defBuffer.aliases.length > 0) {
       this.defBuffer.aliases.forEach((alias) => {
-        var _a2, _b2, _c2;
+        var _a2, _b2, _c2, _d2, _e2;
         this.definitions.push({
           key: alias.toLowerCase(),
           word: (_a2 = this.defBuffer.word) != null ? _a2 : "",
           aliases: (_b2 = this.defBuffer.aliases) != null ? _b2 : [],
           definition: (_c2 = this.defBuffer.definition) != null ? _c2 : "",
           file: this.file,
-          linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`
+          linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
+          position: {
+            from: (_e2 = (_d2 = this.defBuffer.filePosition) == null ? void 0 : _d2.from) != null ? _e2 : 0,
+            to: this.currLine - 1
+          }
         });
       });
     }
@@ -469,7 +486,6 @@ var FileParser = class {
   }
   startNewBlock() {
     this.inDefinition = false;
-    this.defBuffer = {};
   }
   getParseSettings() {
     return getSettings().defFileParseConfig;
@@ -590,6 +606,9 @@ var DefinitionRepo = class {
     if (!defMap) {
       defMap = /* @__PURE__ */ new Map();
       this.fileDefMap.set(def.file.path, defMap);
+    }
+    if (defMap.has(def.key)) {
+      return;
     }
     defMap.set(def.key, def);
   }
@@ -946,8 +965,103 @@ function initFileExplorerDecoration(app) {
   return fileExplorerDecoration;
 }
 
+// src/editor/edit-modal.ts
+var import_obsidian5 = require("obsidian");
+
+// src/core/def-file-updater.ts
+var import_obsidian4 = require("obsidian");
+var DefFileUpdater = class {
+  constructor(app) {
+    this.app = app;
+  }
+  async updateDefinition(def) {
+    const file = def.file;
+    const fileContent = await this.app.vault.read(file);
+    const fileParser = new FileParser(this.app, file);
+    const defs = await fileParser.parseFile(fileContent);
+    const lines = fileContent.split("\n");
+    const fileDef = defs.find((fileDef2) => fileDef2.key === def.key);
+    if (!fileDef) {
+      logError("File definition not found, cannot edit");
+      return;
+    }
+    const newLines = this.replaceDefinition(fileDef.position, def, lines);
+    const newContent = newLines.join("\n");
+    await this.app.vault.modify(file, newContent);
+    await getDefFileManager().loadUpdatedFiles();
+    new import_obsidian4.Notice("Definition successfully modified");
+  }
+  replaceDefinition(position, def, lines) {
+    const before = lines.slice(0, position.from);
+    const after = lines.slice(position.to + 1);
+    const newLines = this.constructLinesFromDef(def);
+    return before.concat(newLines, after);
+  }
+  constructLinesFromDef(def) {
+    const lines = [`# ${def.word}`];
+    if (def.aliases.length > 0) {
+      const aliasStr = `*${def.aliases.join(", ")}*`;
+      lines.push("", aliasStr);
+    }
+    const trimmedDef = def.definition.replace(/\s+$/g, "");
+    lines.push("", trimmedDef, "");
+    return lines;
+  }
+};
+
+// src/editor/edit-modal.ts
+var EditDefinitionModal = class {
+  constructor(app) {
+    this.app = app;
+    this.modal = new import_obsidian5.Modal(app);
+  }
+  open(def) {
+    this.submitting = false;
+    this.modal.setTitle(`Edit definition for '${def.word}'`);
+    this.modal.contentEl.createDiv({
+      cls: "edit-modal-section-header",
+      text: "Aliases"
+    });
+    const aliasText = this.modal.contentEl.createEl("textarea", {
+      cls: "edit-modal-aliases",
+      attr: {
+        placeholder: "Add comma-separated aliases here"
+      },
+      text: def.aliases.join(", ")
+    });
+    this.modal.contentEl.createDiv({
+      cls: "edit-modal-section-header",
+      text: "Definition"
+    });
+    const defText = this.modal.contentEl.createEl("textarea", {
+      cls: "edit-modal-textarea",
+      attr: {
+        placeholder: "Add definition here"
+      },
+      text: def.definition
+    });
+    const button = this.modal.contentEl.createEl("button", {
+      text: "Save",
+      cls: "edit-modal-save-button"
+    });
+    button.addEventListener("click", () => {
+      if (this.submitting) {
+        return;
+      }
+      const updater = new DefFileUpdater(this.app);
+      updater.updateDefinition({
+        ...def,
+        aliases: aliasText.value ? aliasText.value.split(",").map((alias) => alias.trim()) : [],
+        definition: defText.value
+      });
+      this.modal.close();
+    });
+    this.modal.open();
+  }
+};
+
 // src/main.ts
-var NoteDefinition = class extends import_obsidian4.Plugin {
+var NoteDefinition = class extends import_obsidian6.Plugin {
   constructor() {
     super(...arguments);
     this.activeEditorExtensions = [];
@@ -1008,6 +1122,10 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       this.updateEditorExts();
     }));
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor) => {
+      const defPopover = getDefinitionPopover();
+      if (defPopover) {
+        defPopover.close();
+      }
       const curWord = getMarkedWordUnderCursor(editor);
       if (!curWord)
         return;
@@ -1017,7 +1135,7 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
       this.registerMenuItems(menu, def);
     }));
     this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => {
-      if (file instanceof import_obsidian4.TFolder) {
+      if (file instanceof import_obsidian6.TFolder) {
         menu.addItem((item) => {
           item.setTitle("Set definition folder").setIcon("book-a").onClick(() => {
             const settings = getSettings();
@@ -1032,6 +1150,12 @@ var NoteDefinition = class extends import_obsidian4.Plugin {
     menu.addItem((item) => {
       item.setTitle("Go to definition").setIcon("arrow-left-from-line").onClick(() => {
         this.app.workspace.openLinkText(def.linkText, "");
+      });
+    });
+    menu.addItem((item) => {
+      item.setTitle("Edit definition").setIcon("pencil").onClick(() => {
+        const editModal = new EditDefinitionModal(this.app);
+        editModal.open(def);
       });
     });
   }
