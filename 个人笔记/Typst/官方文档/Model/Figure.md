@@ -1,7 +1,9 @@
 ---
 created_at: 2024-06-18 20:02:36
-updated_at: 2024-06-21 17:49:54
+updated_at: 2024-06-22 21:33:29
 url: https://typst.app/docs/reference/model/figure
+tags:
+  - Typst
 ---
 #figure
 

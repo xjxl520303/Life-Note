@@ -1,6 +1,9 @@
 ---
 created_at: 2024-06-21 19:58:38
 url: https://typst.app/docs/reference/layout/box/
+tags:
+  - Typst
+updated_at: 2024-06-22 21:33:14
 ---
 #box
 

@@ -1,7 +1,9 @@
 ---
 created_at: 2024-06-20 18:58:51
 url: https://typst.app/docs/reference/model/numbering/
-updated_at: 2024-06-21 17:50:41
+updated_at: 2024-06-22 21:33:41
+tags:
+  - Typst
 ---
  #numbering
 

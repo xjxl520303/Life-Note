@@ -1,7 +1,9 @@
 ---
 created_at: 2024-06-20 18:06:39
 url: https://typst.app/docs/reference/visualize/image/
-updated_at: 2024-06-20 18:16:19
+updated_at: 2024-06-22 21:34:52
+tags:
+  - Typst
 ---
 #image
 

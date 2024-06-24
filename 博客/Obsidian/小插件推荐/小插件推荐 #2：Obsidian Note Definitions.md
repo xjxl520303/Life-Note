@@ -13,7 +13,7 @@ platforms:
     url: https://juejin.cn/post/7379487557598003237
     date: 2024-06-13 15:48
     last_update: 2024-06-13 15:48
-updated_at: 2024-06-21 14:56:00
+updated_at: 2024-06-23 15:49:28
 plugins:
   - Obsidian-Note-Definitions
 ---
@@ -183,6 +183,16 @@ But science does provide us with the best available guide to the future, and it 
 早期版本官方只提供了一个上下文菜单【Go to definition】来跳转到定义文件，现在随着新版本迭代新增加了一个【Edit definition】的上下文菜单，直接打开一个模态框来编辑定义内容：
 
 ![[1718952593879.png]]
+
+## 2024-06-23 更新内容
+
+官方发布版本：0.14.0。
+
+新增了一个命令【Note Definitions: Add definition】用于打开一个【Add Definition】的模态框来添加新的定义。
+
+这个功能很实用，减少了每次添加新内容时的文档切换时间和编辑消耗。
+
+![[Pasted image 20240623154928.png]]
 
 ## 参考
 

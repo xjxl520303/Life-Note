@@ -42,5 +42,9 @@
   "note-definitions",
   "remember-cursor-position",
   "typst",
-  "mathlinks"
+  "mathlinks",
+  "better-fn",
+  "obsidian-footnotes",
+  "obsidian-tidy-footnotes",
+  "commentator"
 ]

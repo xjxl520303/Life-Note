@@ -1,7 +1,9 @@
 ---
 created_at: 2024-06-21 18:35:56
 url: https://typst.app/docs/reference/text/super/
-updated_at: 2024-06-21 18:51:07
+updated_at: 2024-06-22 21:34:32
+tags:
+  - Typst
 ---
 #super
 

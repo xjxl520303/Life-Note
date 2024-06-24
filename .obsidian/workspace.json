@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "bd8108d4644eb54a",
+        "id": "5a616afbaf71dd30",
         "type": "tabs",
         "children": [
           {
-            "id": "721e089f3b2a5275",
+            "id": "46f41ae961a5690f",
             "type": "leaf",
             "state": {
               "type": "home-tab-view",
@@ -44,7 +44,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "tag:Hledger",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -62,15 +62,7 @@
             }
           },
           {
-            "id": "814db614ff17be4f",
-            "type": "leaf",
-            "state": {
-              "type": "file-tree-view",
-              "state": {}
-            }
-          },
-          {
-            "id": "38a7f51394100815",
+            "id": "cbc82877ea9e187e",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -78,18 +70,19 @@
             }
           },
           {
-            "id": "286301f23b79a0f3",
+            "id": "9df8a07406a4f15b",
             "type": "leaf",
             "state": {
-              "type": "recent-files",
+              "type": "file-tree-view",
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 347.5
+    "width": 351.50390243530273
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -98,7 +91,6 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
-        "dimension": 68.89763779527559,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -155,38 +147,6 @@
             }
           },
           {
-            "id": "4c0cb0bfaa589cac",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {}
-            }
-          },
-          {
-            "id": "cb72d9fbc5f3d104",
-            "type": "leaf",
-            "state": {
-              "type": "quiet-outline",
-              "state": {}
-            }
-          }
-        ],
-        "currentTab": 4
-      },
-      {
-        "id": "168fb7c04db3051b",
-        "type": "tabs",
-        "dimension": 31.10236220472441,
-        "children": [
-          {
-            "id": "18d7aa0f9f9f669a",
-            "type": "leaf",
-            "state": {
-              "type": "file-properties",
-              "state": {}
-            }
-          },
-          {
             "id": "bfff48720db8c001",
             "type": "leaf",
             "state": {
@@ -199,7 +159,38 @@
             }
           },
           {
-            "id": "c523dcaa3c78414c",
+            "id": "4c0cb0bfaa589cac",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "e01e8d69fe988f00",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      },
+      {
+        "id": "6ca3a75d518ccf91",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "502798142850ac3a",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {}
+            }
+          },
+          {
+            "id": "455ab436802e7c14",
             "type": "leaf",
             "state": {
               "type": "metatable-sidebar-view",
@@ -207,76 +198,78 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 254.5
+    "width": 371.5
   },
   "left-ribbon": {
     "hiddenItems": {
-      "media-extended:Open media": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "templater-obsidian:Templater": false,
       "vscode-editor:新建代码文件": false,
-      "open-vscode:VSCode": false,
       "switcher:打开快速切换": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "file-tree-alternative:File Tree Alternative Plugin": false,
-      "obsidian-metatable:Metatable": false
+      "open-vscode:VSCode": false,
+      "media-extended:Open media": false,
+      "templater-obsidian:Templater": false,
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "darlal-switcher-plus:Open Symbols for the active editor": false,
+      "obsidian-metatable:Metatable": false,
+      "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "cc3c5048ac02c60f",
+  "active": "46f41ae961a5690f",
   "lastOpenFiles": [
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
+    "模板/插入特殊符号.md",
+    "个人笔记/写作/Obsidian 思考.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
+    "附件/Pasted image 20240623154928.png",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Db forlder.md",
+    "个人笔记/Typst/官方文档/Model/Numbering.md",
+    "个人笔记/写作",
     "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
-    "个人笔记/Typst/官方文档/ Layout/Box.md",
-    "附件/Pasted image 20240621191342.png",
+    "个人笔记/Typst/Typst Examples Book/知识点记录.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：啊！阅读批注，—— Commentator 来了…….md",
+    "术语/Obsidian 插件.md",
+    "模板/插入 CriticMarkup.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：数学公式输入之 · Typst 篇.md",
+    "个人笔记/Typst/官方文档/Model/Figure.md",
+    "个人笔记/Obsidian 常用快捷键.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md",
+    "个人笔记/Typst/参考资源.md",
+    "个人笔记/Typst/官方文档/官方教程.md",
+    "个人笔记/Typst/官方文档/官方参考 - 语法.md",
+    "个人笔记/Typst/官方文档/Visualize/Image.md",
+    "个人笔记/Typst/官方文档/Text/Underline.md",
     "个人笔记/Typst/官方文档/Text/Superscript.md",
     "个人笔记/Typst/官方文档/Text/Subscript.md",
-    "附件/Pasted image 20240621183650.png",
-    "个人笔记/Typst/官方文档/Text/Underline.md",
+    "个人笔记/Typst/官方文档/Text/Raw Text or Code.md",
     "个人笔记/Typst/官方文档/Model/Outline.md",
-    "附件/Pasted image 20240621180341.png",
-    "个人笔记/Typst/官方文档/Text",
-    "个人笔记/Typst/官方文档/Model/Numbering.md",
-    "个人笔记/Typst/官方文档/Visualize/Image.md",
-    "个人笔记/Typst/官方文档/Model/Figure.md",
-    "模板/插入 Typst 内嵌代码的代码块.md",
-    "模板/插入 Typst 代码块.md",
+    "个人笔记/Typst/官方文档/ Layout/Box.md",
     "个人笔记/Typst/官方文档/ Layout/Block.md",
-    "模板/插入 Typst 示例选项卡.md",
-    "个人笔记/Typst/参考资源.md",
-    "个人笔记/Obsidian 常用快捷键.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
+    "个人笔记/Typst/日积月累",
+    "test.pdf",
+    "附件/Pasted image 20240621191342.png",
+    "附件/Pasted image 20240621183650.png",
+    "附件/Pasted image 20240621180341.png",
     "附件/1718952593879.png",
-    "模板/插入特殊符号.md",
-    "模板/插入代码块.md",
-    "模板/创建和更新时间模板.md",
-    "模板/创建 Obsidian 博客文章.md",
-    "模板/插入插件名称.md",
+    "个人笔记/Typst/官方文档/Text",
     "附件/Pasted image 20240620201954.png",
     "附件/Pasted image 20240620200031.png",
     "附件/Pasted image 20240620181617.png",
     "附件/Pasted image 20240620181414.png",
     "附件/Pasted image 20240620180801.png",
-    "个人笔记/Typst/官方文档/Visualize",
-    "附件/Pasted image 20240620180423.png",
-    "README.md",
-    "个人笔记/Typst/官方文档/ Layout",
-    "电子书/W020190128580990138234.pdf",
-    "电子书/W020190128580990138234.pdf.crdownload",
     "电子书/re_PunctuationMarks.pdf",
-    "电子书/re_PunctuationMarks.pdf.crdownload",
     "电子书/pingcap-style-guide-zh.pdf",
-    "个人笔记/Typst/官方文档/Model",
-    "个人笔记/Typst/官方文档"
+    "电子书/W020190128580990138234.pdf",
+    "电子书/Typst.Tutorial.CN.v0.1.0.pdf",
+    "电子书",
+    "个人笔记/Typst/官方文档/Visualize"
   ]
 }

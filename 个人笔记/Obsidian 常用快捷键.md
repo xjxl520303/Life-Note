@@ -1,6 +1,6 @@
 ---
 created_at: 2024-06-19 20:53:04
-updated_at: 2024-06-21 16:00:09
+updated_at: 2024-06-22 22:27:41
 ---
 ## 自定义快捷键
 
@@ -10,6 +10,7 @@ updated_at: 2024-06-21 16:00:09
 - <kbd>Alt + ←</kbd> Outliner: Outdent the list and sublists
 - <kbd>Alt + →</kbd> Outliner: Indent the list and sublists
 - <kbd>Alt + ;</kbd> Templater: Jump to next cursor location
+- <kbd>Alt + +</kbd> Tidy Footnotes: Tidy Footnotes
 
 ## 插件快捷键
 
@@ -20,6 +21,7 @@ updated_at: 2024-06-21 16:00:09
 - <kbd>Ctrl + Shift + ↓</kbd> Outliner: Move list and sublists down
 - <kbd>Shift + Tab</kbd> Outliner: Outdent the list and sublists
 - <kbd>Tab</kbd> Outliner: Indent the list and sublists
-
+- <kbd>Alt + 0</kbd> Footnote Shortcut: Insert / Navigate Auto-Numbered Footnote
+- <kbd>Alt + -</kbd> Footnote Shortcut: Insert / Navigate Named Footnote
 
  

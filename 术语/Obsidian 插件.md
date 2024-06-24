@@ -110,3 +110,41 @@ Renders typst code blocks in Obsidian into images using Typst through the power 
 A masonry note gallery for obsidian.
 
 地址：[pashashocky/obsidian-note-gallery](https://github.com/pashashocky/obsidian-note-gallery)
+
+---
+
+# Obsidian-Footnotes-Plugin
+
+*Footnotes Plugin*
+
+Makes creating footnotes in Obsidian more fun!
+
+地址：[MichaBrugger/obsidian-footnotes](https://github.com/MichaBrugger/obsidian-footnotes)
+
+---
+
+# Obsidian-Tidy-Footnotes
+
+*Tidy Footnotes*
+
+Tidy your footnotes seamlessly in Obsidian. 
+
+地址：[charliecm/obsidian-tidy-footnotes](https://github.com/charliecm/obsidian-tidy-footnotes)
+
+---
+
+# BetterFn
+
+Footnote hover preview for Obsidian.md
+
+地址：[aidenlx/better-fn](https://github.com/aidenlx/better-fn)
+
+---
+
+# Obsidian-CriticMarkup
+
+*Commentator*
+
+Annotate notes with comments and suggestions using CriticMarkup in Obsidian
+
+地址：[Fevol/obsidian-criticmarkup](https://github.com/Fevol/obsidian-criticmarkup)

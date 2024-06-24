@@ -1,6 +1,9 @@
 ---
 created_at: 2024-06-20 13:20:15
 url: https://typst.app/docs/reference/layout/block
+tags:
+  - Typst
+updated_at: 2024-06-22 21:32:58
 ---
 #block
 

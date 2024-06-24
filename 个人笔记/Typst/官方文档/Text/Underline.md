@@ -1,7 +1,9 @@
 ---
 created_at: 2024-06-21 18:01:53
 url: https://typst.app/docs/reference/text/underline/
-updated_at: 2024-06-21 18:18:50
+updated_at: 2024-06-22 21:34:41
+tags:
+  - Typst
 ---
 #underline
 

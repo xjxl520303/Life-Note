@@ -1,20 +1,4 @@
 {
-  "obsidian-footnotes:insert-autonumbered-footnote": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "0"
-    }
-  ],
-  "obsidian-footnotes:insert-named-footnote": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "-"
-    }
-  ],
   "editor:toggle-source": [
     {
       "modifiers": [
@@ -69,6 +53,30 @@
         "Alt"
       ],
       "key": ";"
+    }
+  ],
+  "obsidian-footnotes:insert-autonumbered-footnote": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "0"
+    }
+  ],
+  "obsidian-footnotes:insert-named-footnote": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "-"
+    }
+  ],
+  "obsidian-tidy-footnotes:tidy-footnotes": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "="
     }
   ],
   "templater-obsidian:模板/插入特殊符号.md": [
