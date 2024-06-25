@@ -71,3 +71,4 @@ console.log(tableMd)
 文章参考：
 
 - [Obs147｜簡易試算表外掛：CalcCraft，運算式儲存格 – 簡睿隨筆 (jdev.tw)](https://jdev.tw/blog/8274/obsidian-calccraft-easy-calculation-cells)
+

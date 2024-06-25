@@ -1,12 +1,48 @@
 {
   "recentFiles": [
     {
-      "basename": "Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇",
-      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md"
+      "basename": "Obsidian 案例解密：链接不为人知的一面",
+      "path": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md"
+    },
+    {
+      "basename": "正则表达式",
+      "path": "个人笔记/前端/正则表达式.md"
+    },
+    {
+      "basename": "README",
+      "path": "README.md"
+    },
+    {
+      "basename": "小插件推荐 #2：Obsidian Note Definitions",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md"
+    },
+    {
+      "basename": "小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md"
+    },
+    {
+      "basename": "Obsidian 插件",
+      "path": "术语/Obsidian 插件.md"
+    },
+    {
+      "basename": "小插件推荐 #1：Obsidian-II-Quicker",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md"
+    },
+    {
+      "basename": "Templater 代码收藏",
+      "path": "个人笔记/Obsidian/Templater 代码收藏.md"
     },
     {
       "basename": "Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了……",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md"
+    },
+    {
+      "basename": "插入 CriticMarkup",
+      "path": "模板/插入 CriticMarkup.md"
     },
     {
       "basename": "知识点记录",
@@ -66,19 +102,11 @@
     },
     {
       "basename": "Obsidian 常用快捷键",
-      "path": "个人笔记/Obsidian 常用快捷键.md"
-    },
-    {
-      "basename": "小插件推荐 #2：Obsidian Note Definitions",
-      "path": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md"
+      "path": "个人笔记/Obsidian/Obsidian 常用快捷键.md"
     },
     {
       "basename": "小插件推荐 #3：Note Gallery",
       "path": "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md"
-    },
-    {
-      "basename": "小插件推荐 #1：Obsidian-II-Quicker",
-      "path": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md"
     },
     {
       "basename": "插入特殊符号",
@@ -99,10 +127,6 @@
     {
       "basename": "插入插件名称",
       "path": "模板/插入插件名称.md"
-    },
-    {
-      "basename": "README",
-      "path": "README.md"
     },
     {
       "basename": "Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API",

@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "5a616afbaf71dd30",
+        "id": "b1ecc0c5e827dece",
         "type": "tabs",
         "children": [
           {
-            "id": "46f41ae961a5690f",
+            "id": "2a1a13e57e1a681e",
             "type": "leaf",
             "state": {
-              "type": "home-tab-view",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md",
+                "mode": "preview",
+                "source": false
+              }
             }
           }
         ]
@@ -44,7 +48,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:Hledger",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -62,7 +66,7 @@
             }
           },
           {
-            "id": "cbc82877ea9e187e",
+            "id": "38a7f51394100815",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -70,19 +74,26 @@
             }
           },
           {
-            "id": "9df8a07406a4f15b",
+            "id": "286301f23b79a0f3",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {}
+            }
+          },
+          {
+            "id": "240ace6efb004007",
             "type": "leaf",
             "state": {
               "type": "file-tree-view",
               "state": {}
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 351.50390243530273
+    "width": 316.5
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -91,6 +102,7 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
+        "dimension": 68.89763779527559,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -98,6 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -114,6 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -135,7 +149,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md"
+              }
             }
           },
           {
@@ -144,6 +160,40 @@
             "state": {
               "type": "git-view",
               "state": {}
+            }
+          },
+          {
+            "id": "4c0cb0bfaa589cac",
+            "type": "leaf",
+            "state": {
+              "type": "advanced-tables-toolbar",
+              "state": {}
+            }
+          },
+          {
+            "id": "519392ab336d024c",
+            "type": "leaf",
+            "state": {
+              "type": "quiet-outline",
+              "state": {}
+            }
+          }
+        ],
+        "currentTab": 4
+      },
+      {
+        "id": "168fb7c04db3051b",
+        "type": "tabs",
+        "dimension": 31.102362204724407,
+        "children": [
+          {
+            "id": "18d7aa0f9f9f669a",
+            "type": "leaf",
+            "state": {
+              "type": "file-properties",
+              "state": {
+                "file": "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md"
+              }
             }
           },
           {
@@ -159,38 +209,7 @@
             }
           },
           {
-            "id": "4c0cb0bfaa589cac",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {}
-            }
-          },
-          {
-            "id": "e01e8d69fe988f00",
-            "type": "leaf",
-            "state": {
-              "type": "quiet-outline",
-              "state": {}
-            }
-          }
-        ],
-        "currentTab": 4
-      },
-      {
-        "id": "6ca3a75d518ccf91",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "502798142850ac3a",
-            "type": "leaf",
-            "state": {
-              "type": "file-properties",
-              "state": {}
-            }
-          },
-          {
-            "id": "455ab436802e7c14",
+            "id": "c523dcaa3c78414c",
             "type": "leaf",
             "state": {
               "type": "metatable-sidebar-view",
@@ -198,78 +217,78 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 371.5
+    "width": 456.5
   },
   "left-ribbon": {
     "hiddenItems": {
+      "darlal-switcher-plus:Open in Headings Mode": false,
+      "darlal-switcher-plus:Open Symbols for the active editor": false,
+      "media-extended:Open media": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "templater-obsidian:Templater": false,
       "vscode-editor:新建代码文件": false,
+      "open-vscode:VSCode": false,
       "switcher:打开快速切换": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
       "markdown-table-editor:Open Markdown Table Editor": false,
-      "open-vscode:VSCode": false,
-      "media-extended:Open media": false,
-      "templater-obsidian:Templater": false,
-      "darlal-switcher-plus:Open in Headings Mode": false,
-      "darlal-switcher-plus:Open Symbols for the active editor": false,
       "obsidian-metatable:Metatable": false,
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "46f41ae961a5690f",
+  "active": "cc3c5048ac02c60f",
   "lastOpenFiles": [
-    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
+    "个人笔记/前端/正则表达式.md",
+    "博客/Obsidian/真实案例讲解/Obsidian 案例解密：链接不为人知的一面.md",
+    "个人笔记/前端",
+    "README.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md",
+    "术语/Obsidian 插件.md",
+    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
+    "个人笔记/Obsidian/Templater 代码收藏.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "博客/Obsidian/真实案例讲解/.md",
+    "博客/Obsidian/真实案例讲解",
+    "个人笔记/Obsidian",
+    "博客/Obsidian/小插件推荐/小插件推荐：Test.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
+    "附件/Pasted image 20240624122548.png",
+    "附件/Pasted image 20240624121925.png",
+    "附件/Pasted image 20240624121300.png",
+    "附件/Pasted image 20240624120352.png",
+    "模板/插入 CriticMarkup.md",
     "模板/插入特殊符号.md",
     "个人笔记/写作/Obsidian 思考.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-    "附件/Pasted image 20240623154928.png",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Db forlder.md",
-    "个人笔记/Typst/官方文档/Model/Numbering.md",
     "个人笔记/写作",
-    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
-    "个人笔记/Typst/Typst Examples Book/知识点记录.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：啊！阅读批注，—— Commentator 来了…….md",
-    "术语/Obsidian 插件.md",
-    "模板/插入 CriticMarkup.md",
+    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
+    "个人笔记/Typst/日积月累",
+    "附件/Pasted image 20240623154928.png",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：数学公式输入之 · Typst 篇.md",
-    "个人笔记/Typst/官方文档/Model/Figure.md",
-    "个人笔记/Obsidian 常用快捷键.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md",
-    "个人笔记/Typst/参考资源.md",
-    "个人笔记/Typst/官方文档/官方教程.md",
-    "个人笔记/Typst/官方文档/官方参考 - 语法.md",
-    "个人笔记/Typst/官方文档/Visualize/Image.md",
-    "个人笔记/Typst/官方文档/Text/Underline.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：数学公式输入之 · Typst 篇.md",
+    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+    "个人笔记/Typst/官方文档/ Layout/Box.md",
+    "附件/Pasted image 20240621191342.png",
     "个人笔记/Typst/官方文档/Text/Superscript.md",
     "个人笔记/Typst/官方文档/Text/Subscript.md",
-    "个人笔记/Typst/官方文档/Text/Raw Text or Code.md",
-    "个人笔记/Typst/官方文档/Model/Outline.md",
-    "个人笔记/Typst/官方文档/ Layout/Box.md",
-    "个人笔记/Typst/官方文档/ Layout/Block.md",
-    "个人笔记/Typst/日积月累",
-    "test.pdf",
-    "附件/Pasted image 20240621191342.png",
     "附件/Pasted image 20240621183650.png",
+    "个人笔记/Typst/官方文档/Text/Underline.md",
+    "个人笔记/Typst/官方文档/Model/Outline.md",
     "附件/Pasted image 20240621180341.png",
-    "附件/1718952593879.png",
     "个人笔记/Typst/官方文档/Text",
+    "个人笔记/Typst/官方文档/Model/Numbering.md",
+    "个人笔记/Typst/官方文档/Visualize/Image.md",
+    "附件/1718952593879.png",
     "附件/Pasted image 20240620201954.png",
-    "附件/Pasted image 20240620200031.png",
-    "附件/Pasted image 20240620181617.png",
-    "附件/Pasted image 20240620181414.png",
-    "附件/Pasted image 20240620180801.png",
-    "电子书/re_PunctuationMarks.pdf",
-    "电子书/pingcap-style-guide-zh.pdf",
+    "个人笔记/Typst/官方文档/Visualize",
+    "个人笔记/Typst/官方文档/ Layout",
     "电子书/W020190128580990138234.pdf",
-    "电子书/Typst.Tutorial.CN.v0.1.0.pdf",
-    "电子书",
-    "个人笔记/Typst/官方文档/Visualize"
+    "电子书/W020190128580990138234.pdf.crdownload"
   ]
 }
