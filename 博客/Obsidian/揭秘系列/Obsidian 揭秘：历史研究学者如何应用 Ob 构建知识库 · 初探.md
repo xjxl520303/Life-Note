@@ -9,7 +9,7 @@ const metaTagFile = "咨询二/标签元数据/标签"
 const linkFolders = ["咨询二/重要事件"]
 
 // 所有元数据标签
-let metaTags;
+let metaTags;•
 // 所有使用链接的关键词
 let linkKeys;
 
@@ -49,3 +49,6 @@ function replaceTag(text) {
 }
 _%>
 ````
+
+>[!tip] 上述实现方式中，插入链接未考虑笔记存在别名的情况。如果要匹配到别名，需要使用对象的形式来存储笔记名称和关联的别名。另外插入形式为：`[[名称|别名]]`，而原始笔记为：`[[名称]]`。
+

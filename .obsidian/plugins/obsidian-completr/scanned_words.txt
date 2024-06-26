@@ -933,6 +933,7 @@ getDayEl
 giving
 gallery
 gap
+gm
 date
 default
 daily
@@ -1104,6 +1105,8 @@ renderHeatmapCalendar
 renderMarkdown
 rule
 rect
+replaceTag
+reg
 Untitled
 URL
 Unary
