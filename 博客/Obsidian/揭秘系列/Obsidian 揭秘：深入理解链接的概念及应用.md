@@ -3,19 +3,19 @@ created_at: 2024-06-26 11:35:43
 tags:
   - Blog
   - Obsidian
-updated_at: 2024-06-26 18:57:31
+updated_at: 2024-06-26 19:54:42
 ---
-Obsidian 是双链笔记应用中的佼佼者，而作为使用 Obsidian 的用户，我们有必要花点时间认真理解其概念、熟练并合理地应用到个人知识体系建设中来。
+Obsidian 是双链笔记应用中的佼佼者，而作为使用 Obsidian 的用户，我们有必要花点时间认真理解其概念、熟练并合理地应用到个人知识体系中。
 
-本文旨在通过作者目前已有的知识来向广大读者分享一下自己对于 Obsidian 中「链接」的理解和使用过程中需要注意的事项。本文有部分内容来自早前写的《[Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/699143387)》文章中关于链接的介绍。
+本文旨在通过作者目前已有的知识来向广大读者分享一下自己对于 Obsidian 中「链接」的理解和使用过程中需要注意的事项。本文有部分内容来自早前写的《[Obsidian 达人成长之路 #1：使用终极工具 Dataview 释放笔记库的潜力 · DQL查询语言 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/699143387)》文章中关于链接的介绍（修订了部分文字）。
 
-除了介绍相关概念和语法外，本文还会介绍相关的插件（如 Dataview 和 Templater）对于链接的操作，以及与链接有关的插件。
+除了介绍相关概念和语法外，本文还会介绍相关的插件（如 Dataview 和 Templater）涉及链接的相关操作，以及与链接有关的插件。
 
 ## 链接介绍
 
 在文档中插入的 URL 图片地址，网页 URL 地址，我们称之为**外部链接**。如果在 Obsidian 文档中想要引用其它文档，或者其文档中的标题，部分段落，我们需要创建**内部链接**。在 Obsidian 中我们通常将内部链接称作**双链**或者**双向链接**，然后在 Obsidian 环境中我们使用**链接**（Link）指代内部链接，如果有特殊情况会单独说明。
 
-在文档中创建链接的语法为 `[[文档名称]]`，当我们输入前两个中括号后，Obsidian 界面中会弹出文档选择下拉列表，然后自动插入文档名称和补全后面的两个中括号。一个文档内部可能会引用多个外部文档的链接，同时文档也会被别的文档引用为链接，这样就行成了一个双向的链接。我们将当前文档引入的链接称之为**出链**（Outgoing links），如果有其它文档引用了当前文档，则将其它文档称之为**外链**（Backlinks）。
+在文档中创建链接的语法为 `[[文档名称]]`，当我们输入前两个中括号后，Obsidian 界面中会弹出文档选择下拉列表，然后自动插入文档名称并补全后面的两个中括号。一个文档内部可能会引用多个外部文档的链接，同时文档也会被别的文档引用为链接，这样就行成了一个双向的链接。我们将当前文档引入的链接称之为**出链**（Outgoing links），如果有其它文档引用了当前文档，则将其它文档称之为**反向链接**（Backlinks）。
 
 在引入其它文档内容时我们可以选择指向整个文档，也可以引用文档标题，进一步还可以引用某个段落（块），此外还可以对引用的内容指定别名。下面是 4 种链接引用方式举例，其中 `x` 用来指代任意符合链接规范的文本，在 Obsidian 中输入 `[[` 后全是可视化操作选择，例如在选择文档后，在文档后输入 `|` 会加载文档内容让你选择要引用的段落。
 
@@ -144,7 +144,7 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 >[!tip] 需要注意的是：在 Obsidian 中记录时需要对 `[` 和 `]` 进行转义，不然标题中‘\[\[文件名” 或 “测试\]\]’会被识别成链接。
 
-通过在不同的视图模式下测试，会发现情形① 在「源码视图」和「实时预览视图」中表现一致，但在「阅读视图」中指向了“文件名.md”文件，而 `[[测试` 成了内容的一部分。再来看一下情形②，不管是什么视图全部指向了文件“测试.md”，`文件名]]` 部分成了文本。
+通过在不同的视图模式下测试，会发现情形①在「源码视图」和「实时预览视图」中表现一致，但在「阅读视图」中指向了“文件名.md”文件，而 `[[测试` 成了内容的一部分。再来看一下情形②，不管是什么视图全部指向了文件“测试.md”，`文件名]]` 部分成了文本。
 
 ![[Pasted image 20240626164710.png]]
 
@@ -158,7 +158,7 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 这种情形下，我们将其细分为：包含链接操作符前后不同的完整部分和中间插入其它字符的部分。同样，分别用 “情形①” 和 “情形②” 来指代 2 种细分情形。
 
-情形① 在在「源码视图」和「实时预览视图」中表现一致（都指向“\[\[测试]文件]名.md”），而在「阅读视图」中变成了“\[测试\]文件\]名.md”。情形② 则 3 种视图模式下表现一致——均指向“测\[试\[文件名.md”文件。
+情形①在「源码视图」和「实时预览视图」中表现一致（都指向“\[\[测试]文件]名.md”），而在「阅读视图」中变成了“\[测试\]文件\]名.md”。情形②则 3 种视图模式下表现一致——均指向“测\[试\[文件名.md”文件。
 
 ![[Pasted image 20240626181523.png]]
 
@@ -168,9 +168,196 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 ## Dataview 中链接相关知识
 
-关于 Dataview 的前置知识请读者查阅作者达人成长之路系统前 3 篇。我们这里就开门见山，直奔主题介绍相关操作。
+有关 Dataview 的前置知识请读者查阅作者《达人成长之路系列》前 3 篇。我们这里就开门见山，直奔主题介绍相关链接的知识点。
 
-在 「DQL 查询语言」中使用 `FROM [[文档名]]` 来查询“文档名.md”被引用的文件、使用 `FROM outgoing([[文档名]])` 来查询 “文档名.md” 中引入的外部链接（包含文档、图片、PDF 等）。
+### DQL 查询语言中的链接知识
+
+在「DQL 查询语言」中使用 `FROM [[文档名]]` 来查询“文档名.md”被引用的文件、使用 `FROM outgoing([[文档名]])` 来查询 “文档名.md” 中引入的外部链接（包含文档、图片、PDF 等）。
+
+Dataview 为每个文档内置了 `file` 对象属性——在 Obsidian 原始的 TFile 的基础上添加了诸多属性——我们只关心与链接相关的属性。
+
+`file.outlinks` 数组属性表示「出链」，`file.inlinks` 数组属性表示「反向链接」。此外，我们还需要留意一下 `aliases` 属性，因为在通过脚本方式插入链接时有可能需要同时插入文档定义好的别名。
+
+>[!question] 这里的【出链】可以理解为：出（来）自外部。【反向链接】可以理解为：反过来被引用。
+
+下面我们以在文档“测试链接.md”中引入“测试文件名.md”和另外任意一个文档和图片（读者可自行选择自己的）为例：
+
+````
+%% 测试链接.md %%
+[[测试文件名]]
+[[测试文件名|测试链接文件]]
+[[测试文件名#标题二]]
+[[测试文件名#标题二|标题别名]]
+[[测试文件名#^a9e808]]
+[[测试文件名#^a9e808|块内容别名]]
+
+[[The Good Doctor]]
+[[Basic_Task_Queries_completion_screenshot.png]]
+````
+
+接下来我们通过下面的脚本在另外一个新建的空白文档中来查询"测试链接.md"中所有「出链」：
+
+````
+```dataview
+LIST join(rows.file.link, "<br>")
+FROM "测试链接.md"
+FLATTEN file.outlinks AS outlinks
+GROUP BY outlinks
+```
+````
+
+下面是执行后的结果：
+
+![[Pasted image 20240627151830.png]]
+
+下面我们来分析一下上述结果：
+
+1. 查询的显示结果是一个二级的嵌套列表：第一级表示引入的文档（包含同一文档的 3 种不同类型）；第二级表示同一文档类型被引用的次数。
+2. 文档中我们对每一种链接方式（分别使用默认和别名方式）引用了 2 次，实际每一种类型在结果第一级列表中只显示了一次。
+3. 从结果第二级列表中我们并不能获取到设置的显示别名。
+
+接下来，我们来解决如何获取引入链接别名显示问题。
+
+Dataview 提供了一个 `meta()` 函数来获取链接的元数据信息。它有以下属性：
+
+- `display` 显示别名，没有设置则为 `null`。
+- `embed` 表示链接的内容是否作为引用嵌入到文档中，即以 `![[]]` 的形式引入链接，不是则返回 `false` 值。
+- `subpath` 为标题或块引用 ID，这个根据链接的类型来决定。
+- `type` 链接的类型，其值为 `file` / `header` 和 `block`，分别对应文件、标题和块区域（也可以称之为段落）。
+
+忘记说了……前面示例的分析中所说的“第一级”列表实际上是 `LIST` 查询默认显示的列表 ID（实际就是链接）。我们是可以通过 `LIST WITHOUT ID` 将其隐藏不显示，那么剩下的就是 8 个 “测试链接” 了：
+
+![[Pasted image 20240627161341.png]]
+
+上图左边是 `LIST WITHOUT ID rows.file.link` 的结果，右边是 `LIST WITHOUT ID join(rows.file.link, "<br>")` 的结果。
+
+>[!tip] 实际上，作者这里故意绕了半天，完全可以使用 `LIST WITHOUT ID join(rows.outlinks, "<br>")` 直接获取最终的结果，只不过查询结果显示的是链接「阅读视图」的结果……。
+>——作者的目的是为了引入其它链接相关的函数。
+
+现在我们在文档“测试链接.md”中添加一个嵌入的图片（原来的图片链接前加了一个 `!` 符号）`！[[Basic_Task_Queries_completion_screenshot.png]]`。查询语句由原来的 `LIST` 改成 `TABLE`，同时输出原始的链接和我们通过 `link()` 函数生成的链接：
+
+````
+```dataview
+TABLE WITHOUT ID
+join(rows.file.link, "<br>") AS 链接,
+join(rows.outlinks, "<br>") AS 原始链接,
+join(rows.newLink, "<br>") AS 拼接的链接
+FROM "测试链接.md"
+FLATTEN file.outlinks AS outlinks
+FLATTEN meta(outlinks) AS metaLink
+FLATTEN link(metaLink.path, metaLink.display) AS newLink
+GROUP BY outlinks
+```
+````
+
+结果：
+
+![[Pasted image 20240627170759.png]]
+
+从结果来看除了嵌入的图片和"原始链接"对应不上外，其它都正常显示。
+
+要实现图片链接（指 `![[]]` 而非 `![]()`）嵌入，我们需要使用 ` mebed() ` 函数，并将第 2 个参数传递 `true` 值。下面是改进后的实现：
+
+````
+```dataview
+TABLE WITHOUT ID
+join(rows.file.link, "<br>") AS 链接,
+join(rows.outlinks, "<br>") AS 原始链接,
+join(rows.newLink, "<br>") AS 拼接的链接
+FROM "测试链接.md"
+FLATTEN file.outlinks AS outlinks
+FLATTEN meta(outlinks) AS metaLink
+FLATTEN link(metaLink.path, metaLink.display) AS commonLink
+FLATTEN embed(link(metaLink.path, metaLink.display), true) AS embedLink
+FLATTEN choice(metaLink.embed, embedLink, commonLink) AS newLink
+GROUP BY outlinks
+```
+````
+
+至此，有关「 DQL 查询语言」中所有链接相关的函数已介绍完毕。
+
+### Dataview 查询 API 中链接相关知识
+
+使用 API 的方式，我们同样需要从 `file.inlinks` 和 `file.outlinks` 中获取链接信息——只不过我们通过 `dv.list()` 和 `dv.table()` 显示结果时，嵌入的图片不再是显示成纯文本，而是渲染成了图片。
+
+````
+```dataviewjs
+const pages = dv.pages('"测试链接.md"')
+dv.list(pages.map(p => p.file.outlinks)[0])
+```
+````
+
+上面代码中，我们读取了结果数组第 1 项（因为 `dv.list()` 返回的是一个列表，而 `outlinks` 是一个数组），因为查询文档只有一个。
+
+结果：
+
+![[Pasted image 20240627182638.png]]
+
+不同于「DQL 查询语言」，使用 API 方式，我们需要根据链接的类型来选择构建链接的函数：
+
+- `dv.fileLink(path, [embed?], [display-name])` 普通链接。
+- `dv.sectionLink(path, section, [embed?], [display?])` 链接到标题。
+- `dv.blockLink(path, blockId, [embed?], [display?])` 链接到块区域（或叫段落）。
+
+下面我们通过以上 3 个 API 来实现“拼接的链接”：
+
+````
+```dataviewjs
+const pages = dv.pages('"测试链接.md"')
+dv.table(['链接', '原始链接', '拼接的链接'], pages.flatMap(p => {
+    return p.file.outlinks.flatMap((l, i) => {
+        let customLink;
+        if (l.type === 'file') {
+            if (/.png$/.test(l.path) && l.embed) {
+                customLink = l.display
+            } else {
+                customLink = dv.fileLink(l.path, l.embed, l.display)
+            }
+        } else if (l.type === 'block') {
+            customLink = dv.blockLink(l.path, l.subpath, l.embed, l.display)
+        } else if (l.type === 'header') {
+            customLink = dv.sectionLink(l.path, l.subpath, l.embed, l.display)
+        } else {
+            customLink = l.path;
+        }
+
+        return [[p.file.link, l, customLink]]
+    })
+}))
+```
+````
+
+结果：
+
+![[Pasted image 20240627190838.png]]
+
+上述代码中变量 `l` 实际上已经是一个链接 （`Link`） 对象了，我们这里其实直接返回就可以了。但是，为了演示 API 的用法我们额外做了一个判断来保持与「DQL 查询语言」中的结果一致。脚本中两个 `flatMap()` 函数用法很关键，读者可自行研究。
+
+## Templater 中链接相关知识
+
+在 Templater 中要实现对链接的查询，我们需要使用到 Obsidian 提供的 API 来实现。
+
+通过 `app.metadataCache.resolvedLinks` 属性可以获取到仓库中所有笔记中所包含的链接名称和引用次数，同时使用 `app.metadataCache.unresolvedLinks` 可以获取到笔记中的空链接名称和引用次数。这二个对象都是以文件的路径作为键值，以包含的链接数组作为对象值。
+
+下面我们来获取一下在 Dataview 章节中示例文件“测试链接.md”中的链接信息：
+
+````
+<%*
+const filename = "测试链接"
+const links = app.metadataCache.resolvedLinks[`${filename}.md`]
+_%>
+
+| 链接  | 引用次数 |
+| --- | ---- |
+<%* Object.keys(links).forEach(key => { _%>
+| <% key %>|<% links[key] %> |
+<%* }) _%>
+````
+
+结果：
+
+![[动画2 64.gif]]
+
 
 ## 参考
 
