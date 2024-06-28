@@ -530,6 +530,7 @@ multiplication
 module
 maroon
 more
+metaLink
 next
 new
 note
@@ -553,6 +554,7 @@ nothingislost
 newFileName
 numbering
 nums
+newLink
 cursor
 content
 create
@@ -640,6 +642,9 @@ center
 cap
 creating
 comments
+commonLink
+customLink
+createdFromPath
 in
 include
 is
@@ -1060,6 +1065,7 @@ enter
 emph
 extent
 evade
+embedLink
 relative
 results
 rename

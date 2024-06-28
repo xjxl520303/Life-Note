@@ -3,7 +3,7 @@ created_at: 2024-06-26 11:35:43
 tags:
   - Blog
   - Obsidian
-updated_at: 2024-06-26 19:54:42
+updated_at: 2024-06-27 21:04:28
 ---
 Obsidian 是双链笔记应用中的佼佼者，而作为使用 Obsidian 的用户，我们有必要花点时间认真理解其概念、熟练并合理地应用到个人知识体系中。
 
@@ -42,7 +42,7 @@ aliases:
 标题二要被引用的段落内容。
 ````
 
-现在我在其它文档中来引入其内容：
+现在我们在其它文档中来引入其内容：
 
 ````
 [[测试文件名]]
@@ -83,7 +83,7 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 上面讨论了如何创建不规范笔记的几种方式。下面，我们来看看不规范文件名对链接的影响。
 
-### 文件名中带有 “#” 符号
+### 文件名中带有“#”符号
 
 作为 Obsidian 的用户，大家都清楚如何创建标签，以及标签在文档中的表示形式。但是，如果我们在创建文件时使用了不规范的文件名，比如：`测试文件名 #标签：包含标签内容`。在被其他笔记作为链接插入后显示成：
 
@@ -111,7 +111,7 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 可以看到我们编辑时，“标签：包含标签内容”部分被识别成了标题，但是并不存在于文件“测试文件名”（当前仓库中并不存在）中。当我们尝试通过链接跳转至原文件时，会发现 Obsidian 为我们创建了一个名为“测试文件名”的新文档。当然，我们还是可以使用 `|` 符号来为链接添加显示别名，但不能使用 `^` 来指定区块——内容不存在。
 
-### 文件名中带有 “[” 和 “]” 符号
+### 文件名中带有“[”和“]”符号
 
 现在我们来另外一个比较常见破坏链接的不规范命名场景：文件名中包含 `[` 和 `]`。为此，我们考虑以下多种包含特殊符号的命名场景：
 
@@ -162,7 +162,7 @@ Obsidian 中文档的文件名在命名时如果出现特殊字符（链接语�
 
 ![[Pasted image 20240626181523.png]]
 
-### 文件中带有 “^” 符号
+### 文件中带有“^”符号
 
 虽然前面我们提到文件名不能包含链接语法所包含的特殊符号，但是经过测试发现：不管是 `测试^文件名`、`^测试文件名`、`^测试^文件名` 还是 `测试文件名^` 都能成功跳转至原文件。
 
@@ -256,7 +256,7 @@ GROUP BY outlinks
 
 从结果来看除了嵌入的图片和"原始链接"对应不上外，其它都正常显示。
 
-要实现图片链接（指 `![[]]` 而非 `![]()`）嵌入，我们需要使用 ` mebed() ` 函数，并将第 2 个参数传递 `true` 值。下面是改进后的实现：
+要实现图片链接（指 `![[]]` 而非 `![]()`）嵌入，我们需要使用 ` embed() ` 函数，并将第 2 个参数传递 `true` 值。下面是改进后的实现：
 
 ````
 ```dataview
@@ -339,24 +339,281 @@ dv.table(['链接', '原始链接', '拼接的链接'], pages.flatMap(p => {
 
 通过 `app.metadataCache.resolvedLinks` 属性可以获取到仓库中所有笔记中所包含的链接名称和引用次数，同时使用 `app.metadataCache.unresolvedLinks` 可以获取到笔记中的空链接名称和引用次数。这二个对象都是以文件的路径作为键值，以包含的链接数组作为对象值。
 
-下面我们来获取一下在 Dataview 章节中示例文件“测试链接.md”中的链接信息：
+下面我们来获取一下在 Dataview 章节中示例文件“测试链接.md”中的链接信息，同时在文档后面追加一行:
+
+```
+[[不存在的链接]]
+```
+
+然后，进行查询：
 
 ````
 <%*
 const filename = "测试链接"
 const links = app.metadataCache.resolvedLinks[`${filename}.md`]
+const ulinks = app.metadataCache.unresolvedLinks[`${filename}.md`]
 _%>
+
+- 已解析的链接
 
 | 链接  | 引用次数 |
 | --- | ---- |
 <%* Object.keys(links).forEach(key => { _%>
-| <% key %>|<% links[key] %> |
-<%* }) _%>
+| <% key %>|<% links[key] -%> |
+<%* }) -%>
+
+- 未解析的链接
+
+| 链接  | 引用次数 |
+| --- | ---- |
+<%* Object.keys(ulinks).forEach(key => { _%>
+| <% key %>|<% ulinks[key] -%> |
+<%* }) %>
 ````
 
 结果：
 
-![[动画2 64.gif]]
+![[动画2 65.gif]]
+
+从结果可以看到：成功识别了我们添加的“\[\[不存在的链接\]\]”。
+
+下面我们将通过 `app.metadataCache.getLinks()` 方法来获文档“测试链接.md”所引入的所有的链接信息：
+
+````
+<%*
+const filename = "测试链接"
+const links = app.metadataCache.getLinks()[`${filename}.md`]
+_%>
+
+<%* links.forEach(link => { -%>
+<% link.original %>
+<%* }) -%>
+
+````
+
+结果：
+
+![[Pasted image 20240627210427.png]]
+
+接下来，我们来做 2 件事：
+
+1. 过滤掉未解析的链接。
+2. 将嵌入的图片显示为纯文本。
+
+对于「未解析的链接」，我们可以通过 2 种方式来识别。
+
+一）使用 `unresolvedLinks` 对像中的数据作为参照
+
+`unresolvedLinks` 返回的是链接的原始名称。因此，在处理由 `getLinks()` 拿到的数据时，需要进行名称匹配。`getLinks()` 返回的数据包含以下 3 个属性：
+
+- `displayText` 显示的名称（通常为文件名），如果有指定别名则显示别名。
+- `link` 链接不包含 `[[` 和 `]]` 以及「别名」部分内容。
+- `original` 完整的链接原始内容。
+
+上面 3 个属性中我们选择从 `link` 中获取链接的原始名称。我们需要从形如 `测试文件名`、`测试文件名|别名 `、` 测试文件名#标题二 `、`测试文件名#标题二|别名`、` 测试文件名#^a9e808 ` 和 `测试文件名#^a9e808|别名` 的数据中提取出 `测试文件名`。由于，`unresolvedLinks` 对象的键值和 `link` 属性是一致的，这里我们只需要过滤掉 `unresolvedLinks` 对象中的值即可：
+
+````
+<%*
+const filename = "测试链接"
+const ulinks = Object.keys(app.metadataCache.unresolvedLinks[`${filename}.md`])
+const links = app.metadataCache.getLinks()[`${filename}.md`].filter(l => !ulinks.includes(l.link))
+_%>
+
+<%* links.forEach(link => { -%>
+<% link.original %>
+<%* }) -%>
+````
+
+二）使用 `t.file.find_tfile()` 判断文件是否存在来实现
+
+这个实现的关键点在于提取出 `link` 中的原始文件名并传入 `t.file.find_tfile()` 中。这里，我们使用正则表达式 `/(.+?)(?:(#.+$)|(\|.+$)?)/gm` 来匹配 ` link ` 中的文件名。此外，还需要注意脚本中的异步方式地使用。
+
+````
+<%*
+const filename = "测试链接"
+const filenameReg = /(.+?)(?:(#.+$)|(\|.+$)?)/gm
+const ulinks = Object.keys(app.metadataCache.unresolvedLinks[`${filename}.md`])
+let links = []
+await app.metadataCache.getLinks()[`${filename}.md`].forEach(async l => {
+    const rawFilename = l.link.replace(filenameReg, "$1")
+    const tfile = await tp.file.find_tfile(rawFilename)
+    if (tfile) links.push(l)
+})
+_%>
+
+<%* links.forEach(link => { -%>
+<% link.original %>
+<%* }) -%>
+````
+
+最终结果：
+
+![[Pasted image 20240628154006.png]]
+
+现在我们来解决「图片显示成纯文本」的问题。
+
+这里我们需要识别出图片的链接，同时还需要判断图片是否作为内容嵌入到文档中。图片（以 `.png` 为例）我们只需要判断 `link` 属性的扩展名即可；是否嵌入，则需要判断 `original` 属性值文本是否以 `!` 作为起始文本就可以了。 
+
+由于渲染时我们是从 `link.original` 中获取的值，因此对于纯文本，需要将其原来的值覆盖——不然就要改渲染逻辑了。
+
+````
+<%*
+const filename = "测试链接"
+const filenameReg = /(.+?)(?:(#.+$)|(\|.+$)?)/gm
+const ulinks = Object.keys(app.metadataCache.unresolvedLinks[`${filename}.md`])
+let links = []
+await app.metadataCache.getLinks()[`${filename}.md`].forEach(async l => {
+    const rawFilename = l.link.replace(filenameReg, "$1")
+    const tfile = await tp.file.find_tfile(rawFilename)
+    if (tfile) {
+        if (/\.png$/.test(l.link) && l.original.startsWith("!")) {
+            l.original = l.link
+            links.push(l)
+        } else {
+            links.push(l)
+        }
+    }
+})
+_%>
+
+<%* links.forEach(link => { -%>
+<% link.original %>
+<%* }) -%>
+````
+
+接下来，我们对已有的知识进行应用扩展，为文章增添点亮点。
+
+### 为空链接创建文件
+
+前面我们介绍了链接的多种形式，而对于「未解析的链接」或称之为「空链接」——我们不关心它所引用的标题和块内容。如果链接存在别名，我们就将其添加到属性 `aliases` 中；如果链接包含有路径信息，我们就创建不存在在的目录。
+
+现在我们采用另外一种方式来获取指定文档的所有链接：使用 `app.metadataCache.getFileCache(file)?.links` 属性。使用 `app.metadataCache.getFileCache(file)` 还可以获取诸如：属性（`frontmatter`）、标签（`tags`）、块内容（`blocks`）、标题（`headings`）和嵌入资源（`embeds`）等内容。
+
+这里我们还将前面的“测试链接.md”文件用 `tp.config.target_file` 替代，以便作用于任意目标文档。
+
+下面直接上实现方式：
+
+````
+<%*
+// 应用模板的目标文件
+const file = tp.config.target_file
+// 目标文件中的所有链接
+const links = app.metadataCache.getFileCache(file)?.links || []
+// 匹配链接中的文件名
+const filenameReg = /(.+?)(?:(#.+$)|(\|.+$)?)/gm
+// 只匹配文件的别名，不匹配标题和内容的
+const fileAliasReg = /(^.+?)(?<!#.*?)(?=\|)(.+$)/gm
+
+if (links.length > 0) {
+    links.forEach(async l => {
+        const rawFilePath = l.link.replace(filenameReg, "$1")
+        const rawFilename = rawFilePath.split('/').pop()
+        const tfile = await tp.file.find_tfile(rawFilePath)
+        if (!tfile) {
+            const folder = tp.file.folder(true)
+            const createdFromPath = folder === '/' ? file.name : `${folder}/${file.name}`
+            await tp.file.create_new(
+                `文件自动创建自：${createdFromPath}`,
+                rawFilename,
+                false,
+                rawFilePath.split('/').slice(0, -1).join('/')
+            )
+
+            // 延迟 200ms 后再更新文件别名
+            if (l.displayText !== rawFilename && fileAliasReg.test(l.original)) {
+                const newFile = await tp.file.find_tfile(rawFilePath)
+                setTimeout(async () => {
+                    await app.fileManager.processFrontMatter(newFile, fm => {
+                        fm.aliases = l.displayText
+                    })
+                }, 200)
+            }
+        }
+    })
+}
+-%>
+````
+
+注意：上述实现对于多个链接到同一个的链接只设置一次别名。
+
+### 将文档内容关联链接
+
+我们这里要实现的目标是对文档内容进行链接匹配，什么意思呢？——就是将文档内容中凡是文本中包含指定的文件名的全部替换成链接，如：`测试文字` -> `[[测试文字]]`。这对于某些用户来说是很有必要的，它极大地减少了手工添加链接的时间，剩下的就只需要校验即可。当然，我们这里也不止是作用于链接，对于标签同样适用。
+
+对于标签，作者为了方便测试，直接放置在了一个单独文档中，数据如下：
+
+````
+# 共产党主要将领
+
+#刘少奇 #周恩来 #朱德 #任弼时 #邓小平 #彭德怀 #叶剑英 #杨尚昆 #李先念 #薄一波 #贺龙 #刘伯承 #林彪 #徐向前 #聂荣臻 #罗荣桓 #罗瑞卿 #左权 #粟裕 #叶挺 #吕正操 #杨得志 #杨勇 #陈毅 #张云逸 #王震 #黄克诚 #彭雪枫 #张爱萍 #杨靖宇 #赵尚志 #马本斋 #陈锡联 #陈赓 #王树声 #谭政 #许光达 #曾生
+
+# 国民革命军方面
+
+#蒋光鼐 #蔡廷锴 #冯玉祥 #张学良 #李宗仁 #阎锡山 #白崇禧 #厉尔康 #陈诚 #傅作义 #何应钦 #宋哲元 #孙连仲 #卫立煌 #张治中 #张自忠 #佟麟阁 #赵登禹 #戴安澜 #郝梦龄 #王铭章 #余程万 #黄光锐 #林伟俦 #司徒非 #谭邃 #谢晋元 #薛岳 #杜聿明 #郑洞国 #马占山 #高志航 #范筑先 #张发奎 #余汉谋 #李品仙 #刘湘 #胡宗南 #顾祝同 #刘峙 #唐生智 #徐永昌 #杨虎城 #蒋鼎文 #程潜 #李烈钧 #鹿钟麟 #苏炳文 #邱清泉 #张灵甫 #黄伯韬 #庞炳勋 #刘汝明 #汤恩伯 #罗卓英 #刘戡 #周至柔 #陈绍宽 #饶国华 #陈安宝 #唐淮源 #李家钰 #王耀武
+
+# 日本战犯
+
+#松井石根 #板垣征四郎 #武藤章 #土肥原贤二 #广田弘毅 #木村兵太郎 #梅津美治郎 #冈村宁次 #阿南惟几 #杉山元 #山下奉文 #南云忠一 #石原莞尔 #阿部规秀 #寺内寿一
+````
+
+至于要链接的文档，作者这里就不给出了。读者可以自行去百度抗日战争相关的词条，然后复制内容，并对如条约、战役等按词条创建文档即可测试。
+
+在实现时，我们需要考虑到词条优先级。我们这里对标签和链接名按文字长度进行排序，优先匹配长词条。
+
+下面是完整地实现：
+
+````
+<%*
+// 放置标签的文档，自行替换
+const metaTagFile = "咨询二/标签元数据/标签"
+// 放置需要链接的目录
+const linkFolders = ["咨询二/重要事件"]
+
+// 所有元数据标签
+let metaTags
+// 所有使用链接的关键词
+let linkKeys
+
+const fileCache = app.metadataCache.getFileCache(tp.file.find_tfile(metaTagFile))
+metaTags = fileCache.tags.map(tag => tag.tag.replace(/#/, '')).sort((a, b) => b.length - a.length)
+
+linkKeys = app.vault.getMarkdownFiles()
+    .filter(file => file.path.startsWith(linkFolders))
+    .map(file => file.basename)
+    .sort((a, b) => b.length - a.length)
+
+const tfile = tp.config.target_file
+const linkReg = /\[([^\]]+)\]\(([^)]+)\)/g
+const tagReg = /#([^\s]+)/g
+
+const content = await app.vault.read(tfile)
+const lines = content.split('\n')
+
+const newLines =lines.map((line, index) => {
+   if (!/#\s./.test(line) && line.trim() !== '') {
+        return replaceTag(replaceLink(line))
+   } else {
+        return line
+   }
+})
+
+await app.vault.modify(tfile, newLines.join('\n'))
+
+function replaceLink(text) {
+    const reg =new RegExp(`(?<!(?<=\\[\\[(?:.*?)).*(?=(?:.*?)\\]\\]))(${linkKeys.join('|')})(?!(?<=\\[\\[(?:.*?)).*(?=(?:.*?)\\]\\]))`, 'gm')
+    return text.replace(reg, '[[$&]]')
+}
+
+function replaceTag(text) {
+    const reg = new RegExp(`(?<!(?<=\\[\\[(?:.*?)).*(?=(?:.*?)\\]\\]))(${metaTags.join('|')})(?!(?<=\\[\\[(?:.*?)).*(?=(?:.*?)\\]\\]))`, 'gm')
+    return text.replace(reg, ' #$& ')
+}
+_%>
+````
+
+演示效果：
+
+![[动画2 66.gif]]
 
 
 ## 参考

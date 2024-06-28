@@ -4,19 +4,15 @@
     "type": "split",
     "children": [
       {
-        "id": "4039802eae59d59d",
+        "id": "865c4a7294244e8f",
         "type": "tabs",
         "children": [
           {
-            "id": "82a4eb5cf3cf7761",
+            "id": "6f3a32e116066547",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "home-tab-view",
+              "state": {}
             }
           }
         ]
@@ -110,7 +106,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +122,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -149,9 +143,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
-              }
+              "state": {}
             }
           },
           {
@@ -191,9 +183,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
-              }
+              "state": {}
             }
           },
           {
@@ -242,8 +232,16 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "cc3c5048ac02c60f",
+  "active": "6f3a32e116066547",
   "lastOpenFiles": [
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
+    "附件/动画2 66.gif",
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
+    "个人笔记/前端/正则表达式.md",
+    "附件/Pasted image 20240628154006.png",
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
+    "附件/Pasted image 20240627210427.png",
+    "附件/动画2 65.gif",
     "附件/动画2 64.gif",
     "附件/Pasted image 20240627190838.png",
     "附件/Pasted image 20240627182638.png",
@@ -251,20 +249,11 @@
     "附件/Pasted image 20240627161341.png",
     "附件/Pasted image 20240627151830.png",
     "模板/插入特殊符号.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
-    "附件/Pasted image 20240626192140.png",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
-    "附件/Pasted image 20240626181523.png",
-    "附件/Pasted image 20240626174900.png",
-    "附件/Pasted image 20240626164710.png",
     "博客/Obsidian/小插件推荐/小插件推荐 #4：Note Gallery.md",
-    "附件/Pasted image 20240626160013.png",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
     "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
     "博客/Obsidian/小插件推荐/小插件推荐：Folder Notes.md",
-    "个人笔记/前端/正则表达式.md",
     "个人笔记/前端",
     "README.md",
     "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
