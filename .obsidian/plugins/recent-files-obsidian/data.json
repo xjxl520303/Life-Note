@@ -1,20 +1,56 @@
 {
   "recentFiles": [
     {
-      "basename": "Obsidian 揭秘：深入理解链接的概念及应用",
-      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
+      "basename": "Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了……",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md"
     },
     {
       "basename": "Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md"
     },
     {
-      "basename": "正则表达式",
-      "path": "个人笔记/前端/正则表达式.md"
+      "basename": "Obsidian 揭秘：深入理解链接的概念及应用",
+      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
     },
     {
       "basename": "Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md"
+    },
+    {
+      "basename": "2024-07-01",
+      "path": "日记/2024-07-01.md"
+    },
+    {
+      "basename": "Obsidian 常用快捷键",
+      "path": "个人笔记/Obsidian/Obsidian 常用快捷键.md"
+    },
+    {
+      "basename": "2024-05-27",
+      "path": "日记/2024-05-27.md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路：Image Gallery 插件使用",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Image Gallery 插件使用.md"
+    },
+    {
+      "basename": "写作资料",
+      "path": "个人笔记/写作资料.md"
+    },
+    {
+      "basename": "Templater 代码收藏",
+      "path": "个人笔记/Obsidian/Templater 代码收藏.md"
+    },
+    {
+      "basename": "创建 Obsidian 博客文章",
+      "path": "模板/创建 Obsidian 博客文章.md"
+    },
+    {
+      "basename": "小插件推荐 #1：Obsidian-II-Quicker",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md"
+    },
+    {
+      "basename": "正则表达式",
+      "path": "个人笔记/前端/正则表达式.md"
     },
     {
       "basename": "插入特殊符号",
@@ -23,10 +59,6 @@
     {
       "basename": "Obsidian 达人成长之路：链接相关插件指南",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md"
-    },
-    {
-      "basename": "Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了……",
-      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md"
     },
     {
       "basename": "小插件推荐：Quick Preview",
@@ -51,14 +83,6 @@
     {
       "basename": "Obsidian 插件",
       "path": "术语/Obsidian 插件.md"
-    },
-    {
-      "basename": "小插件推荐 #1：Obsidian-II-Quicker",
-      "path": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md"
-    },
-    {
-      "basename": "Templater 代码收藏",
-      "path": "个人笔记/Obsidian/Templater 代码收藏.md"
     },
     {
       "basename": "Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率",
@@ -125,10 +149,6 @@
       "path": "个人笔记/Typst/参考资源.md"
     },
     {
-      "basename": "Obsidian 常用快捷键",
-      "path": "个人笔记/Obsidian/Obsidian 常用快捷键.md"
-    },
-    {
       "basename": "小插件推荐 #3：Note Gallery",
       "path": "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md"
     },
@@ -141,10 +161,6 @@
       "path": "模板/创建和更新时间模板.md"
     },
     {
-      "basename": "创建 Obsidian 博客文章",
-      "path": "模板/创建 Obsidian 博客文章.md"
-    },
-    {
       "basename": "插入插件名称",
       "path": "模板/插入插件名称.md"
     },
@@ -155,10 +171,6 @@
     {
       "basename": "知识点记录",
       "path": "个人笔记/Typst/Typst Examples Book/知识点记录.md"
-    },
-    {
-      "basename": "写作资料",
-      "path": "个人笔记/写作资料.md"
     },
     {
       "basename": "官方教程",

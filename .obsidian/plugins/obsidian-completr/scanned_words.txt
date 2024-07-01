@@ -164,6 +164,7 @@ Plain
 Personal
 PDF
 Parenthesized
+PPT
 Obsidian
 Open
 OverwriteFile
@@ -293,6 +294,7 @@ kbd
 key
 keys
 kind
+kdb
 MacOS
 MyFileContent
 MyFilename
@@ -317,6 +319,7 @@ Move
 Markup
 MultiMarkdown
 Makes
+MDX
 Windows
 With
 Welcome
@@ -423,6 +426,7 @@ lang
 loop
 li
 lock
+linkKeys
 Alt
 API
 Automatic
@@ -998,6 +1002,7 @@ Health
 Heatmap
 Han
 Highlight
+Hike
 File
 Footnotes
 Frame
@@ -1232,6 +1237,7 @@ Numbered
 None
 Named
 New
+Navigate
 StartupTemplate
 Some
 Sup
@@ -1254,6 +1260,7 @@ Smart
 Symbol
 Show
 Substitution
+Shortcut
 xx
 xl
 xiaolu
