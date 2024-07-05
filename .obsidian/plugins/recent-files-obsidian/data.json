@@ -1,28 +1,96 @@
 {
   "recentFiles": [
     {
-      "basename": "Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了……",
-      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md"
+      "basename": "2024-07-04",
+      "path": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md"
     },
     {
-      "basename": "Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探",
-      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md"
+      "basename": "Dataview 使用到的库",
+      "path": "个人笔记/Obsidian/插件开发/Codemirror/Dataview 使用到的库.md"
+    },
+    {
+      "basename": "2024-07-02",
+      "path": "个人笔记/Obsidian/插件开发/随记/2024-07-02.md"
+    },
+    {
+      "basename": "知识点记录",
+      "path": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
+    },
+    {
+      "basename": "知识点记录",
+      "path": "个人笔记/Typst/Typst Examples Book/知识点记录.md"
+    },
+    {
+      "basename": "从模板中获取的有用代码",
+      "path": "个人笔记/Typst/日积月累/从模板中获取的有用代码.md"
     },
     {
       "basename": "Obsidian 揭秘：深入理解链接的概念及应用",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
     },
     {
-      "basename": "Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用",
-      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md"
+      "basename": "Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探",
+      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md"
+    },
+    {
+      "basename": "2024-07-01",
+      "path": "个人笔记/Obsidian/插件开发/随记/2024-07-01.md"
     },
     {
       "basename": "2024-07-01",
       "path": "日记/2024-07-01.md"
     },
     {
+      "basename": "Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了……",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md"
+    },
+    {
+      "basename": "小插件推荐：Dynamic Highlights",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐：Dynamic Highlights.md"
+    },
+    {
+      "basename": "小插件推荐：Supercharged Links",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐：Supercharged Links.md"
+    },
+    {
+      "basename": "Templater 代码收集",
+      "path": "个人笔记/Obsidian/插件开发/Templater 代码收集.md"
+    },
+    {
       "basename": "Obsidian 常用快捷键",
       "path": "个人笔记/Obsidian/Obsidian 常用快捷键.md"
+    },
+    {
+      "basename": "Templater 代码收藏",
+      "path": "个人笔记/Obsidian/Templater 代码收藏.md"
+    },
+    {
+      "basename": "README",
+      "path": "README.md"
+    },
+    {
+      "basename": "插件开发代码收集",
+      "path": "个人笔记/Obsidian/插件开发/插件开发代码收集.md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路：Latex 插件使用",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Latex 插件使用.md"
+    },
+    {
+      "basename": "Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用",
+      "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md"
+    },
+    {
+      "basename": "写作资料",
+      "path": "个人笔记/写作资料.md"
     },
     {
       "basename": "2024-05-27",
@@ -31,14 +99,6 @@
     {
       "basename": "Obsidian 达人成长之路：Image Gallery 插件使用",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Image Gallery 插件使用.md"
-    },
-    {
-      "basename": "写作资料",
-      "path": "个人笔记/写作资料.md"
-    },
-    {
-      "basename": "Templater 代码收藏",
-      "path": "个人笔记/Obsidian/Templater 代码收藏.md"
     },
     {
       "basename": "创建 Obsidian 博客文章",
@@ -69,10 +129,6 @@
       "path": "博客/Obsidian/小插件推荐/小插件推荐：Folder Notes.md"
     },
     {
-      "basename": "README",
-      "path": "README.md"
-    },
-    {
       "basename": "小插件推荐 #2：Obsidian Note Definitions",
       "path": "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md"
     },
@@ -85,16 +141,8 @@
       "path": "术语/Obsidian 插件.md"
     },
     {
-      "basename": "Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率",
-      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
-    },
-    {
       "basename": "插入 CriticMarkup",
       "path": "模板/插入 CriticMarkup.md"
-    },
-    {
-      "basename": "知识点记录",
-      "path": "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md"
     },
     {
       "basename": "Box",
@@ -147,38 +195,6 @@
     {
       "basename": "参考资源",
       "path": "个人笔记/Typst/参考资源.md"
-    },
-    {
-      "basename": "小插件推荐 #3：Note Gallery",
-      "path": "博客/Obsidian/小插件推荐/小插件推荐 #3：Note Gallery.md"
-    },
-    {
-      "basename": "插入代码块",
-      "path": "模板/插入代码块.md"
-    },
-    {
-      "basename": "创建和更新时间模板",
-      "path": "模板/创建和更新时间模板.md"
-    },
-    {
-      "basename": "插入插件名称",
-      "path": "模板/插入插件名称.md"
-    },
-    {
-      "basename": "Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API",
-      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #2：使用终极工具 Dataview 释放笔记库的潜力 · JavaScript API.md"
-    },
-    {
-      "basename": "知识点记录",
-      "path": "个人笔记/Typst/Typst Examples Book/知识点记录.md"
-    },
-    {
-      "basename": "官方教程",
-      "path": "个人笔记/Typst/官方文档/官方教程.md"
-    },
-    {
-      "basename": "官方参考 - 语法",
-      "path": "个人笔记/Typst/官方文档/官方参考 - 语法.md"
     }
   ],
   "omittedPaths": [

@@ -27,7 +27,7 @@ __export(main_exports, {
   default: () => NoteDefinition
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 
 // src/globals.ts
 var import_obsidian6 = require("obsidian");
@@ -91,6 +91,10 @@ var DEFAULT_SETTINGS = {
       dash: true,
       underscore: false
     }
+  },
+  defPopoverConfig: {
+    displayAliases: true,
+    displayDefFileName: false
   }
 };
 var SettingsTab = class extends import_obsidian.PluginSettingTab {
@@ -120,17 +124,6 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
           delay: 100
         }
       );
-    });
-    new import_obsidian.Setting(containerEl).setName("Definition popover display event").setDesc("Choose the trigger event for displaying the definition popover").addDropdown((component) => {
-      component.addOption("hover" /* Hover */, "Hover");
-      component.addOption("click" /* Click */, "Click");
-      component.setValue(this.settings.popoverEvent);
-      component.onChange(async (value) => {
-        if (value === "hover" /* Hover */ || value === "click" /* Click */) {
-          this.settings.popoverEvent = value;
-        }
-        await this.plugin.saveSettings();
-      });
     });
     new import_obsidian.Setting(containerEl).setName("Definition file format settings").setDesc("Customise parsing rules for definition files").addExtraButton((component) => {
       component.onClick(() => {
@@ -164,13 +157,39 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
         modal.open();
       });
     });
+    new import_obsidian.Setting(containerEl).setHeading().setName("Definition Popover Settings");
+    new import_obsidian.Setting(containerEl).setName("Definition popover display event").setDesc("Choose the trigger event for displaying the definition popover").addDropdown((component) => {
+      component.addOption("hover" /* Hover */, "Hover");
+      component.addOption("click" /* Click */, "Click");
+      component.setValue(this.settings.popoverEvent);
+      component.onChange(async (value) => {
+        if (value === "hover" /* Hover */ || value === "click" /* Click */) {
+          this.settings.popoverEvent = value;
+        }
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Display aliases").setDesc("Display the list of aliases configured for the definition").addToggle((component) => {
+      component.setValue(this.settings.defPopoverConfig.displayAliases);
+      component.onChange(async (value) => {
+        this.settings.defPopoverConfig.displayAliases = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Display definition source file").setDesc("Display the title of the definition's source file").addToggle((component) => {
+      component.setValue(this.settings.defPopoverConfig.displayDefFileName);
+      component.onChange(async (value) => {
+        this.settings.defPopoverConfig.displayDefFileName = value;
+        await this.plugin.saveSettings();
+      });
+    });
   }
 };
 function getSettings() {
   return window.NoteDefinition.settings;
 }
 
-// src/editor/marker.ts
+// src/editor/decoration.ts
 var import_state = require("@codemirror/state");
 var import_view = require("@codemirror/view");
 
@@ -232,7 +251,7 @@ var LineScanner = class {
     for (let i = 0; i < line.length; i++) {
       const c = line.charAt(i).toLowerCase();
       if (this.isValidStart(line, i)) {
-        traversers.push(new PTreeTraverser(defManager.prefixTree));
+        traversers.push(new PTreeTraverser(defManager.getPrefixTree()));
       }
       traversers.forEach((traverser) => {
         traverser.gotoNext(c);
@@ -277,7 +296,7 @@ var LineScanner = class {
   }
 };
 
-// src/editor/marker.ts
+// src/editor/decoration.ts
 var markedPhrases = [];
 function getMarkedPhrases() {
   return markedPhrases;
@@ -416,6 +435,11 @@ var FileParser = class {
     if (!fileContent) {
       fileContent = await this.vault.cachedRead(this.file);
     }
+    const fileMetadata = this.app.metadataCache.getFileCache(this.file);
+    const fmPos = fileMetadata == null ? void 0 : fileMetadata.frontmatterPosition;
+    if (fmPos) {
+      fileContent = fileContent.slice(fmPos.end.offset + 1);
+    }
     const lines = fileContent.split("\n");
     this.currLine = -1;
     for (const line of lines) {
@@ -529,21 +553,72 @@ var FileParser = class {
 
 // src/core/def-file-manager.ts
 var defFileManager;
+var DEF_CTX_FM_KEY = "def-context";
 var DefManager = class {
   constructor(app) {
     this.app = app;
     this.globalDefs = new DefinitionRepo();
     this.globalDefFiles = /* @__PURE__ */ new Map();
-    this.prefixTree = new PTreeNode();
+    this.globalPrefixTree = new PTreeNode();
+    this.resetLocalConfigs();
     this.lastUpdate = 0;
     window.NoteDefinition.definitions.global = this.globalDefs;
     this.loadDefinitions();
+  }
+  // Get the appropriate prefix tree to use for current active file
+  getPrefixTree() {
+    if (this.shouldUseLocalPTree) {
+      return this.localPrefixTree;
+    }
+    return this.globalPrefixTree;
+  }
+  // Updates active file and rebuilds local prefix tree if necessary
+  updateActiveFile() {
+    var _a;
+    this.activeFile = this.app.workspace.getActiveFile();
+    this.resetLocalConfigs();
+    if (this.activeFile) {
+      const metadataCache = this.app.metadataCache.getFileCache(this.activeFile);
+      if (!metadataCache) {
+        return;
+      }
+      const fmCache = (_a = metadataCache.frontmatter) == null ? void 0 : _a[DEF_CTX_FM_KEY];
+      if (!fmCache) {
+        return;
+      }
+      if (!Array.isArray(fmCache)) {
+        logWarn("Unrecognised type for 'def-source' frontmatter");
+        return;
+      }
+      this.buildLocalPrefixTree(fmCache);
+      this.shouldUseLocalPTree = true;
+    }
+  }
+  // For manually updating definition sources, as metadata cache may not be the latest updated version
+  updateDefSources(defSource) {
+    this.resetLocalConfigs();
+    this.buildLocalPrefixTree(defSource);
+    this.shouldUseLocalPTree = true;
+  }
+  buildLocalPrefixTree(fmCache) {
+    const root = new PTreeNode();
+    fmCache.forEach((filePath) => {
+      const defMap = this.globalDefs.getMapForFile(filePath);
+      if (!defMap) {
+        logWarn(`Unrecognised file path '${filePath}'`);
+        return;
+      }
+      [...defMap.keys()].forEach((key) => {
+        root.add(key, 0);
+      });
+    });
+    this.localPrefixTree = root;
   }
   isDefFile(file) {
     return file.path.startsWith(this.getGlobalDefFolder());
   }
   reset() {
-    this.prefixTree = new PTreeNode();
+    this.globalPrefixTree = new PTreeNode();
     this.globalDefs.clear();
     this.globalDefFiles = /* @__PURE__ */ new Map();
   }
@@ -553,6 +628,9 @@ var DefManager = class {
   }
   get(key) {
     return this.globalDefs.get(normaliseWord(key));
+  }
+  getDefFiles() {
+    return [...this.globalDefFiles.values()];
   }
   async loadUpdatedFiles() {
     const definitions = [];
@@ -575,6 +653,10 @@ var DefManager = class {
     }
     this.buildPrefixTree();
     this.lastUpdate = Date.now();
+  }
+  resetLocalConfigs() {
+    this.localPrefixTree = new PTreeNode();
+    this.shouldUseLocalPTree = false;
   }
   async loadGlobals() {
     const retry = useRetry();
@@ -601,7 +683,7 @@ var DefManager = class {
     this.globalDefs.getAllKeys().forEach((key) => {
       root.add(key, 0);
     });
-    this.prefixTree = root;
+    this.globalPrefixTree = root;
   }
   async parseFolder(folder) {
     const definitions = [];
@@ -628,6 +710,9 @@ var DefManager = class {
 var DefinitionRepo = class {
   constructor() {
     this.fileDefMap = /* @__PURE__ */ new Map();
+  }
+  getMapForFile(filePath) {
+    return this.fileDefMap.get(filePath);
   }
   get(key) {
     for (let [_, defMap] of this.fileDefMap) {
@@ -736,9 +821,9 @@ var DefinitionPopover = class extends import_obsidian4.Component {
   shouldOpenUpwards(verticalOffset, containerStyle) {
     return verticalOffset > parseInt(containerStyle.height) / 2;
   }
-  createElement(def) {
-    var _a, _b;
-    const el = this.app.workspace.containerEl.createEl("div", {
+  createElement(def, parent) {
+    const popoverSettings = getSettings().defPopoverConfig;
+    const el = parent.createEl("div", {
       cls: "definition-popover",
       attr: {
         id: DEF_POPOVER_ID,
@@ -746,7 +831,7 @@ var DefinitionPopover = class extends import_obsidian4.Component {
       }
     });
     el.createEl("h2", { text: def.word });
-    if (def.aliases.length > 0) {
+    if (def.aliases.length > 0 && popoverSettings.displayAliases) {
       el.createEl("i", { text: def.aliases.join(", ") });
     }
     const contentEl = el.createEl("div");
@@ -756,10 +841,40 @@ var DefinitionPopover = class extends import_obsidian4.Component {
       this.app,
       def.definition,
       contentEl,
-      (_b = (_a = this.plugin.app.workspace.getActiveFile()) == null ? void 0 : _a.path) != null ? _b : "",
+      (0, import_obsidian4.normalizePath)(def.file.path),
       currComponent
     );
+    this.postprocessMarkdown(contentEl, def);
+    if (popoverSettings.displayDefFileName) {
+      el.createEl("div", {
+        text: def.file.basename,
+        cls: "definition-popover-filename"
+      });
+    }
     return el;
+  }
+  // Internal links do not work properly in the popover
+  // This is to manually open internal links
+  postprocessMarkdown(el, def) {
+    const internalLinks = el.getElementsByClassName("internal-link");
+    for (let i = 0; i < internalLinks.length; i++) {
+      const linkEl = internalLinks.item(i);
+      if (linkEl) {
+        linkEl.addEventListener("click", (e) => {
+          var _a;
+          e.preventDefault();
+          const file = this.app.metadataCache.getFirstLinkpathDest(
+            (_a = linkEl.getAttr("href")) != null ? _a : "",
+            (0, import_obsidian4.normalizePath)(def.file.path)
+          );
+          this.unmount();
+          if (!file) {
+            return;
+          }
+          this.app.workspace.getLeaf().openFile(file);
+        });
+      }
+    }
   }
   mountAtCursor(def) {
     let cursorCoords;
@@ -771,25 +886,45 @@ var DefinitionPopover = class extends import_obsidian4.Component {
     }
     this.mountAtCoordinates(def, cursorCoords);
   }
+  // Offset coordinates from viewport coordinates to coordinates relative to the parent container element
+  offsetCoordsToContainer(coords, container) {
+    const containerRect = container.getBoundingClientRect();
+    return {
+      left: coords.left - containerRect.left,
+      right: coords.right - containerRect.left,
+      top: coords.top - containerRect.top,
+      bottom: coords.bottom - containerRect.top
+    };
+  }
   mountAtCoordinates(def, coords) {
-    const workspaceStyle = getComputedStyle(this.app.workspace.containerEl);
-    this.mountedPopover = this.createElement(def);
+    const mdView = this.app.workspace.getActiveViewOfType(import_obsidian4.MarkdownView);
+    if (!mdView) {
+      logError("Could not mount popover: No active markdown view found");
+      return;
+    }
+    this.mountedPopover = this.createElement(def, mdView.containerEl);
+    const containerStyle = getComputedStyle(mdView.containerEl);
+    const matchedClasses = mdView.containerEl.getElementsByClassName("view-header");
+    let offsetHeaderHeight = 0;
+    if (matchedClasses.length > 0) {
+      offsetHeaderHeight = parseInt(getComputedStyle(matchedClasses[0]).height);
+    }
+    coords = this.offsetCoordsToContainer(coords, mdView.containerEl);
     const positionStyle = {
       visibility: "visible"
     };
-    if (this.shouldOpenToLeft(coords.left, workspaceStyle)) {
-      positionStyle.right = `${parseInt(workspaceStyle.width) - coords.right}px`;
-      positionStyle.maxWidth = "max(calc(100vw / 3))";
+    positionStyle.maxWidth = `${parseInt(containerStyle.width) / 2}px`;
+    if (this.shouldOpenToLeft(coords.left, containerStyle)) {
+      positionStyle.right = `${parseInt(containerStyle.width) - coords.right}px`;
     } else {
       positionStyle.left = `${coords.left}px`;
-      positionStyle.maxWidth = "max(calc(100vw / 3))";
     }
-    if (this.shouldOpenUpwards(coords.top, workspaceStyle)) {
-      positionStyle.bottom = `${parseInt(workspaceStyle.height) - coords.top}px`;
-      positionStyle.maxHeight = `${coords.top}px`;
+    if (this.shouldOpenUpwards(coords.top, containerStyle)) {
+      positionStyle.bottom = `${parseInt(containerStyle.height) - coords.top}px`;
+      positionStyle.maxHeight = `${coords.top - offsetHeaderHeight}px`;
     } else {
       positionStyle.top = `${coords.bottom}px`;
-      positionStyle.maxHeight = `calc(100vh - ${coords.bottom}px)`;
+      positionStyle.maxHeight = `${parseInt(containerStyle.height) - coords.bottom}px`;
     }
     this.mountedPopover.setCssStyles(positionStyle);
   }
@@ -802,6 +937,8 @@ var DefinitionPopover = class extends import_obsidian4.Component {
     this.mountedPopover = void 0;
     this.unregisterClosePopoverListeners();
   }
+  // This uses internal non-exposed codemirror API to get cursor coordinates
+  // Cursor coordinates seem to be relative to viewport
   getCursorCoords() {
     var _a, _b;
     const editor = (_a = this.app.workspace.activeEditor) == null ? void 0 : _a.editor;
@@ -1276,8 +1413,41 @@ var AddDefinitionModal = class {
   }
 };
 
+// src/editor/frontmatter-suggest-modal.ts
+var import_obsidian10 = require("obsidian");
+var FMSuggestModal = class extends import_obsidian10.FuzzySuggestModal {
+  constructor(app, currFile) {
+    super(app);
+    this.file = currFile;
+  }
+  getItems() {
+    const defManager = getDefFileManager();
+    return defManager.getDefFiles();
+  }
+  getItemText(item) {
+    return item.basename;
+  }
+  onChooseItem(item, evt) {
+    this.app.fileManager.processFrontMatter(this.file, (fm) => {
+      let currDefSource = fm[DEF_CTX_FM_KEY];
+      if (!currDefSource || !Array.isArray(currDefSource)) {
+        fm[DEF_CTX_FM_KEY] = [item.path];
+        return;
+      }
+      if (currDefSource.includes(item.path)) {
+        new import_obsidian10.Notice("Definition file source is already included for this file");
+        return;
+      }
+      fm[DEF_CTX_FM_KEY] = [...currDefSource, item.path];
+      getDefFileManager().updateDefSources([...currDefSource, item.path]);
+    }).catch((e) => {
+      logError(`Error writing to frontmatter of file: ${e}`);
+    });
+  }
+};
+
 // src/main.ts
-var NoteDefinition = class extends import_obsidian10.Plugin {
+var NoteDefinition = class extends import_obsidian11.Plugin {
   constructor() {
     super(...arguments);
     this.activeEditorExtensions = [];
@@ -1339,6 +1509,19 @@ var NoteDefinition = class extends import_obsidian10.Plugin {
         addModal.open(selectedText);
       }
     });
+    this.addCommand({
+      id: "add-def-context",
+      name: "Add definition context",
+      editorCallback: (editor) => {
+        const activeFile = this.app.workspace.getActiveFile();
+        if (!activeFile) {
+          new import_obsidian11.Notice("Command must be used within an active opened file");
+          return;
+        }
+        const suggestModal = new FMSuggestModal(this.app, activeFile);
+        suggestModal.open();
+      }
+    });
   }
   registerEvents() {
     this.registerEvent(this.app.workspace.on("active-leaf-change", async (leaf) => {
@@ -1346,6 +1529,7 @@ var NoteDefinition = class extends import_obsidian10.Plugin {
         return;
       this.reloadUpdatedDefinitions();
       this.updateEditorExts();
+      this.defManager.updateActiveFile();
     }));
     this.registerEvent(this.app.workspace.on("editor-menu", (menu, editor) => {
       const defPopover = getDefinitionPopover();
@@ -1374,7 +1558,7 @@ var NoteDefinition = class extends import_obsidian10.Plugin {
       this.registerMenuForMarkedWords(menu, def);
     }));
     this.registerEvent(this.app.workspace.on("file-menu", (menu, file, source) => {
-      if (file instanceof import_obsidian10.TFolder) {
+      if (file instanceof import_obsidian11.TFolder) {
         menu.addItem((item) => {
           item.setTitle("Set definition folder").setIcon("book-a").onClick(() => {
             const settings = getSettings();

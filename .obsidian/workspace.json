@@ -4,15 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "35185ca18597ffe4",
+        "id": "6f70f0020ac9dba3",
         "type": "tabs",
         "children": [
           {
-            "id": "196f7140e8fd1cd3",
+            "id": "170dd133858b6ce4",
             "type": "leaf",
             "state": {
-              "type": "home-tab-view",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
         ]
@@ -85,11 +89,12 @@
               "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
-    "width": 380.51103591918945
+    "width": 402.51103591918945
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -106,6 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,6 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -143,7 +150,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md"
+              }
             }
           },
           {
@@ -183,7 +192,9 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {}
+              "state": {
+                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md"
+              }
             }
           },
           {
@@ -234,20 +245,38 @@
   },
   "active": "cc3c5048ac02c60f",
   "lastOpenFiles": [
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
+    "个人笔记/Obsidian/插件开发/Codemirror/Dataview 使用到的库.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-02.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
+    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+    "个人笔记/Codemirror 6/入门.md",
+    "个人笔记/Typst/Typst Examples Book/知识点记录.md",
+    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
     "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-01.md",
     "日记/2024-07-01.md",
+    "个人笔记/Codemirror 6",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
+    "博客/Obsidian/小插件推荐/小插件推荐：Dynamic Highlights.md",
+    "博客/Obsidian/小插件推荐/小插件推荐：Supercharged Links.md",
+    "附件/Pasted image 20240704150248.png",
+    "个人笔记/Obsidian/插件开发/Templater 代码收集.md",
     "个人笔记/Obsidian/Obsidian 常用快捷键.md",
+    "个人笔记/Obsidian/插件开发/Codemirror",
+    "个人笔记/Obsidian/Templater 代码收藏.md",
+    "README.md",
+    "个人笔记/Obsidian/插件开发/插件开发代码收集.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Latex 插件使用.md",
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
+    "个人笔记/Obsidian/插件开发/随记",
+    "个人笔记/Obsidian/插件开发",
+    "个人笔记/写作资料.md",
     "日记/2024-05-27.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Image Gallery 插件使用.md",
-    "个人笔记/写作资料.md",
-    "个人笔记/Obsidian/Templater 代码收藏.md",
-    "模板/创建 Obsidian 博客文章.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md",
     "附件/动画2 66.gif",
-    "个人笔记/前端/正则表达式.md",
     "附件/Pasted image 20240628154006.png",
     "附件/Pasted image 20240627210427.png",
     "附件/动画2 65.gif",
@@ -256,29 +285,11 @@
     "附件/Pasted image 20240627182638.png",
     "附件/Pasted image 20240627170759.png",
     "附件/Pasted image 20240627161341.png",
-    "附件/Pasted image 20240627151830.png",
-    "模板/插入特殊符号.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #4：Note Gallery.md",
-    "博客/Obsidian/小插件推荐/小插件推荐：Quick Preview.md",
-    "博客/Obsidian/小插件推荐/小插件推荐：Folder Notes.md",
     "个人笔记/前端",
-    "README.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #2：Obsidian Note Definitions.md",
-    "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md",
-    "术语/Obsidian 插件.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-    "博客/Obsidian/真实案例讲解/.md",
     "博客/Obsidian/揭秘系列",
     "个人笔记/Obsidian",
-    "博客/Obsidian/小插件推荐/小插件推荐：Test.md",
-    "模板/插入 CriticMarkup.md",
     "个人笔记/写作",
     "个人笔记/Typst/日积月累",
-    "个人笔记/Typst/官方文档/Text",
-    "个人笔记/Typst/官方文档/Visualize",
-    "个人笔记/Typst/官方文档/ Layout",
-    "电子书/W020190128580990138234.pdf",
-    "电子书/W020190128580990138234.pdf.crdownload"
+    "个人笔记/Typst/官方文档/Text"
   ]
 }
