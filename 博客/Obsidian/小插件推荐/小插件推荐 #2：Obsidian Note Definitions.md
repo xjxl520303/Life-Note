@@ -13,7 +13,7 @@ platforms:
     url: https://juejin.cn/post/7379487557598003237
     date: 2024-06-13 15:48
     last_update: 2024-06-13 15:48
-updated_at: 2024-06-23 15:49:28
+updated_at: 2024-07-07 17:29:36
 plugins:
   - Obsidian-Note-Definitions
 ---
@@ -193,6 +193,22 @@ But science does provide us with the best available guide to the future, and it 
 这个功能很实用，减少了每次添加新内容时的文档切换时间和编辑消耗。
 
 ![[Pasted image 20240623154928.png]]
+
+## 2024-07-07 更新内容
+
+官方发布版本：0.18.1。
+
+这次一下子发布了 4 个小版本，可见用户对于这款小插件的钟爱程度，以及作者的积极投入。
+
+本次更新发现作者增加了一个非常人性化的功能：通过 YAML 属性 `def-context` 来定义解析的数据来源文件。作者还为此添加了一个命令 `Note Definitions: Add definition context`，触发后会弹出一个类似 Templater 中的 Suggester 建议框——会列举所有在定义目录中的文档供选择。
+
+在上下文菜单【Add Definition】对话框中同步增加【Definition file】的下拉选择框来指定新创建的定义归属于哪个定义文档。
+
+此外，作者还发现【选项】中多了【Display definition source file】这一选项来控制在定义提示 Popover 中是否显示「定义」文件来源。
+
+这一次更新的同时也发现了一个关于中英文符号提示的 Bug——在中文问号后的英文不显示提示——望作者早日修复。
+
+总的来说这个插件的使用场景越来越宽泛，用户群体也在增多，更多的使用场景也在促使插件不断地更新迭代——使其成为 Obsidian 不可或缺插件生态中的一员。
 
 ## 参考
 
