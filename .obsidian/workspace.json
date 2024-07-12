@@ -4,22 +4,27 @@
     "type": "split",
     "children": [
       {
-        "id": "6f70f0020ac9dba3",
+        "id": "ad2435299c2ffb8a",
         "type": "tabs",
         "children": [
           {
-            "id": "170dd133858b6ce4",
+            "id": "106bf0fa0bb8e92f",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "home-tab-view",
+              "state": {}
+            }
+          },
+          {
+            "id": "dc2cb2a31eaf080b",
+            "type": "leaf",
+            "state": {
+              "type": "swar8080/AVAILABLE_PLUGIN_UPDATES",
+              "state": {}
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -89,12 +94,11 @@
               "state": {}
             }
           }
-        ],
-        "currentTab": 5
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 402.51103591918945
+    "width": 259.51103591918945
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -111,7 +115,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,7 +131,6 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,9 +152,7 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md"
-              }
+              "state": {}
             }
           },
           {
@@ -192,9 +192,7 @@
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {
-                "file": "个人笔记/Obsidian/插件开发/随记/2024-07-04.md"
-              }
+              "state": {}
             }
           },
           {
@@ -222,7 +220,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 381.5
+    "width": 330.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -243,39 +241,40 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "cc3c5048ac02c60f",
+  "active": "dc2cb2a31eaf080b",
   "lastOpenFiles": [
-    "个人笔记/Obsidian/插件开发/Codemirror/Dataview 使用到的库.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-02.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
-    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
-    "个人笔记/Codemirror 6/入门.md",
-    "个人笔记/Typst/Typst Examples Book/知识点记录.md",
-    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
     "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-01.md",
-    "日记/2024-07-01.md",
-    "个人笔记/Codemirror 6",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #3：使用终极工具 Dataview 释放笔记库的潜力 · 案例讲解.md",
-    "博客/Obsidian/小插件推荐/小插件推荐：Dynamic Highlights.md",
-    "博客/Obsidian/小插件推荐/小插件推荐：Supercharged Links.md",
-    "附件/Pasted image 20240704150248.png",
-    "个人笔记/Obsidian/插件开发/Templater 代码收集.md",
-    "个人笔记/Obsidian/Obsidian 常用快捷键.md",
-    "个人笔记/Obsidian/插件开发/Codemirror",
-    "个人笔记/Obsidian/Templater 代码收藏.md",
-    "README.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
+    "博客/Obsidian/插件开发/Obsidian 插件开发知识点记录：Codemirror 6 文本添加下划线思考.md",
+    "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
+    "个人笔记/Typst/官方文档/Visualize/Image.md",
+    "个人笔记/Typst/官方文档/Text/Underline.md",
+    "个人笔记/Typst/官方文档/Text/Superscript.md",
+    "个人笔记/Typst/官方文档/Text/Subscript.md",
+    "个人笔记/Typst/官方文档/Text/Raw Text or Code.md",
+    "个人笔记/Typst/官方文档/Model/Outline.md",
+    "个人笔记/Typst/官方文档/Model/Numbering.md",
+    "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
     "个人笔记/Obsidian/插件开发/插件开发代码收集.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Latex 插件使用.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
+    "个人笔记/Obsidian/插件开发/Templater 代码收集.md",
+    "个人笔记/Obsidian/插件开发/Codemirror/Dataview 使用到的库.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-02.md",
+    "个人笔记/Obsidian/插件开发/随记/2024-07-01.md",
+    "日记/2024-05-27.md",
+    "日记/2024-07-01.md",
+    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
+    "个人笔记/前端/正则表达式.md",
+    "博客/Obsidian/插件开发",
+    "README.md",
+    "模板/插入特殊符号.md",
+    "个人笔记/Codemirror 6",
+    "附件/Pasted image 20240704150248.png",
+    "个人笔记/Obsidian/插件开发/Codemirror",
     "个人笔记/Obsidian/插件开发/随记",
     "个人笔记/Obsidian/插件开发",
-    "个人笔记/写作资料.md",
-    "日记/2024-05-27.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Image Gallery 插件使用.md",
     "附件/动画2 66.gif",
     "附件/Pasted image 20240628154006.png",
     "附件/Pasted image 20240627210427.png",
@@ -289,7 +288,6 @@
     "博客/Obsidian/揭秘系列",
     "个人笔记/Obsidian",
     "个人笔记/写作",
-    "个人笔记/Typst/日积月累",
-    "个人笔记/Typst/官方文档/Text"
+    "个人笔记/Typst/日积月累"
   ]
 }

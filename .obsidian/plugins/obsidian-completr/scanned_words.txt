@@ -699,6 +699,7 @@ containerEl
 createEl
 case
 codemirror
+con
 in
 include
 is
@@ -740,6 +741,7 @@ instead
 inset
 iter
 import
+ips
 active
 await
 app
@@ -800,6 +802,7 @@ align
 aperture
 addRibbonIcon
 activateView
+adipisicing
 jump
 join
 json
@@ -911,6 +914,7 @@ state
 setState
 setViewState
 sidebar
+sectetur
 boolean
 be
 book
@@ -963,6 +967,7 @@ body
 blue
 box
 baseline
+bacc
 vault
 variables
 variable
@@ -1059,6 +1064,7 @@ dx
 dy
 docs
 dice
+def
 HH
 Html
 Heading
@@ -1142,6 +1148,7 @@ embedLink
 example
 extends
 empty
+elit
 relative
 results
 rename
@@ -1191,6 +1198,7 @@ replaceTag
 reg
 registerView
 revealLeaf
+rich
 Untitled
 URL
 Unary
@@ -1303,6 +1311,7 @@ ul
 unicode
 underline
 uninstallLaTeX
+um
 Note
 Normalize
 NoteDefinitions
@@ -1348,6 +1357,7 @@ xl
 xiaolu
 xxxx
 xAxis
+xmldom
 htmlToMarkdown
 hooks
 hello
@@ -1405,6 +1415,7 @@ Loop
 Leaf
 LocalForage
 Logo
+Lorem
 Video
 Variables
 Vault

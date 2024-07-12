@@ -94,7 +94,12 @@ var DEFAULT_SETTINGS = {
   },
   defPopoverConfig: {
     displayAliases: true,
-    displayDefFileName: false
+    displayDefFileName: false,
+    enableCustomSize: false,
+    maxWidth: 150,
+    maxHeight: 150,
+    popoverDismissEvent: "click" /* Click */,
+    enableDefinitionLink: false
   }
 };
 var SettingsTab = class extends import_obsidian.PluginSettingTab {
@@ -166,9 +171,30 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
         if (value === "hover" /* Hover */ || value === "click" /* Click */) {
           this.settings.popoverEvent = value;
         }
+        if (this.settings.popoverEvent === "click" /* Click */) {
+          this.settings.defPopoverConfig.popoverDismissEvent = "click" /* Click */;
+        }
         await this.plugin.saveSettings();
+        this.display();
       });
     });
+    if (this.settings.popoverEvent === "hover" /* Hover */) {
+      new import_obsidian.Setting(containerEl).setName("Definition popover dismiss event").setDesc("Configure the manner in which you would like to close/dismiss the definition popover.").addDropdown((component) => {
+        component.addOption("click" /* Click */, "Click");
+        component.addOption("mouse_exit" /* MouseExit */, "Mouse exit");
+        if (!this.settings.defPopoverConfig.popoverDismissEvent) {
+          this.settings.defPopoverConfig.popoverDismissEvent = "click" /* Click */;
+          this.plugin.saveSettings();
+        }
+        component.setValue(this.settings.defPopoverConfig.popoverDismissEvent);
+        component.onChange(async (value) => {
+          if (value === "mouse_exit" /* MouseExit */ || value === "click" /* Click */) {
+            this.settings.defPopoverConfig.popoverDismissEvent = value;
+          }
+          await this.plugin.saveSettings();
+        });
+      });
+    }
     new import_obsidian.Setting(containerEl).setName("Display aliases").setDesc("Display the list of aliases configured for the definition").addToggle((component) => {
       component.setValue(this.settings.defPopoverConfig.displayAliases);
       component.onChange(async (value) => {
@@ -180,6 +206,41 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
       component.setValue(this.settings.defPopoverConfig.displayDefFileName);
       component.onChange(async (value) => {
         this.settings.defPopoverConfig.displayDefFileName = value;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Custom popover size").setDesc("Customise the maximum popover size. This is not recommended as it prevents dynamic sizing of the popover based on your viewport.").addToggle((component) => {
+      component.setValue(this.settings.defPopoverConfig.enableCustomSize);
+      component.onChange(async (value) => {
+        this.settings.defPopoverConfig.enableCustomSize = value;
+        await this.plugin.saveSettings();
+        this.display();
+      });
+    });
+    if (this.settings.defPopoverConfig.enableCustomSize) {
+      new import_obsidian.Setting(containerEl).setName("Popover width (px)").setDesc("Maximum width of the definition popover").addSlider((component) => {
+        component.setLimits(150, window.innerWidth, 1);
+        component.setValue(this.settings.defPopoverConfig.maxWidth);
+        component.setDynamicTooltip();
+        component.onChange(async (val) => {
+          this.settings.defPopoverConfig.maxWidth = val;
+          await this.plugin.saveSettings();
+        });
+      });
+      new import_obsidian.Setting(containerEl).setName("Popover height (px)").setDesc("Maximum height of the definition popover").addSlider((component) => {
+        component.setLimits(150, window.innerHeight, 1);
+        component.setValue(this.settings.defPopoverConfig.maxHeight);
+        component.setDynamicTooltip();
+        component.onChange(async (val) => {
+          this.settings.defPopoverConfig.maxHeight = val;
+          await this.plugin.saveSettings();
+        });
+      });
+    }
+    new import_obsidian.Setting(containerEl).setName("Enable definition links").setDesc("Definitions within popovers will be marked and can be clicked to go to definition.").addToggle((component) => {
+      component.setValue(this.settings.defPopoverConfig.enableDefinitionLink);
+      component.onChange(async (val) => {
+        this.settings.defPopoverConfig.enableDefinitionLink = val;
         await this.plugin.saveSettings();
       });
     });
@@ -821,6 +882,7 @@ var DefinitionPopover = class extends import_obsidian4.Component {
   shouldOpenUpwards(verticalOffset, containerStyle) {
     return verticalOffset > parseInt(containerStyle.height) / 2;
   }
+  // Creates popover element and its children, without displaying it 
   createElement(def, parent) {
     const popoverSettings = getSettings().defPopoverConfig;
     const el = parent.createEl("div", {
@@ -903,6 +965,14 @@ var DefinitionPopover = class extends import_obsidian4.Component {
       return;
     }
     this.mountedPopover = this.createElement(def, mdView.containerEl);
+    this.positionAndSizePopover(mdView, coords);
+  }
+  // Position and display popover
+  positionAndSizePopover(mdView, coords) {
+    if (!this.mountedPopover) {
+      return;
+    }
+    const popoverSettings = getSettings().defPopoverConfig;
     const containerStyle = getComputedStyle(mdView.containerEl);
     const matchedClasses = mdView.containerEl.getElementsByClassName("view-header");
     let offsetHeaderHeight = 0;
@@ -913,7 +983,7 @@ var DefinitionPopover = class extends import_obsidian4.Component {
     const positionStyle = {
       visibility: "visible"
     };
-    positionStyle.maxWidth = `${parseInt(containerStyle.width) / 2}px`;
+    positionStyle.maxWidth = popoverSettings.enableCustomSize && popoverSettings.maxWidth ? `${popoverSettings.maxWidth}px` : `${parseInt(containerStyle.width) / 2}px`;
     if (this.shouldOpenToLeft(coords.left, containerStyle)) {
       positionStyle.right = `${parseInt(containerStyle.width) - coords.right}px`;
     } else {
@@ -921,10 +991,10 @@ var DefinitionPopover = class extends import_obsidian4.Component {
     }
     if (this.shouldOpenUpwards(coords.top, containerStyle)) {
       positionStyle.bottom = `${parseInt(containerStyle.height) - coords.top}px`;
-      positionStyle.maxHeight = `${coords.top - offsetHeaderHeight}px`;
+      positionStyle.maxHeight = popoverSettings.enableCustomSize && popoverSettings.maxHeight ? `${popoverSettings.maxHeight}px` : `${coords.top - offsetHeaderHeight}px`;
     } else {
       positionStyle.top = `${coords.bottom}px`;
-      positionStyle.maxHeight = `${parseInt(containerStyle.height) - coords.bottom}px`;
+      positionStyle.maxHeight = popoverSettings.enableCustomSize && popoverSettings.maxHeight ? `${popoverSettings.maxHeight}px` : `${parseInt(containerStyle.height) - coords.bottom}px`;
     }
     this.mountedPopover.setCssStyles(positionStyle);
   }
@@ -947,6 +1017,14 @@ var DefinitionPopover = class extends import_obsidian4.Component {
   registerClosePopoverListeners() {
     this.app.workspace.containerEl.addEventListener("keypress", this.close);
     this.app.workspace.containerEl.addEventListener("click", this.clickClose);
+    if (this.mountedPopover) {
+      this.mountedPopover.addEventListener("mouseleave", () => {
+        const popoverSettings = getSettings().defPopoverConfig;
+        if (popoverSettings.popoverDismissEvent === "mouse_exit" /* MouseExit */) {
+          this.clickClose();
+        }
+      });
+    }
     if (this.cmEditor) {
       this.cmEditor.on("vim-keypress", this.close);
     }
@@ -1028,9 +1106,10 @@ function getDefinitionModal() {
 }
 
 // src/globals.ts
-function injectGlobals(settings) {
+function injectGlobals(settings, app) {
   var _a;
   window.NoteDefinition = {
+    app,
     LOG_LEVEL: ((_a = window.NoteDefinition) == null ? void 0 : _a.LOG_LEVEL) || 1 /* Error */,
     definitions: {
       global: new DefinitionRepo()
@@ -1052,10 +1131,14 @@ function injectGlobals(settings) {
       if (el.onmouseenter) {
         const openPopover = setTimeout(() => {
           defPopover.openAtCoords(def, el.getBoundingClientRect());
+          isOpen = true;
         }, 200);
         el.onmouseleave = () => {
+          const popoverSettings = getSettings().defPopoverConfig;
           if (!isOpen) {
             clearTimeout(openPopover);
+          } else if (popoverSettings.popoverDismissEvent === "mouse_exit" /* MouseExit */) {
+            defPopover.clickClose();
           }
         };
         return;
@@ -1067,17 +1150,20 @@ function injectGlobals(settings) {
 }
 
 // src/editor/md-postprocessor.ts
+var DEF_LINK_DECOR_CLS = "def-link-decoration";
 var postProcessor = (element, context) => {
   const shouldRunPostProcessor = window.NoteDefinition.settings.enableInReadingView;
   if (!shouldRunPostProcessor) {
     return;
   }
-  if (element.getAttr("ctx") === "def-popup") {
+  const popoverSettings = getSettings().defPopoverConfig;
+  const isPopupCtx = element.getAttr("ctx") === "def-popup";
+  if (isPopupCtx && !popoverSettings.enableDefinitionLink) {
     return;
   }
-  rebuildHTML(element);
+  rebuildHTML(element, isPopupCtx);
 };
-var rebuildHTML = (parent) => {
+var rebuildHTML = (parent, isPopupCtx) => {
   for (let i = 0; i < parent.childNodes.length; i++) {
     const childNode = parent.childNodes[i];
     if (childNode.nodeType === Node.TEXT_NODE && childNode.textContent) {
@@ -1095,17 +1181,18 @@ var rebuildHTML = (parent) => {
       let currCursor = 0;
       const newContainer = parent.createSpan();
       const addedMarks = [];
+      const popoverSettings = getSettings().defPopoverConfig;
       phraseInfos.forEach((phraseInfo) => {
         if (phraseInfo.from < currCursor) {
           return;
         }
         newContainer.appendText(currText.slice(currCursor, phraseInfo.from));
-        const attributes = getDecorationAttrs(phraseInfo.phrase);
-        const span = newContainer.createSpan({
-          cls: DEF_DECORATION_CLS,
-          attr: attributes,
-          text: currText.slice(phraseInfo.from, phraseInfo.to)
-        });
+        let span;
+        if (isPopupCtx && popoverSettings.enableDefinitionLink) {
+          span = getLinkDecorationSpan(newContainer, phraseInfo, currText);
+        } else {
+          span = getNormalDecorationSpan(newContainer, phraseInfo, currText);
+        }
         newContainer.appendChild(span);
         addedMarks.push({
           el: span,
@@ -1116,9 +1203,37 @@ var rebuildHTML = (parent) => {
       newContainer.appendText(currText.slice(currCursor));
       childNode.replaceWith(newContainer);
     }
-    rebuildHTML(childNode);
+    rebuildHTML(childNode, isPopupCtx);
   }
 };
+function getNormalDecorationSpan(container, phraseInfo, currText) {
+  const attributes = getDecorationAttrs(phraseInfo.phrase);
+  const span = container.createSpan({
+    cls: DEF_DECORATION_CLS,
+    attr: attributes,
+    text: currText.slice(phraseInfo.from, phraseInfo.to)
+  });
+  return span;
+}
+function getLinkDecorationSpan(container, phraseInfo, currText) {
+  const span = container.createSpan({
+    cls: DEF_LINK_DECOR_CLS,
+    text: currText.slice(phraseInfo.from, phraseInfo.to)
+  });
+  span.addEventListener("click", (e) => {
+    const app = window.NoteDefinition.app;
+    const def = getDefFileManager().get(phraseInfo.phrase);
+    if (!def) {
+      return;
+    }
+    app.workspace.openLinkText(def.linkText, "");
+    const popover = getDefinitionPopover();
+    if (popover) {
+      popover.close();
+    }
+  });
+  return span;
+}
 
 // src/ui/file-explorer.ts
 var fileExplorerDecoration;
@@ -1454,7 +1569,7 @@ var NoteDefinition = class extends import_obsidian11.Plugin {
   }
   async onload() {
     const settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-    injectGlobals(settings);
+    injectGlobals(settings, this.app);
     logDebug("Load note definition plugin");
     initDefinitionPopover(this);
     initDefinitionModal(this.app);
@@ -1566,6 +1681,13 @@ var NoteDefinition = class extends import_obsidian11.Plugin {
             this.saveSettings();
           });
         });
+      }
+    }));
+    this.registerEvent(this.app.vault.on("create", (file) => {
+      const settings = getSettings();
+      if (file.path.startsWith(settings.defFolder)) {
+        this.fileExplorerDeco.run();
+        this.refreshDefinitions();
       }
     }));
   }

@@ -12,15 +12,15 @@ platforms:
     date: 2024-07-01 12:22:44
     last_update: 2024-07-01 12:22:49
   - name: 掘金
-    url: ""
-    date: ""
-    last_update: ""
+    url: https://juejin.cn/post/7386243179279630376
+    date: 2024-07-01T13:33
+    last_update: 2024-07-01T13:33
 ---
 
-| 平台                          | 发布时间                                | 更新时间                                       | 文章地址                           |
-| :-------------------------- | :---------------------------------- | :----------------------------------------- | :----------------------------- |
-| `VIEW[{platforms[0].name}]` | `INPUT[dateTime:platforms[0].date]` | `INPUT[dateTime:platforms[0].last_update]` | `INPUT[text:platforms[0].url]` |
-| `VIEW[{platforms[1].name}]` | `INPUT[dateTime:platforms[1].date]` | `INPUT[dateTime:platforms[1].last_update]` | `INPUT[text:platforms[1].url]` |
+|  平台                           |  发布时间                                 |  更新时间                                        |  文章地址                            |
+|:------------------------------|:--------------------------------------|:---------------------------------------------|:---------------------------------|
+|  `VIEW[{platforms[0].name}]`  |  `INPUT[dateTime:platforms[0].date]`  |  `INPUT[dateTime:platforms[0].last_update]`  |  `INPUT[text:platforms[0].url]`  |
+|  `VIEW[{platforms[1].name}]`  |  `INPUT[dateTime:platforms[1].date]`  |  `INPUT[dateTime:platforms[1].last_update]`  |  `INPUT[text:platforms[1].url]`  |  
 
 Obsidian 是双链笔记应用中的佼佼者，而作为使用 Obsidian 的用户，我们有必要花点时间认真理解其概念、熟练并合理地应用到个人知识体系中。
 

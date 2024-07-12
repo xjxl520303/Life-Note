@@ -3,5 +3,6 @@
   "attachmentFolderPath": "附件",
   "alwaysUpdateLinks": true,
   "propertiesInDocument": "visible",
-  "showUnsupportedFiles": true
+  "showUnsupportedFiles": true,
+  "promptDelete": false
 }
