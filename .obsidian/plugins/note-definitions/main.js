@@ -620,6 +620,7 @@ var DefManager = class {
     this.app = app;
     this.globalDefs = new DefinitionRepo();
     this.globalDefFiles = /* @__PURE__ */ new Map();
+    this.globalDefFolders = /* @__PURE__ */ new Map();
     this.globalPrefixTree = new PTreeNode();
     this.resetLocalConfigs();
     this.lastUpdate = 0;
@@ -643,15 +644,16 @@ var DefManager = class {
       if (!metadataCache) {
         return;
       }
-      const fmCache = (_a = metadataCache.frontmatter) == null ? void 0 : _a[DEF_CTX_FM_KEY];
-      if (!fmCache) {
+      const paths = (_a = metadataCache.frontmatter) == null ? void 0 : _a[DEF_CTX_FM_KEY];
+      if (!paths) {
         return;
       }
-      if (!Array.isArray(fmCache)) {
+      if (!Array.isArray(paths)) {
         logWarn("Unrecognised type for 'def-source' frontmatter");
         return;
       }
-      this.buildLocalPrefixTree(fmCache);
+      const flattenedPaths = this.flattenPathList(paths);
+      this.buildLocalPrefixTree(flattenedPaths);
       this.shouldUseLocalPTree = true;
     }
   }
@@ -661,9 +663,47 @@ var DefManager = class {
     this.buildLocalPrefixTree(defSource);
     this.shouldUseLocalPTree = true;
   }
-  buildLocalPrefixTree(fmCache) {
+  flattenPathList(paths) {
+    const filePaths = [];
+    paths.forEach((path) => {
+      if (this.isFolderPath(path)) {
+        filePaths.push(...this.flattenFolder(path));
+      } else {
+        filePaths.push(path);
+      }
+    });
+    return filePaths;
+  }
+  // Given a folder path, return an array of file paths
+  flattenFolder(path) {
+    if (path.endsWith("/")) {
+      path = path.slice(0, path.length - 1);
+    }
+    const folder = this.app.vault.getFolderByPath(path);
+    if (!folder) {
+      return [];
+    }
+    const childrenFiles = this.getChildrenFiles(folder);
+    return childrenFiles.map((file) => file.path);
+  }
+  getChildrenFiles(folder) {
+    const files = [];
+    folder.children.forEach((abstractFile) => {
+      if (abstractFile instanceof import_obsidian3.TFolder) {
+        files.push(...this.getChildrenFiles(abstractFile));
+      } else if (abstractFile instanceof import_obsidian3.TFile) {
+        files.push(abstractFile);
+      }
+    });
+    return files;
+  }
+  isFolderPath(path) {
+    return path.endsWith("/");
+  }
+  // Expects an array of file paths (not directories)
+  buildLocalPrefixTree(filePaths) {
     const root = new PTreeNode();
-    fmCache.forEach((filePath) => {
+    filePaths.forEach((filePath) => {
       const defMap = this.globalDefs.getMapForFile(filePath);
       if (!defMap) {
         logWarn(`Unrecognised file path '${filePath}'`);
@@ -683,6 +723,9 @@ var DefManager = class {
     this.globalDefs.clear();
     this.globalDefFiles = /* @__PURE__ */ new Map();
   }
+  // Load all definitions from registered def folder
+  // This will recurse through the def folder, parsing all definition files
+  // Expensive operation so use sparingly
   loadDefinitions() {
     this.reset();
     this.loadGlobals();
@@ -692,6 +735,9 @@ var DefManager = class {
   }
   getDefFiles() {
     return [...this.globalDefFiles.values()];
+  }
+  getDefFolders() {
+    return [...this.globalDefFolders.values()];
   }
   async loadUpdatedFiles() {
     const definitions = [];
@@ -715,6 +761,7 @@ var DefManager = class {
     this.buildPrefixTree();
     this.lastUpdate = Date.now();
   }
+  // Global configs should always be used by default
   resetLocalConfigs() {
     this.localPrefixTree = new PTreeNode();
     this.shouldUseLocalPTree = false;
@@ -747,6 +794,7 @@ var DefManager = class {
     this.globalPrefixTree = root;
   }
   async parseFolder(folder) {
+    this.globalDefFolders.set(folder.path, folder);
     const definitions = [];
     for (let f of folder.children) {
       if (f instanceof import_obsidian3.TFolder) {
@@ -1537,27 +1585,34 @@ var FMSuggestModal = class extends import_obsidian10.FuzzySuggestModal {
   }
   getItems() {
     const defManager = getDefFileManager();
-    return defManager.getDefFiles();
+    return [...defManager.getDefFiles(), ...defManager.getDefFolders()];
   }
   getItemText(item) {
-    return item.basename;
+    return this.getPath(item);
   }
   onChooseItem(item, evt) {
+    const path = this.getPath(item);
     this.app.fileManager.processFrontMatter(this.file, (fm) => {
       let currDefSource = fm[DEF_CTX_FM_KEY];
       if (!currDefSource || !Array.isArray(currDefSource)) {
-        fm[DEF_CTX_FM_KEY] = [item.path];
+        fm[DEF_CTX_FM_KEY] = [path];
         return;
       }
-      if (currDefSource.includes(item.path)) {
+      if (currDefSource.includes(path)) {
         new import_obsidian10.Notice("Definition file source is already included for this file");
         return;
       }
-      fm[DEF_CTX_FM_KEY] = [...currDefSource, item.path];
-      getDefFileManager().updateDefSources([...currDefSource, item.path]);
+      fm[DEF_CTX_FM_KEY] = [...currDefSource, path];
+      getDefFileManager().updateDefSources([...currDefSource, path]);
     }).catch((e) => {
       logError(`Error writing to frontmatter of file: ${e}`);
     });
+  }
+  getPath(file) {
+    if (file instanceof import_obsidian10.TFolder) {
+      return file.path + "/";
+    }
+    return file.path;
   }
 };
 

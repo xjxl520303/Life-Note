@@ -122,6 +122,7 @@ TidyFootnotes
 Turndown
 TYPE
 Tex
+Tabs
 obsidian
 open
 order
@@ -177,6 +178,7 @@ Papa
 Parse
 Parsimmon
 Preact
+Plugins
 Obsidian
 Open
 OverwriteFile
@@ -189,6 +191,7 @@ OPEN
 Override
 Outliner
 Outdent
+ObsidianTabs
 Excalidraw
 Enter
 Example
@@ -700,6 +703,7 @@ createEl
 case
 codemirror
 con
+component
 in
 include
 is
@@ -1077,6 +1081,7 @@ Han
 Highlight
 Hike
 Highlighting
+Hover
 File
 Footnotes
 Frame

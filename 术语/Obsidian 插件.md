@@ -148,3 +148,12 @@ Footnote hover preview for Obsidian.md
 Annotate notes with comments and suggestions using CriticMarkup in Obsidian
 
 地址：[Fevol/obsidian-criticmarkup](https://github.com/Fevol/obsidian-criticmarkup)
+
+---
+# Obsidian-Tabs
+
+*Obsidian Tabs*
+
+Insert a tab component into markdown file.
+
+地址：[xhuajin/obsidian-tabs (github.com)](https://github.com/xhuajin/obsidian-tabs)

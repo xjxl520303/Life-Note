@@ -1,6 +1,30 @@
 {
   "recentFiles": [
     {
+      "basename": "主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能",
+      "path": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md"
+    },
+    {
+      "basename": "小插件推荐 #3：Obsidian Tabs",
+      "path": "博客/Obsidian/小插件推荐/小插件推荐 #3：Obsidian Tabs.md"
+    },
+    {
+      "basename": "Obsidian 插件",
+      "path": "术语/Obsidian 插件.md"
+    },
+    {
+      "basename": "Untitled",
+      "path": "博客/Obsidian/小插件推荐/Untitled.md"
+    },
+    {
+      "basename": "Obsidian 达人成长之路：MAKE.md 插件使用",
+      "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：MAKE.md 插件使用.md"
+    },
+    {
+      "basename": "创建 Obsidian 博客文章",
+      "path": "模板/创建 Obsidian 博客文章.md"
+    },
+    {
       "basename": "Obsidian 揭秘：深入理解链接的概念及应用",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
     },
@@ -11,10 +35,6 @@
     {
       "basename": "Obsidian 达人成长之路：链接相关插件指南",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md"
-    },
-    {
-      "basename": "Obsidian 插件开发知识点记录：Codemirror 6 文本添加下划线思考",
-      "path": "博客/Obsidian/插件开发/Obsidian 插件开发知识点记录：Codemirror 6 文本添加下划线思考.md"
     },
     {
       "basename": "知识点记录",
@@ -145,10 +165,6 @@
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Image Gallery 插件使用.md"
     },
     {
-      "basename": "创建 Obsidian 博客文章",
-      "path": "模板/创建 Obsidian 博客文章.md"
-    },
-    {
       "basename": "小插件推荐 #1：Obsidian-II-Quicker",
       "path": "博客/Obsidian/小插件推荐/小插件推荐 #1：Obsidian-II-Quicker.md"
     },
@@ -169,10 +185,6 @@
       "path": "博客/Obsidian/小插件推荐/小插件推荐 #5：脚注相关插件（Obsidian Footnotes Plugin & Obsidian Tidy Footnotes & BetterFn）.md"
     },
     {
-      "basename": "Obsidian 插件",
-      "path": "术语/Obsidian 插件.md"
-    },
-    {
       "basename": "插入 CriticMarkup",
       "path": "模板/插入 CriticMarkup.md"
     },
@@ -187,10 +199,6 @@
     {
       "basename": "插入 Typst 内嵌代码的代码块",
       "path": "模板/插入 Typst 内嵌代码的代码块.md"
-    },
-    {
-      "basename": "插入 Typst 代码块",
-      "path": "模板/插入 Typst 代码块.md"
     }
   ],
   "omittedPaths": [

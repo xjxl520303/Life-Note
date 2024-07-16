@@ -4,27 +4,22 @@
     "type": "split",
     "children": [
       {
-        "id": "ad2435299c2ffb8a",
+        "id": "37b83485f4e49061",
         "type": "tabs",
         "children": [
           {
-            "id": "106bf0fa0bb8e92f",
+            "id": "6688774762bb2c6a",
             "type": "leaf",
             "state": {
-              "type": "home-tab-view",
-              "state": {}
-            }
-          },
-          {
-            "id": "dc2cb2a31eaf080b",
-            "type": "leaf",
-            "state": {
-              "type": "swar8080/AVAILABLE_PLUGIN_UPDATES",
-              "state": {}
+              "type": "markdown",
+              "state": {
+                "file": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md",
+                "mode": "source",
+                "source": false
+              }
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -71,14 +66,6 @@
             }
           },
           {
-            "id": "38a7f51394100815",
-            "type": "leaf",
-            "state": {
-              "type": "mk-path-view",
-              "state": {}
-            }
-          },
-          {
             "id": "286301f23b79a0f3",
             "type": "leaf",
             "state": {
@@ -93,12 +80,20 @@
               "type": "file-tree-view",
               "state": {}
             }
+          },
+          {
+            "id": "a0288adc63a11bd9",
+            "type": "leaf",
+            "state": {
+              "type": "mk-path-view",
+              "state": {}
+            }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 259.51103591918945
+    "width": 292.51103591918945
   },
   "right": {
     "id": "86df642b33d61aa5",
@@ -107,7 +102,7 @@
       {
         "id": "fbd50ba70675730a",
         "type": "tabs",
-        "dimension": 68.89763779527559,
+        "dimension": 56.2634989200864,
         "children": [
           {
             "id": "0620a57e55d9f751",
@@ -115,6 +110,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -131,6 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -152,7 +149,9 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {}
+              "state": {
+                "file": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md"
+              }
             }
           },
           {
@@ -185,14 +184,16 @@
       {
         "id": "168fb7c04db3051b",
         "type": "tabs",
-        "dimension": 31.102362204724407,
+        "dimension": 43.73650107991361,
         "children": [
           {
             "id": "18d7aa0f9f9f669a",
             "type": "leaf",
             "state": {
               "type": "file-properties",
-              "state": {}
+              "state": {
+                "file": "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md"
+              }
             }
           },
           {
@@ -241,12 +242,28 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "dc2cb2a31eaf080b",
+  "active": "cc3c5048ac02c60f",
   "lastOpenFiles": [
+    "附件/动画2 68.gif",
+    "附件/Pasted image 20240716190032.png",
+    "附件/Pasted image 20240716182854.png",
+    "附件/Pasted image 20240716180655.png",
+    "附件/Pasted image 20240716174920.png",
+    "附件/Pasted image 20240716171530.png",
+    "附件/Pasted image 20240716162503.png",
+    "附件/Pasted image 20240716161253.png",
+    "附件/Pasted image 20240716161213.png",
+    "博客/Obsidian/小插件推荐/小插件推荐 #3：Obsidian Tabs.md",
+    "附件/Pasted image 20240715152116.png",
+    "术语/Obsidian 插件.md",
+    "博客/Obsidian/小插件推荐/Untitled.md",
+    "附件/v2-b2b10364c745847811994a69c21d5532_r.png",
+    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：MAKE.md 插件使用.md",
+    "模板/创建 Obsidian 博客文章.md",
     "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #6：😍文本标注插件，—— Commentator 来了…….md",
     "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：链接相关插件指南.md",
-    "博客/Obsidian/插件开发/Obsidian 插件开发知识点记录：Codemirror 6 文本添加下划线思考.md",
+    "博客/Obsidian/插件开发/主流笔记应用对“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md",
     "个人笔记/Typst/The Raindrop-Blue Book/知识点记录.md",
     "个人笔记/Typst/官方文档/Visualize/Image.md",
     "个人笔记/Typst/官方文档/Text/Underline.md",
@@ -263,27 +280,11 @@
     "个人笔记/Obsidian/插件开发/随记/2024-07-02.md",
     "个人笔记/Obsidian/插件开发/随记/2024-07-01.md",
     "日记/2024-05-27.md",
-    "日记/2024-07-01.md",
-    "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md",
-    "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md",
-    "个人笔记/前端/正则表达式.md",
     "博客/Obsidian/插件开发",
-    "README.md",
-    "模板/插入特殊符号.md",
     "个人笔记/Codemirror 6",
-    "附件/Pasted image 20240704150248.png",
     "个人笔记/Obsidian/插件开发/Codemirror",
     "个人笔记/Obsidian/插件开发/随记",
     "个人笔记/Obsidian/插件开发",
-    "附件/动画2 66.gif",
-    "附件/Pasted image 20240628154006.png",
-    "附件/Pasted image 20240627210427.png",
-    "附件/动画2 65.gif",
-    "附件/动画2 64.gif",
-    "附件/Pasted image 20240627190838.png",
-    "附件/Pasted image 20240627182638.png",
-    "附件/Pasted image 20240627170759.png",
-    "附件/Pasted image 20240627161341.png",
     "个人笔记/前端",
     "博客/Obsidian/揭秘系列",
     "个人笔记/Obsidian",
