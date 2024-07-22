@@ -72,6 +72,10 @@ tFileParentFolder
 tab
 tsc
 tsx
+textAtCursorRight
+targetWord
+tr
+textDecoration
 Blog
 Boolean
 Bookmarks
@@ -213,6 +217,7 @@ Outliner
 Outdent
 ObsidianTabs
 ORM
+Obsidan
 Excalidraw
 Enter
 Example
@@ -278,6 +283,7 @@ DaVinci
 Docker
 Designer
 Dart
+DecorationSet
 QuickAdd
 Quick
 Quicker
@@ -326,6 +332,7 @@ React
 Reloat
 Reload
 Restfull
+README
 YAML
 YYYY
 Yearly
@@ -375,12 +382,14 @@ Components
 Confluence
 CRIC
 Casaba
+Chrome
 kbd
 key
 keys
 kind
 kdb
 kern
+keymap
 MacOS
 MyFileContent
 MyFilename
@@ -524,6 +533,8 @@ linkKeys
 leaf
 leaves
 logos
+lineAt
+lsc
 Alt
 API
 Automatic
@@ -646,6 +657,8 @@ more
 metaLink
 mdx
 measure
+matchText
+mark
 next
 new
 note
@@ -671,6 +684,7 @@ numbering
 nums
 newLink
 normalsize
+node
 cursor
 content
 create
@@ -769,6 +783,8 @@ codemirror
 con
 component
 cm
+cut
+changes
 in
 include
 is
@@ -872,6 +888,9 @@ aperture
 addRibbonIcon
 activateView
 adipisicing
+addUnderline
+add
+appendConfig
 jump
 join
 json
@@ -880,6 +899,7 @@ journal
 jenemy
 jpg
 javascript
+jieba
 string
 syntax
 selection
@@ -985,6 +1005,7 @@ setViewState
 sidebar
 sectetur
 saving
+splitWords
 boolean
 be
 book
@@ -1039,6 +1060,9 @@ box
 baseline
 bacc
 bug
+base
+baseTheme
+between
 vault
 variables
 variable
@@ -1085,6 +1109,9 @@ getState
 getLeavesOfType
 getLeaf
 getRightLeaf
+getZhWordAtCursor
+getEnWordAtCursor
+getSpaceCountOfWord
 date
 default
 daily
@@ -1136,6 +1163,9 @@ dy
 docs
 dice
 def
+doc
+decorations
+dispatch
 HH
 Html
 Heading
@@ -1224,6 +1254,7 @@ example
 extends
 empty
 elit
+effects
 relative
 results
 rename
@@ -1275,6 +1306,12 @@ registerView
 revealLeaf
 rich
 reload
+right
+returns
+removeUnderline
+rs
+rsc
+ranges
 Untitled
 URL
 Unary
@@ -1371,6 +1408,8 @@ place
 pos
 pt
 paint
+param
+provide
 using
 undefined
 updated
@@ -1390,6 +1429,14 @@ unicode
 underline
 uninstallLaTeX
 um
+underlineField
+underlineSelection
+underlines
+underlineMark
+underlineTheme
+unknown
+ug
+underlineKeymap
 Note
 Normalize
 NoteDefinitions
@@ -1448,6 +1495,9 @@ Sequelize
 Scrapy
 Shopkeeper
 Sea
+SelectionRange
+StateEffect
+StateField
 xx
 xl
 xiaolu
@@ -1538,6 +1588,7 @@ Zone
 Zoom
 zh
 zip
+zhReg
 KaTeX
 XD
 XState
