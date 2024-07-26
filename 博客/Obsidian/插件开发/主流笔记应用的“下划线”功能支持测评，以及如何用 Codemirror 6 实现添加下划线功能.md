@@ -2,7 +2,7 @@
 created_at: 2024-07-11 19:29:50
 tags:
   - Codemirror
-updated_at: 2024-07-19 21:13:03
+updated_at: 2024-07-26 11:27:16
 ---
 本文以文本编辑器中一个比较常见的【下划线】功能为聚焦点来探讨一下一个小小的功能在各大笔记应用中的细节。我们以小见大、精益求精，从一个非常小的细节来看这些笔记应用（作者主要以网页版作为测评）对于功能上的打磨程度，用户体验如何。
 
@@ -1660,6 +1660,8 @@ function getSpaceCountOfWord(from: number, to: number, view: EditorView): [numbe
     return [startSpaceCount, endSpaceCount]
 }
 ```
+
+> 补充说明：`getEnWordAtCursor()` 函数可替换为 `view.state.wordAt(cursor.head)` 返回的 `SelectionRange` 中的 `from` 和 `to` 属性中得到单词的位置信息。
 
 ## 总结
 

@@ -5,16 +5,32 @@
       "path": "博客/Obsidian/插件开发/主流笔记应用的“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md"
     },
     {
+      "basename": "2024-07-01",
+      "path": "日记/2024-07-01.md"
+    },
+    {
+      "basename": "2024-05-27",
+      "path": "日记/2024-05-27.md"
+    },
+    {
+      "basename": "写作资料",
+      "path": "个人笔记/写作资料.md"
+    },
+    {
+      "basename": "简历（前端开发工程师：吴杰）",
+      "path": "个人笔记/简历（前端开发工程师：吴杰）.md"
+    },
+    {
+      "basename": "正则表达式",
+      "path": "个人笔记/前端/正则表达式.md"
+    },
+    {
       "basename": "Obsidian 揭秘：深入理解链接的概念及应用",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md"
     },
     {
       "basename": "Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md"
-    },
-    {
-      "basename": "简历（前端开发工程师：吴杰）",
-      "path": "个人笔记/简历（前端开发工程师：吴杰）.md"
     },
     {
       "basename": "小插件推荐 #3：Obsidian Tabs",
@@ -105,24 +121,12 @@
       "path": "个人笔记/Obsidian/插件开发/随记/2024-07-01.md"
     },
     {
-      "basename": "2024-05-27",
-      "path": "日记/2024-05-27.md"
-    },
-    {
-      "basename": "2024-07-01",
-      "path": "日记/2024-07-01.md"
-    },
-    {
       "basename": "Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探",
       "path": "博客/Obsidian/揭秘系列/Obsidian 揭秘：历史研究学者如何应用 Ob 构建知识库 · 初探.md"
     },
     {
       "basename": "Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路 #5：使用 Templater 减少重复工作，提高效率.md"
-    },
-    {
-      "basename": "正则表达式",
-      "path": "个人笔记/前端/正则表达式.md"
     },
     {
       "basename": "README",
@@ -159,10 +163,6 @@
     {
       "basename": "Obsidian 达人成长之路：Latex 插件使用",
       "path": "博客/Obsidian/达人成长之路/Obsidian 达人成长之路：Latex 插件使用.md"
-    },
-    {
-      "basename": "写作资料",
-      "path": "个人笔记/写作资料.md"
     },
     {
       "basename": "Obsidian 达人成长之路：Image Gallery 插件使用",

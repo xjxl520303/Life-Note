@@ -37,6 +37,7 @@
   "bannerHeight": 200,
   "spacesDisablePatch": false,
   "folderNoteInsideFolder": true,
+  "folderNoteName": "",
   "sidebarTabs": true,
   "showRibbon": true,
   "deleteFileOption": "trash",
@@ -74,6 +75,7 @@
     "spaces://$tags"
   ],
   "spacesUseAlias": false,
+  "flowState": false,
   "fmKeyAlias": "aliases",
   "fmKeyBanner": "banner",
   "fmKeyColor": "color",
@@ -100,5 +102,7 @@
   "defaultSpaceTemplate": "",
   "selectedKit": "default",
   "actionMaxSteps": 100,
+  "contextPagination": 25,
+  "searchWorker": true,
   "enableTagSpaces": true
 }

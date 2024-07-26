@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "82a9513c1e7d26aa",
+        "id": "d13d7c4ad9320174",
         "type": "tabs",
         "children": [
           {
-            "id": "b5346bb625d58a81",
+            "id": "397355fc041510c5",
             "type": "leaf",
             "state": {
               "type": "home-tab-view",
@@ -78,7 +78,7 @@
             }
           },
           {
-            "id": "a0288adc63a11bd9",
+            "id": "0ae96482778cbea5",
             "type": "leaf",
             "state": {
               "type": "mk-path-view",
@@ -86,7 +86,7 @@
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -233,22 +233,26 @@
       "file-tree-alternative:File Tree Alternative Plugin": false
     }
   },
-  "active": "b5346bb625d58a81",
+  "active": "397355fc041510c5",
   "lastOpenFiles": [
     "博客/Obsidian/插件开发/主流笔记应用的“下划线”功能支持测评，以及如何用 Codemirror 6 实现添加下划线功能.md",
+    "日记/2024-07-01.md",
+    "日记/2024-05-27.md",
+    "个人笔记/写作资料.md",
+    "个人笔记/简历（前端开发工程师：吴杰）.md",
+    "附件/Pasted image 20240723114850.png",
+    "个人笔记/前端/正则表达式.md",
     "博客/Obsidian/揭秘系列/Obsidian 揭秘：深入理解链接的概念及应用.md",
     "博客/Obsidian/揭秘系列/Obsidian 揭秘：flatMap 函数在 Dataview 中的妙用.md",
     "附件/Pasted image 20240719191535.png",
     "附件/动画2 81.gif",
     "附件/动画2 80.gif",
-    "个人笔记/简历（前端开发工程师：吴杰）.md",
     "附件/Pasted image 20240719171918.png",
     "附件/Pasted image 20240719171415.png",
     "附件/Pasted image 20240719170145.png",
     "附件/Pasted image 20240719165412.png",
     "附件/企业微信截图_17213783331883.png",
     "附件/动画2 79.gif",
-    "附件/动画2 78.gif",
     "博客/Obsidian/小插件推荐/小插件推荐 #3：Obsidian Tabs.md",
     "术语/Obsidian 插件.md",
     "博客/Obsidian/小插件推荐/Untitled.md",
@@ -267,10 +271,6 @@
     "个人笔记/Typst/日积月累/从模板中获取的有用代码.md",
     "个人笔记/Obsidian/插件开发/插件开发代码收集.md",
     "个人笔记/Obsidian/插件开发/Templater 代码收集.md",
-    "个人笔记/Obsidian/插件开发/Codemirror/Dataview 使用到的库.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-04.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-02.md",
-    "个人笔记/Obsidian/插件开发/随记/2024-07-01.md",
     "博客/Obsidian/插件开发",
     "个人笔记/Codemirror 6",
     "个人笔记/Obsidian/插件开发/Codemirror",

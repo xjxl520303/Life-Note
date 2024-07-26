@@ -82,11 +82,216 @@ var PTreeTraverser = class {
 
 // src/settings.ts
 var import_obsidian = require("obsidian");
+
+// src/core/atomic-def-parser.ts
+var AtomicDefParser = class {
+  constructor(app, file) {
+    this.app = app;
+    this.file = file;
+  }
+  async parseFile(fileContent) {
+    if (!fileContent) {
+      fileContent = await this.app.vault.cachedRead(this.file);
+    }
+    const fileMetadata = this.app.metadataCache.getFileCache(this.file);
+    let aliases = [];
+    const fmData = fileMetadata == null ? void 0 : fileMetadata.frontmatter;
+    if (fmData) {
+      const fmAlias = fmData["aliases"];
+      if (Array.isArray(fmAlias)) {
+        aliases = fmAlias;
+      }
+    }
+    const fmPos = fileMetadata == null ? void 0 : fileMetadata.frontmatterPosition;
+    if (fmPos) {
+      fileContent = fileContent.slice(fmPos.end.offset + 1);
+    }
+    const def = {
+      key: this.file.basename.toLowerCase(),
+      word: this.file.basename,
+      aliases,
+      definition: fileContent,
+      file: this.file,
+      linkText: `${this.file.path}`,
+      fileType: "atomic" /* Atomic */
+    };
+    return [def];
+  }
+};
+
+// src/core/consolidated-def-parser.ts
+var ConsolidatedDefParser = class {
+  constructor(app, file) {
+    this.app = app;
+    this.file = file;
+    this.defBuffer = {};
+    this.inDefinition = false;
+    this.definitions = [];
+  }
+  async parseFile(fileContent) {
+    if (!fileContent) {
+      fileContent = await this.app.vault.cachedRead(this.file);
+    }
+    const fileMetadata = this.app.metadataCache.getFileCache(this.file);
+    const fmPos = fileMetadata == null ? void 0 : fileMetadata.frontmatterPosition;
+    if (fmPos) {
+      fileContent = fileContent.slice(fmPos.end.offset + 1);
+    }
+    const lines = fileContent.split("\n");
+    this.currLine = -1;
+    for (const line of lines) {
+      this.currLine++;
+      if (this.isEndOfBlock(line)) {
+        if (this.bufferValid()) {
+          this.commitDefBuffer();
+        }
+        this.startNewBlock();
+        continue;
+      }
+      if (this.inDefinition) {
+        this.defBuffer.definition += line + "\n";
+        continue;
+      }
+      if (line == "") {
+        continue;
+      }
+      if (this.isWordDeclaration(line)) {
+        let from = this.currLine;
+        this.defBuffer.filePosition = {
+          from
+        };
+        this.defBuffer.word = this.extractWordDeclaration(line);
+        continue;
+      }
+      if (this.isAliasDeclaration(line)) {
+        this.defBuffer.aliases = this.extractAliases(line);
+        continue;
+      }
+      this.inDefinition = true;
+      this.defBuffer.definition = line + "\n";
+    }
+    this.currLine++;
+    if (this.bufferValid()) {
+      this.commitDefBuffer();
+    }
+    return this.definitions;
+  }
+  commitDefBuffer() {
+    var _a, _b, _c, _d, _e, _f, _g;
+    this.definitions.push({
+      key: (_b = (_a = this.defBuffer.word) == null ? void 0 : _a.toLowerCase()) != null ? _b : "",
+      word: (_c = this.defBuffer.word) != null ? _c : "",
+      aliases: (_d = this.defBuffer.aliases) != null ? _d : [],
+      definition: (_e = this.defBuffer.definition) != null ? _e : "",
+      file: this.file,
+      linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
+      fileType: "consolidated" /* Consolidated */,
+      position: {
+        from: (_g = (_f = this.defBuffer.filePosition) == null ? void 0 : _f.from) != null ? _g : 0,
+        to: this.currLine - 1
+      }
+    });
+    if (this.defBuffer.aliases && this.defBuffer.aliases.length > 0) {
+      this.defBuffer.aliases.forEach((alias) => {
+        var _a2, _b2, _c2, _d2, _e2;
+        this.definitions.push({
+          key: alias.toLowerCase(),
+          word: (_a2 = this.defBuffer.word) != null ? _a2 : "",
+          aliases: (_b2 = this.defBuffer.aliases) != null ? _b2 : [],
+          definition: (_c2 = this.defBuffer.definition) != null ? _c2 : "",
+          file: this.file,
+          linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
+          fileType: "consolidated" /* Consolidated */,
+          position: {
+            from: (_e2 = (_d2 = this.defBuffer.filePosition) == null ? void 0 : _d2.from) != null ? _e2 : 0,
+            to: this.currLine - 1
+          }
+        });
+      });
+    }
+    this.defBuffer = {};
+  }
+  bufferValid() {
+    return !!this.defBuffer.word;
+  }
+  isEndOfBlock(line) {
+    const parseSettings = this.getParseSettings();
+    if (parseSettings.divider.dash && line.startsWith("---")) {
+      return true;
+    }
+    return parseSettings.divider.underscore && line.startsWith("___");
+  }
+  isAliasDeclaration(line) {
+    line = line.trimEnd();
+    return !!this.defBuffer.word && line.startsWith("*") && line.endsWith("*");
+  }
+  extractAliases(line) {
+    {
+      line = line.trimEnd().replace(/\*+/g, "");
+      const aliases = line.split(/[,|]/);
+      return aliases.map((alias) => alias.trim());
+    }
+  }
+  isWordDeclaration(line) {
+    return line.startsWith("# ");
+  }
+  extractWordDeclaration(line) {
+    const sepLine = line.split(" ");
+    if (sepLine.length <= 1) {
+      return "";
+    }
+    return sepLine.slice(1).join(" ");
+  }
+  startNewBlock() {
+    this.inDefinition = false;
+  }
+  getParseSettings() {
+    return getSettings().defFileParseConfig;
+  }
+};
+
+// src/core/file-parser.ts
+var DEF_TYPE_FM = "def-type";
+var FileParser = class {
+  constructor(app, file) {
+    this.app = app;
+    this.file = file;
+  }
+  // Optional argument used when file cache may not be updated
+  // and we know the new contents of the file
+  async parseFile(fileContent) {
+    const defFileType = this.getDefFileType();
+    switch (defFileType) {
+      case "consolidated" /* Consolidated */:
+        const defParser = new ConsolidatedDefParser(this.app, this.file);
+        return defParser.parseFile(fileContent);
+      case "atomic" /* Atomic */:
+        const atomicParser = new AtomicDefParser(this.app, this.file);
+        return atomicParser.parseFile(fileContent);
+    }
+  }
+  getDefFileType() {
+    var _a;
+    const fileCache = this.app.metadataCache.getFileCache(this.file);
+    const fmFileType = (_a = fileCache == null ? void 0 : fileCache.frontmatter) == null ? void 0 : _a[DEF_TYPE_FM];
+    if (fmFileType && (fmFileType === "consolidated" /* Consolidated */ || fmFileType === "atomic" /* Atomic */)) {
+      return fmFileType;
+    }
+    const parserSettings = getSettings().defFileParseConfig;
+    if (parserSettings.defaultFileType) {
+      return parserSettings.defaultFileType;
+    }
+    return "consolidated" /* Consolidated */;
+  }
+};
+
+// src/settings.ts
 var DEFAULT_DEF_FOLDER = "definitions";
 var DEFAULT_SETTINGS = {
   enableInReadingView: true,
   popoverEvent: "hover" /* Hover */,
   defFileParseConfig: {
+    defaultFileType: "consolidated" /* Consolidated */,
     divider: {
       dash: true,
       underscore: false
@@ -160,6 +365,16 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
           });
         });
         modal.open();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Default definition file type").setDesc("When the 'def-type' frontmatter is not specified, the definition file will be treated as this configured default file type.").addDropdown((component) => {
+      var _a;
+      component.addOption("consolidated" /* Consolidated */, "consolidated");
+      component.addOption("atomic" /* Atomic */, "atomic");
+      component.setValue((_a = this.settings.defFileParseConfig.defaultFileType) != null ? _a : "consolidated" /* Consolidated */);
+      component.onChange(async (val) => {
+        this.settings.defFileParseConfig.defaultFileType = val;
+        await this.plugin.saveSettings();
       });
     });
     new import_obsidian.Setting(containerEl).setHeading().setName("Definition Popover Settings");
@@ -241,6 +456,23 @@ var SettingsTab = class extends import_obsidian.PluginSettingTab {
       component.setValue(this.settings.defPopoverConfig.enableDefinitionLink);
       component.onChange(async (val) => {
         this.settings.defPopoverConfig.enableDefinitionLink = val;
+        await this.plugin.saveSettings();
+      });
+    });
+    new import_obsidian.Setting(containerEl).setName("Background colour").setDesc("Customise the background colour of the definition popover").addExtraButton((component) => {
+      component.setIcon("rotate-ccw");
+      component.setTooltip("Reset to default colour set by theme");
+      component.onClick(async () => {
+        this.settings.defPopoverConfig.backgroundColour = void 0;
+        await this.plugin.saveSettings();
+        this.display();
+      });
+    }).addColorPicker((component) => {
+      if (this.settings.defPopoverConfig.backgroundColour) {
+        component.setValue(this.settings.defPopoverConfig.backgroundColour);
+      }
+      component.onChange(async (val) => {
+        this.settings.defPopoverConfig.backgroundColour = val;
         await this.plugin.saveSettings();
       });
     });
@@ -482,136 +714,6 @@ function useRetry(retryCount) {
   };
 }
 
-// src/core/file-parser.ts
-var FileParser = class {
-  constructor(app, file) {
-    this.app = app;
-    this.vault = app.vault;
-    this.file = file;
-    this.defBuffer = {};
-    this.inDefinition = false;
-    this.definitions = [];
-  }
-  async parseFile(fileContent) {
-    if (!fileContent) {
-      fileContent = await this.vault.cachedRead(this.file);
-    }
-    const fileMetadata = this.app.metadataCache.getFileCache(this.file);
-    const fmPos = fileMetadata == null ? void 0 : fileMetadata.frontmatterPosition;
-    if (fmPos) {
-      fileContent = fileContent.slice(fmPos.end.offset + 1);
-    }
-    const lines = fileContent.split("\n");
-    this.currLine = -1;
-    for (const line of lines) {
-      this.currLine++;
-      if (this.isEndOfBlock(line)) {
-        if (this.bufferValid()) {
-          this.commitDefBuffer();
-        }
-        this.startNewBlock();
-        continue;
-      }
-      if (this.inDefinition) {
-        this.defBuffer.definition += line + "\n";
-        continue;
-      }
-      if (line == "") {
-        continue;
-      }
-      if (this.isWordDeclaration(line)) {
-        let from = this.currLine;
-        this.defBuffer.filePosition = {
-          from
-        };
-        this.defBuffer.word = this.extractWordDeclaration(line);
-        continue;
-      }
-      if (this.isAliasDeclaration(line)) {
-        this.defBuffer.aliases = this.extractAliases(line);
-        continue;
-      }
-      this.inDefinition = true;
-      this.defBuffer.definition = line + "\n";
-    }
-    this.currLine++;
-    if (this.bufferValid()) {
-      this.commitDefBuffer();
-    }
-    return this.definitions;
-  }
-  commitDefBuffer() {
-    var _a, _b, _c, _d, _e, _f, _g;
-    this.definitions.push({
-      key: (_b = (_a = this.defBuffer.word) == null ? void 0 : _a.toLowerCase()) != null ? _b : "",
-      word: (_c = this.defBuffer.word) != null ? _c : "",
-      aliases: (_d = this.defBuffer.aliases) != null ? _d : [],
-      definition: (_e = this.defBuffer.definition) != null ? _e : "",
-      file: this.file,
-      linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
-      position: {
-        from: (_g = (_f = this.defBuffer.filePosition) == null ? void 0 : _f.from) != null ? _g : 0,
-        to: this.currLine - 1
-      }
-    });
-    if (this.defBuffer.aliases && this.defBuffer.aliases.length > 0) {
-      this.defBuffer.aliases.forEach((alias) => {
-        var _a2, _b2, _c2, _d2, _e2;
-        this.definitions.push({
-          key: alias.toLowerCase(),
-          word: (_a2 = this.defBuffer.word) != null ? _a2 : "",
-          aliases: (_b2 = this.defBuffer.aliases) != null ? _b2 : [],
-          definition: (_c2 = this.defBuffer.definition) != null ? _c2 : "",
-          file: this.file,
-          linkText: `${this.file.path}${this.defBuffer.word ? "#" + this.defBuffer.word : ""}`,
-          position: {
-            from: (_e2 = (_d2 = this.defBuffer.filePosition) == null ? void 0 : _d2.from) != null ? _e2 : 0,
-            to: this.currLine - 1
-          }
-        });
-      });
-    }
-    this.defBuffer = {};
-  }
-  bufferValid() {
-    return !!this.defBuffer.word;
-  }
-  isEndOfBlock(line) {
-    const parseSettings = this.getParseSettings();
-    if (parseSettings.divider.dash && line.startsWith("---")) {
-      return true;
-    }
-    return parseSettings.divider.underscore && line.startsWith("___");
-  }
-  isAliasDeclaration(line) {
-    line = line.trimEnd();
-    return !!this.defBuffer.word && line.startsWith("*") && line.endsWith("*");
-  }
-  extractAliases(line) {
-    {
-      line = line.trimEnd().replace(/\*+/g, "");
-      const aliases = line.split(",");
-      return aliases.map((alias) => alias.trim());
-    }
-  }
-  isWordDeclaration(line) {
-    return line.startsWith("# ");
-  }
-  extractWordDeclaration(line) {
-    const sepLine = line.split(" ");
-    if (sepLine.length <= 1) {
-      return "";
-    }
-    return sepLine.slice(1).join(" ");
-  }
-  startNewBlock() {
-    this.inDefinition = false;
-  }
-  getParseSettings() {
-    return getSettings().defFileParseConfig;
-  }
-};
-
 // src/core/def-file-manager.ts
 var defFileManager;
 var DEF_CTX_FM_KEY = "def-context";
@@ -622,10 +724,15 @@ var DefManager = class {
     this.globalDefFiles = /* @__PURE__ */ new Map();
     this.globalDefFolders = /* @__PURE__ */ new Map();
     this.globalPrefixTree = new PTreeNode();
+    this.consolidatedDefFiles = /* @__PURE__ */ new Map();
     this.resetLocalConfigs();
     this.lastUpdate = 0;
+    this.markedDirty = [];
     window.NoteDefinition.definitions.global = this.globalDefs;
     this.loadDefinitions();
+  }
+  addDefFile(file) {
+    this.globalDefFiles.set(file.path, file);
   }
   // Get the appropriate prefix tree to use for current active file
   getPrefixTree() {
@@ -662,6 +769,9 @@ var DefManager = class {
     this.resetLocalConfigs();
     this.buildLocalPrefixTree(defSource);
     this.shouldUseLocalPTree = true;
+  }
+  markDirty(file) {
+    this.markedDirty.push(file);
   }
   flattenPathList(paths) {
     const filePaths = [];
@@ -733,8 +843,14 @@ var DefManager = class {
   get(key) {
     return this.globalDefs.get(normaliseWord(key));
   }
+  set(def) {
+    this.globalDefs.set(def);
+  }
   getDefFiles() {
     return [...this.globalDefFiles.values()];
+  }
+  getConsolidatedDefFiles() {
+    return [...this.consolidatedDefFiles.values()];
   }
   getDefFolders() {
     return [...this.globalDefFolders.values()];
@@ -742,7 +858,8 @@ var DefManager = class {
   async loadUpdatedFiles() {
     const definitions = [];
     const dirtyFiles = [];
-    for (let file of this.globalDefFiles.values()) {
+    const files = [...this.globalDefFiles.values(), ...this.markedDirty];
+    for (let file of files) {
       if (file.stat.mtime > this.lastUpdate) {
         logDebug(`File ${file.path} was updated, reloading definitions...`);
         dirtyFiles.push(file.path);
@@ -758,6 +875,7 @@ var DefManager = class {
         this.globalDefs.set(def);
       });
     }
+    this.markedDirty = [];
     this.buildPrefixTree();
     this.lastUpdate = Date.now();
   }
@@ -810,7 +928,11 @@ var DefManager = class {
   async parseFile(file) {
     this.globalDefFiles.set(file.path, file);
     let parser = new FileParser(this.app, file);
-    return parser.parseFile();
+    const def = await parser.parseFile();
+    if (def.length > 0 && def[0].fileType === "consolidated" /* Consolidated */) {
+      this.consolidatedDefFiles.set(file.path, file);
+    }
+    return def;
   }
   getGlobalDefFolder() {
     return window.NoteDefinition.settings.defFolder || DEFAULT_DEF_FOLDER;
@@ -848,6 +970,13 @@ var DefinitionRepo = class {
       return;
     }
     defMap.set(def.key, def);
+    if (def.aliases.length > 0) {
+      def.aliases.forEach((alias) => {
+        if (defMap) {
+          defMap.set(alias.toLowerCase(), def);
+        }
+      });
+    }
   }
   clearForFile(filePath) {
     const defMap = this.fileDefMap.get(filePath);
@@ -937,7 +1066,7 @@ var DefinitionPopover = class extends import_obsidian4.Component {
       cls: "definition-popover",
       attr: {
         id: DEF_POPOVER_ID,
-        style: `visibility:hidden`
+        style: `visibility:hidden;${popoverSettings.backgroundColour ? `background-color: ${popoverSettings.backgroundColour};` : ""}`
       }
     });
     el.createEl("h2", { text: def.word });
@@ -1359,11 +1488,46 @@ var import_obsidian8 = require("obsidian");
 
 // src/core/def-file-updater.ts
 var import_obsidian7 = require("obsidian");
+
+// src/core/fm-builder.ts
+var FrontmatterBuilder = class {
+  constructor() {
+    this.fm = /* @__PURE__ */ new Map();
+  }
+  add(k, v) {
+    this.fm.set(k, v);
+  }
+  finish() {
+    let fm = "---\n";
+    this.fm.forEach((v, k) => {
+      fm += `${k}: ${v}
+`;
+    });
+    fm += "---\n";
+    return fm;
+  }
+};
+
+// src/core/def-file-updater.ts
 var DefFileUpdater = class {
   constructor(app) {
     this.app = app;
   }
   async updateDefinition(def) {
+    if (def.fileType === "atomic" /* Atomic */) {
+      await this.updateAtomicDefFile(def);
+    } else if (def.fileType === "consolidated" /* Consolidated */) {
+      await this.updateConsolidatedDefFile(def);
+    } else {
+      return;
+    }
+    await getDefFileManager().loadUpdatedFiles();
+    new import_obsidian7.Notice("Definition successfully modified");
+  }
+  async updateAtomicDefFile(def) {
+    await this.app.vault.modify(def.file, def.definition);
+  }
+  async updateConsolidatedDefFile(def) {
     const file = def.file;
     const fileContent = await this.app.vault.read(file);
     const fileParser = new FileParser(this.app, file);
@@ -1374,13 +1538,49 @@ var DefFileUpdater = class {
       logError("File definition not found, cannot edit");
       return;
     }
-    const newLines = this.replaceDefinition(fileDef.position, def, lines);
-    const newContent = newLines.join("\n");
-    await this.app.vault.modify(file, newContent);
-    await getDefFileManager().loadUpdatedFiles();
-    new import_obsidian7.Notice("Definition successfully modified");
+    if (fileDef.position) {
+      const newLines = this.replaceDefinition(fileDef.position, def, lines);
+      const newContent = newLines.join("\n");
+      await this.app.vault.modify(file, newContent);
+    }
   }
-  async addDefinition(def) {
+  async addDefinition(def, folder) {
+    if (!def.fileType) {
+      logError("File type missing");
+      return;
+    }
+    if (def.fileType === "consolidated" /* Consolidated */) {
+      await this.addConsoldiatedFileDefinition(def);
+    } else if (def.fileType === "atomic" /* Atomic */) {
+      await this.addAtomicFileDefinition(def, folder);
+    }
+    await getDefFileManager().loadUpdatedFiles();
+    new import_obsidian7.Notice("Definition succesfully added");
+  }
+  async addAtomicFileDefinition(def, folder) {
+    if (!folder) {
+      logError("Folder missing for atomic file add");
+      return;
+    }
+    if (!def.definition) {
+      logWarn("No definition given");
+      return;
+    }
+    const fmBuilder = new FrontmatterBuilder();
+    fmBuilder.add("def-type", "atomic");
+    if (def.aliases) {
+      const aliases = [];
+      def.aliases.forEach((alias) => {
+        aliases.push(`- ${alias}`);
+      });
+      fmBuilder.add("aliases", "\n" + aliases.join("\n"));
+    }
+    const fm = fmBuilder.finish();
+    const file = await this.app.vault.create(`${folder}/${def.word}.md`, fm + def.definition);
+    getDefFileManager().addDefFile(file);
+    getDefFileManager().markDirty(file);
+  }
+  async addConsoldiatedFileDefinition(def) {
     const file = def.file;
     if (!file) {
       logError("Add definition failed, no file given");
@@ -1396,8 +1596,6 @@ var DefFileUpdater = class {
     const newLines = lines.concat(addedLines);
     const newContent = newLines.join("\n");
     await this.app.vault.modify(file, newContent);
-    await getDefFileManager().loadUpdatedFiles();
-    new import_obsidian7.Notice("Definition succesfully added");
   }
   addSeparator(lines) {
     const dividerSettings = getSettings().defFileParseConfig.divider;
@@ -1535,15 +1733,36 @@ var AddDefinitionModal = class {
         placeholder: "Add definition here"
       }
     });
-    const defManager = getDefFileManager();
-    let defFileSettings;
-    new import_obsidian9.Setting(this.modal.contentEl).setName("Definition file").addDropdown((component) => {
-      const defFiles = defManager.globalDefFiles;
-      [...defFiles.keys()].forEach((file) => {
-        component.addOption(file, file);
+    new import_obsidian9.Setting(this.modal.contentEl).setName("Definition file type").addDropdown((component) => {
+      component.addOption("consolidated" /* Consolidated */, "Consolidated");
+      component.addOption("atomic" /* Atomic */, "Atomic");
+      component.onChange((val) => {
+        if (val === "consolidated" /* Consolidated */) {
+          this.atomicFolderPickerSetting.settingEl.hide();
+          this.defFilePickerSetting.settingEl.show();
+        } else if (val === "atomic" /* Atomic */) {
+          this.defFilePickerSetting.settingEl.hide();
+          this.atomicFolderPickerSetting.settingEl.show();
+        }
       });
-      defFileSettings = component;
+      this.fileTypePicker = component;
     });
+    const defManager = getDefFileManager();
+    this.defFilePickerSetting = new import_obsidian9.Setting(this.modal.contentEl).setName("Definition file").addDropdown((component) => {
+      const defFiles = defManager.getConsolidatedDefFiles();
+      defFiles.forEach((file) => {
+        component.addOption(file.path, file.path);
+      });
+      this.defFilePicker = component;
+    });
+    this.atomicFolderPickerSetting = new import_obsidian9.Setting(this.modal.contentEl).setName("Add file to folder").addDropdown((component) => {
+      const defFolders = defManager.getDefFolders();
+      defFolders.forEach((folder) => {
+        component.addOption(folder.path, folder.path + "/");
+      });
+      this.atomicFolderPicker = component;
+    });
+    this.atomicFolderPickerSetting.settingEl.hide();
     const button = this.modal.contentEl.createEl("button", {
       text: "Save",
       cls: "edit-modal-save-button"
@@ -1556,20 +1775,22 @@ var AddDefinitionModal = class {
         new import_obsidian9.Notice("Please fill in a definition value");
         return;
       }
-      if (!defFileSettings.getValue()) {
+      if (!this.defFilePicker.getValue()) {
         new import_obsidian9.Notice("Please choose a definition file. If you do not have any definition files, please create one.");
         return;
       }
       const defFileManager2 = getDefFileManager();
-      const definitionFile = defFileManager2.globalDefFiles.get(defFileSettings.getValue());
+      const definitionFile = defFileManager2.globalDefFiles.get(this.defFilePicker.getValue());
       const updated = new DefFileUpdater(this.app);
+      const fileType = this.fileTypePicker.getValue();
       updated.addDefinition({
-        key: phraseText.value,
+        fileType,
+        key: phraseText.value.toLowerCase(),
         word: phraseText.value,
         aliases: aliasText.value ? aliasText.value.split(",").map((alias) => alias.trim()) : [],
         definition: defText.value,
         file: definitionFile
-      });
+      }, this.atomicFolderPicker.getValue());
       this.modal.close();
     });
     this.modal.open();
@@ -1615,6 +1836,16 @@ var FMSuggestModal = class extends import_obsidian10.FuzzySuggestModal {
     return file.path;
   }
 };
+
+// src/editor/def-file-registration.ts
+function registerDefFile(app, file, fileType) {
+  app.fileManager.processFrontMatter(file, (fm) => {
+    fm[DEF_TYPE_FM] = fileType;
+    getDefFileManager().loadDefinitions();
+  }).catch((e) => {
+    logError(`Err writing to frontmatter of file: ${e}`);
+  });
+}
 
 // src/main.ts
 var NoteDefinition = class extends import_obsidian11.Plugin {
@@ -1690,6 +1921,38 @@ var NoteDefinition = class extends import_obsidian11.Plugin {
         }
         const suggestModal = new FMSuggestModal(this.app, activeFile);
         suggestModal.open();
+      }
+    });
+    this.addCommand({
+      id: "refresh-definitions",
+      name: "Refresh definitions",
+      callback: () => {
+        this.fileExplorerDeco.run();
+        this.defManager.loadDefinitions();
+      }
+    });
+    this.addCommand({
+      id: "register-consolidated-def-file",
+      name: "Register consolidated definition file",
+      editorCallback: (_) => {
+        const activeFile = this.app.workspace.getActiveFile();
+        if (!activeFile) {
+          new import_obsidian11.Notice("Command must be used within an active opened file");
+          return;
+        }
+        registerDefFile(this.app, activeFile, "consolidated" /* Consolidated */);
+      }
+    });
+    this.addCommand({
+      id: "register-atomic-def-file",
+      name: "Register atomic definition file",
+      editorCallback: (_) => {
+        const activeFile = this.app.workspace.getActiveFile();
+        if (!activeFile) {
+          new import_obsidian11.Notice("Command must be used within an active opened file");
+          return;
+        }
+        registerDefFile(this.app, activeFile, "atomic" /* Atomic */);
       }
     });
   }
